@@ -20,7 +20,7 @@ import java.util.List;
  * @since 2020-07-25 15:11:00
  */
 @RestController
-@RequestMapping("upload")
+@RequestMapping("/upload")
 public class UploadController extends ApiController {
     /**
      * 服务对象
@@ -35,7 +35,7 @@ public class UploadController extends ApiController {
      * @param upload 查询实体
      * @return 所有数据
      */
-    @GetMapping
+    @GetMapping("/")
     public R selectAll(Page<Upload> page, Upload upload) {
         return success(this.uploadService.page(page, new QueryWrapper<>(upload)));
     }
@@ -57,7 +57,7 @@ public class UploadController extends ApiController {
      * @param upload 实体对象
      * @return 新增结果
      */
-    @PostMapping
+    @PostMapping("/")
     public R insert(@RequestBody Upload upload) {
         return success(this.uploadService.save(upload));
     }
@@ -68,7 +68,7 @@ public class UploadController extends ApiController {
      * @param upload 实体对象
      * @return 修改结果
      */
-    @PutMapping
+    @PutMapping("/")
     public R update(@RequestBody Upload upload) {
         return success(this.uploadService.updateById(upload));
     }
@@ -79,7 +79,7 @@ public class UploadController extends ApiController {
      * @param idList 主键结合
      * @return 删除结果
      */
-    @DeleteMapping
+    @DeleteMapping("/")
     public R delete(@RequestParam("idList") List<Long> idList) {
         return success(this.uploadService.removeByIds(idList));
     }

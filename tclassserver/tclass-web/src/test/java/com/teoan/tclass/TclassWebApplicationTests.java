@@ -25,7 +25,9 @@ class TclassWebApplicationTests {
 
         Page<Student> page = new Page<>(2,5);
 
-        IPage<Student> studentIPage = studentMapper.selectPage(page, null);
+        Student student = Student.builder().gender("女").build();
+        QueryWrapper<Student> wrapper = new QueryWrapper<>(student);
+        IPage<Student> studentIPage = studentMapper.selectPage(page, wrapper);
         List<Student> studentList = studentIPage.getRecords();
 
         studentList.forEach(System.out::println);

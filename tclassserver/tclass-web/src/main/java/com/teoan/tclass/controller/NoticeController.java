@@ -20,7 +20,7 @@ import java.util.List;
  * @since 2020-07-25 15:11:32
  */
 @RestController
-@RequestMapping("notice")
+@RequestMapping("/notice")
 public class NoticeController extends ApiController {
     /**
      * 服务对象
@@ -31,13 +31,13 @@ public class NoticeController extends ApiController {
     /**
      * 分页查询所有数据
      *
-     * @param page   分页对象
-     * @param notice 查询实体
+     * @param current 分页对象
+     * @param size 查询数据量
      * @return 所有数据
      */
-    @GetMapping
-    public R selectAll(Page<Notice> page, Notice notice) {
-        return success(this.noticeService.page(page, new QueryWrapper<>(notice)));
+    @GetMapping("/")
+    public R selectNoticeByPage(@RequestParam(defaultValue = "1")Long current,@RequestParam(defaultValue = "10")Long size, Notice notice) {
+        return success(noticeService.selectNoticesByPage(current,size,notice));
     }
 
     /**
@@ -57,7 +57,7 @@ public class NoticeController extends ApiController {
      * @param notice 实体对象
      * @return 新增结果
      */
-    @PostMapping
+    @PostMapping("/")
     public R insert(@RequestBody Notice notice) {
         return success(this.noticeService.save(notice));
     }
@@ -68,7 +68,7 @@ public class NoticeController extends ApiController {
      * @param notice 实体对象
      * @return 修改结果
      */
-    @PutMapping
+    @PutMapping("/")
     public R update(@RequestBody Notice notice) {
         return success(this.noticeService.updateById(notice));
     }
@@ -79,7 +79,7 @@ public class NoticeController extends ApiController {
      * @param idList 主键结合
      * @return 删除结果
      */
-    @DeleteMapping
+    @DeleteMapping("/")
     public R delete(@RequestParam("idList") List<Long> idList) {
         return success(this.noticeService.removeByIds(idList));
     }

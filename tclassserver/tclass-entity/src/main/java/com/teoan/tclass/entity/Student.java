@@ -7,7 +7,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.io.Serializable;
 import java.util.List;
@@ -23,7 +28,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @TableName(value ="student",resultMap = "AllStudentInfo")
-public class Student extends Model<Student> {
+public class Student extends Model<Student> implements UserDetails {
 
     /**
     * 学号
@@ -121,4 +126,41 @@ public class Student extends Model<Student> {
         return this.id;
     }
 
+
+    //springSecurity
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
+        authorityList.add(new SimpleGrantedAuthority(role.getName()));
+        return authorityList;
+    }
+
+    //登录使用学号登录，所以这里用户名返回的是学号
+    @Override
+    public String getUsername() {
+        return String.valueOf(this.id);
+    }
+
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

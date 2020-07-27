@@ -51,11 +51,10 @@ public class StudentController extends ApiController {
      * @return 所有数据
      */
     @GetMapping("/")
-    public R getStudentByPage(@RequestParam(defaultValue = "1")Long current,@RequestParam(defaultValue = "10")Long size) {
+    public R getStudentByPage(@RequestParam(defaultValue = "1")Long current,@RequestParam(defaultValue = "10")Long size,Student student) {
 
-        Page<Student> studentPage = new Page<>(current,size);
-        List<Student> studentList = this.studentService.page(studentPage, null).getRecords();
-        return success(studentList);
+
+        return success(studentService.getStudentsByPage(current,size,student));
     }
 
     /**
@@ -77,7 +76,11 @@ public class StudentController extends ApiController {
      */
     @PostMapping
     public R insert(@RequestBody Student student) {
-        return success(this.studentService.save(student));
+
+        if(studentService.addStudent(student)){
+            return success("添加成功！");
+        }
+        return failed("添加失败，用户名重复！");
     }
 
     /**

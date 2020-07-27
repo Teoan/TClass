@@ -20,7 +20,7 @@ import java.util.List;
  * @since 2020-07-25 15:11:13
  */
 @RestController
-@RequestMapping("work")
+@RequestMapping("/work")
 public class WorkController extends ApiController {
     /**
      * 服务对象
@@ -35,7 +35,7 @@ public class WorkController extends ApiController {
      * @param work 查询实体
      * @return 所有数据
      */
-    @GetMapping
+    @GetMapping("/")
     public R selectAll(Page<Work> page, Work work) {
         return success(this.workService.page(page, new QueryWrapper<>(work)));
     }
@@ -57,7 +57,7 @@ public class WorkController extends ApiController {
      * @param work 实体对象
      * @return 新增结果
      */
-    @PostMapping
+    @PostMapping("/")
     public R insert(@RequestBody Work work) {
         return success(this.workService.save(work));
     }
@@ -68,7 +68,7 @@ public class WorkController extends ApiController {
      * @param work 实体对象
      * @return 修改结果
      */
-    @PutMapping
+    @PutMapping("/")
     public R update(@RequestBody Work work) {
         return success(this.workService.updateById(work));
     }
@@ -79,7 +79,7 @@ public class WorkController extends ApiController {
      * @param idList 主键结合
      * @return 删除结果
      */
-    @DeleteMapping
+    @DeleteMapping("/")
     public R delete(@RequestParam("idList") List<Long> idList) {
         return success(this.workService.removeByIds(idList));
     }
