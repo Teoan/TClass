@@ -45,7 +45,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         QueryWrapper<Student> wrapper = new QueryWrapper<>();
-        wrapper.eq("name",s);
+        wrapper.eq("id",s);
         Student student = getBaseMapper().selectOne(wrapper);
         if(student==null){
             throw new UsernameNotFoundException("用户名不存在!");

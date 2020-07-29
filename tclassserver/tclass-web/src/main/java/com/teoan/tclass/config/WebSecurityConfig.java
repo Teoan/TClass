@@ -1,18 +1,35 @@
 package com.teoan.tclass.config;
 
+import com.baomidou.mybatisplus.extension.api.R;
+import com.baomidou.mybatisplus.extension.enums.ApiErrorCode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.teoan.tclass.entity.Student;
 import com.teoan.tclass.service.StudentService;
 import com.teoan.tclass.service.impl.StudentServiceImpl;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.*;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.Date;
 
 /**
  * @author Teoan
@@ -23,12 +40,17 @@ import java.io.PrintWriter;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
-    StudentServiceImpl studentService;
+    UserDetailsService studentDetaService;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //自定义的用户和角色数据提供者
-        auth.userDetailsService(studentService).passwordEncoder(new PasswordEncoder() { //设置密码加密对象
+    @Resource
+    StudentService studentService;
+
+
+
+
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return new PasswordEncoder() { //设置密码加密对象
             //encode():把参数按照特定的解析规则进行解析
             @Override
             public String encode(CharSequence charSequence) {
@@ -41,13 +63,36 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             public boolean matches(CharSequence charSequence, String s) {
                 return s.equals(DigestUtils.md5DigestAsHex(charSequence.toString().getBytes()));
             }
-        });
+        };
+    }
+
+    @Bean
+    MyAuthenticationProvider myAuthenticationProvider() {
+        MyAuthenticationProvider myAuthenticationProvider = new MyAuthenticationProvider();
+        myAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        myAuthenticationProvider.setUserDetailsService(studentDetaService);
+        return myAuthenticationProvider;
     }
 
 
     @Override
+    @Bean
+    protected AuthenticationManager authenticationManager() throws Exception {
+        ProviderManager manager = new ProviderManager(Arrays.asList(myAuthenticationProvider()));
+        return manager;
+    }
+
+
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        //自定义的用户和角色数据提供者
+        auth.userDetailsService(studentDetaService).passwordEncoder(passwordEncoder());
+    }
+
+    @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/css/**", "/js/**", "/index.html", "/img/**", "/fonts/**", "/favicon.ico", "/verifyCode");
+        web.ignoring().antMatchers("/css/**", "/js/**", "/index.html", "/img/**", "/fonts/**", "/favicon.ico","/vc.jpg");
     }
 
     @Override
@@ -59,27 +104,82 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()//其他的路径都是登录后即可访问
                 .and()
                 .formLogin()//指定支持基于表单的身份验证。如果未指定FormLoginConfigurer#loginPage(String)，则将生成默认登录页面
-                .loginPage("/login_page")//设置登录页面
-                .failureUrl("/login_error")//设置登录失败后跳转的页面
-                .defaultSuccessUrl("/login_success",true)//设置登录成功后跳转的页面
+                .loginPage("/login")
                 .loginProcessingUrl("/login")//设置登录表单提交的页面
                 .usernameParameter("sid")//设置表单提交用户名时使用的参数名
                 .passwordParameter("password")//设置表单提交密码时使用的参数名
                 .permitAll()//允许任何人访问
+                .successHandler((request, response, authentication) -> {
+                    response.setContentType("application/json;charset=utf-8");
+                    PrintWriter out = response.getWriter();
+                    Student student = (Student) authentication.getPrincipal();
+                    student.setLoginTime(new Date());
+                    studentService.updateById(student);
+                    student.setPassword(null);
+                    R respBean = R.ok(student);
+                    respBean.setMsg("登录成功！");
+                    String s = new ObjectMapper().writeValueAsString(respBean);
+                    out.write(s);
+                    out.flush();
+                    out.close();
+                })
+                .failureHandler((request, response, e) -> {
+                    response.setContentType("application/json;charset=utf-8");
+                    PrintWriter out = response.getWriter();
+                    R respBean = new R();
+                    respBean.setMsg(e.getMessage());
+                    if (e instanceof LockedException) {
+                        respBean.setMsg("账户被锁定，请联系管理员!");
+                    } else if (e instanceof CredentialsExpiredException) {
+                        respBean.setMsg("密码过期，请联系管理员!");
+                    } else if (e instanceof AccountExpiredException) {
+                        respBean.setMsg("账户过期，请联系管理员!");
+                    } else if (e instanceof DisabledException) {
+                        respBean.setMsg("账户被禁用，请联系管理员!");
+                    } else if (e instanceof BadCredentialsException) {
+                        respBean.setMsg("用户名或者密码输入错误，请重新输入!");
+                    }
+                    respBean.setCode(ApiErrorCode.FAILED.getCode());
+                    out.write(new ObjectMapper().writeValueAsString(respBean));
+                    out.flush();
+                    out.close();
+                })
                 .and()
                 .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessHandler((request, response, authentication) -> {
+                    response.setContentType("application/json;charset=utf-8");
+                    PrintWriter out = response.getWriter();
+                    Student student = (Student) authentication.getPrincipal();
+                    R respBean = new R();
+                    respBean.setMsg("注销成功！");
+                    respBean.setData(student.getName());
+                    respBean.setCode(ApiErrorCode.SUCCESS.getCode());
+                    out.write(new ObjectMapper().writeValueAsString(respBean));
+                    out.flush();
+                    out.close();
+
+                })
                 .permitAll()
                 .and()
                 .csrf()
                 .disable()
                 .exceptionHandling()
-                .accessDeniedHandler((httpServletRequest, httpServletResponse, e) -> {
-                    httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                    httpServletResponse.setContentType("application/json;charset=utf-8");
-                    PrintWriter printWriter = httpServletResponse.getWriter();
-                    printWriter.write("权限不足，请联系管理员");//返回失败json数据
-                    printWriter.flush();
-                    printWriter.close();
+                .authenticationEntryPoint((request, response, e) -> {
+                    response.setContentType("application/json;charset=utf-8");
+                    response.setStatus(401);
+                    PrintWriter out = response.getWriter();
+                    R respBean = new R();
+                    respBean.setData("访问失败！");
+                    respBean.setCode(ApiErrorCode.FAILED.getCode());
+                    if (e instanceof InsufficientAuthenticationException) {
+                        respBean.setMsg("请求失败，请联系管理员!");
+                    }else{
+                        respBean.setMsg("尚未登录，请先登录");
+                    }
+                    out.write(new ObjectMapper().writeValueAsString(respBean));
+                    out.flush();
+                    out.close();
                 });
     }
 }
