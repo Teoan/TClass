@@ -1,6 +1,7 @@
 package com.teoan.tclass.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.teoan.tclass.entity.Student;
@@ -22,12 +23,12 @@ import java.util.List;
 @Service("studentService")
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService, UserDetailsService {
     @Override
-    public List<Student> getStudentsByPage(Long current, Long size, Student student) {
+    public IPage getStudentsByPage(Long current, Long size, Student student) {
         Page<Student> studentPage = new Page<>(current,size);
         QueryWrapper<Student> wrapper = new QueryWrapper<>(student);
-        List<Student> studentList = getBaseMapper().selectPage(studentPage, wrapper).getRecords();
-        return studentList;
+        return getBaseMapper().selectPage(studentPage, wrapper);
     }
+
 
     @Override
     public Boolean addStudent(Student student) {

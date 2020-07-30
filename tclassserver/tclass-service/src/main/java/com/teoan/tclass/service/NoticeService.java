@@ -1,5 +1,6 @@
 package com.teoan.tclass.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.teoan.tclass.entity.Notice;
 import com.teoan.tclass.entity.Student;
@@ -22,5 +23,5 @@ public interface NoticeService extends IService<Notice> {
      * @param size 查询数据量
      * @return 所有数据
      */
-    List<Notice> selectNoticesByPage(Long current, Long size, Notice notice);
+    IPage selectNoticesByPage(Long current, Long size, Notice notice);
 }

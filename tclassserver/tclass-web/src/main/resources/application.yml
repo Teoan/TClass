@@ -4,7 +4,11 @@ spring:
     username: Teoan
     password: 277077411
     url: jdbc:mysql://localhost:3306/tclass?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-
+  redis:
+    host: 192.168.123.2
+    database: 0
+    port: 6379
+    password:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

@@ -2,6 +2,7 @@ package com.teoan.tclass.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -31,13 +32,14 @@ public class WorkController extends ApiController {
     /**
      * 分页查询所有数据
      *
-     * @param page 分页对象
-     * @param work 查询实体
+     * @param current 分页对象
+     * @param size 查询数据量
      * @return 所有数据
      */
     @GetMapping("/")
-    public R selectAll(Page<Work> page, Work work) {
-        return success(this.workService.page(page, new QueryWrapper<>(work)));
+    public R selectAll(@RequestParam(value = "corrent",defaultValue = "1")Long current,@RequestParam(value = "size",defaultValue = "10")Long size,Work work) {
+        IPage worksByPage = workService.getWorksByPage(current, size, work);
+        return success(worksByPage);
     }
 
     /**
@@ -51,36 +53,4 @@ public class WorkController extends ApiController {
         return success(this.workService.getById(id));
     }
 
-    /**
-     * 新增数据
-     *
-     * @param work 实体对象
-     * @return 新增结果
-     */
-    @PostMapping("/")
-    public R insert(@RequestBody Work work) {
-        return success(this.workService.save(work));
-    }
-
-    /**
-     * 修改数据
-     *
-     * @param work 实体对象
-     * @return 修改结果
-     */
-    @PutMapping("/")
-    public R update(@RequestBody Work work) {
-        return success(this.workService.updateById(work));
-    }
-
-    /**
-     * 删除数据
-     *
-     * @param idList 主键结合
-     * @return 删除结果
-     */
-    @DeleteMapping("/")
-    public R delete(@RequestParam("idList") List<Long> idList) {
-        return success(this.workService.removeByIds(idList));
-    }
 }

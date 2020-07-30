@@ -53,7 +53,6 @@ public class StudentController extends ApiController {
     @GetMapping("/")
     public R getStudentByPage(@RequestParam(defaultValue = "1")Long current,@RequestParam(defaultValue = "10")Long size,Student student) {
 
-
         return success(studentService.getStudentsByPage(current,size,student));
     }
 

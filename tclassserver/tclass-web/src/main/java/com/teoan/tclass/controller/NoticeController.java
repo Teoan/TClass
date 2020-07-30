@@ -51,36 +51,4 @@ public class NoticeController extends ApiController {
         return success(this.noticeService.getById(id));
     }
 
-    /**
-     * 新增数据
-     *
-     * @param notice 实体对象
-     * @return 新增结果
-     */
-    @PostMapping("/")
-    public R insert(@RequestBody Notice notice) {
-        return success(this.noticeService.save(notice));
-    }
-
-    /**
-     * 修改数据
-     *
-     * @param notice 实体对象
-     * @return 修改结果
-     */
-    @PutMapping("/")
-    public R update(@RequestBody Notice notice) {
-        return success(this.noticeService.updateById(notice));
-    }
-
-    /**
-     * 删除数据
-     *
-     * @param idList 主键结合
-     * @return 删除结果
-     */
-    @DeleteMapping("/")
-    public R delete(@RequestParam("idList") List<Long> idList) {
-        return success(this.noticeService.removeByIds(idList));
-    }
 }
