@@ -13,4 +13,4 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
-  port: 7777
+  port: 8080
