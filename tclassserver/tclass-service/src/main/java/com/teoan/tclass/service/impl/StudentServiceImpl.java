@@ -7,11 +7,16 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.teoan.tclass.entity.Student;
 import com.teoan.tclass.mapper.StudentMapper;
 import com.teoan.tclass.service.StudentService;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -21,8 +26,15 @@ import java.util.List;
  * @since 2020-07-25 10:14:33
  */
 @Service("studentService")
+@CacheConfig(cacheNames = "student_cache")
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService, UserDetailsService {
+
+
+
+
+
     @Override
+    @Cacheable(unless = "#result.records.size()==0")
     public IPage getStudentsByPage(Long current, Long size, Student student) {
         Page<Student> studentPage = new Page<>(current,size);
         QueryWrapper<Student> wrapper = new QueryWrapper<>(student);
@@ -30,6 +42,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
 
+    @CacheEvict(allEntries = true)
     @Override
     public Boolean addStudent(Student student) {
         QueryWrapper<Student> wrapper = new QueryWrapper<>();
@@ -40,6 +53,19 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         }
         getBaseMapper().insert(student);
         return true;
+    }
+
+
+    @CacheEvict(allEntries = true)
+    @Override
+    public boolean updateById(Student entity) {
+        return super.updateById(entity);
+    }
+
+    @CacheEvict(allEntries = true)
+    @Override
+    public boolean removeByIds(Collection<? extends Serializable> idList) {
+        return super.removeByIds(idList);
     }
 
     //springSecurity

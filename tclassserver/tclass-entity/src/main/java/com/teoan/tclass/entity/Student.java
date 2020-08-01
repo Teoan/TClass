@@ -3,6 +3,7 @@ package com.teoan.tclass.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +29,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @TableName(value ="student",resultMap = "AllStudentInfo")
+//忽略从redis反序列化时的字段名
+@JsonIgnoreProperties({"accountNonExpired","accountNonLocked","username","authorities","credentialsNonExpired"})
 public class Student extends Model<Student> implements UserDetails {
 
     /**
@@ -90,6 +93,10 @@ public class Student extends Model<Student> implements UserDetails {
     * 最近登录时间
     */
     private Date loginTime;
+    /**
+     * 用户是否可用
+     */
+    private boolean enabled;
 
     /**
      * 权限
@@ -116,6 +123,8 @@ public class Student extends Model<Student> implements UserDetails {
      */
     @TableField(exist = false)
     private List<Department> departmentList;
+
+
     /**
      * 获取主键值
      *
@@ -143,7 +152,6 @@ public class Student extends Model<Student> implements UserDetails {
         return String.valueOf(this.id);
     }
 
-
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -161,6 +169,6 @@ public class Student extends Model<Student> implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 }

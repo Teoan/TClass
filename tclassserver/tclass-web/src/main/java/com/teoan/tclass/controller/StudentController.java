@@ -68,21 +68,6 @@ public class StudentController extends ApiController {
     }
 
     /**
-     * 新增数据
-     *
-     * @param student 实体对象
-     * @return 新增结果
-     */
-    @PostMapping
-    public R insert(@RequestBody Student student) {
-
-        if(studentService.addStudent(student)){
-            return success("添加成功！");
-        }
-        return failed("添加失败，用户名重复！");
-    }
-
-    /**
      * 修改数据
      *
      * @param student 实体对象
@@ -93,16 +78,6 @@ public class StudentController extends ApiController {
         return success(this.studentService.updateById(student));
     }
 
-    /**
-     * 删除数据
-     *
-     * @param idList 主键结合
-     * @return 删除结果
-     */
-    @DeleteMapping("/")
-    public R delete(@RequestParam("idList") List<Long> idList) {
-        return success(this.studentService.removeByIds(idList));
-    }
     /**
      * 获取民族列表
      *
