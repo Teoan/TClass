@@ -30,7 +30,7 @@
 
 
     <select id="getRole" resultType="com.teoan.tclass.entity.Role">
-        select id, name from tclass.role where id=#{role_id};
+        select id, name,zh_name from tclass.role where id=#{role_id};
     </select>
     <select id="getNation" resultType="com.teoan.tclass.entity.Nation">
         select id, name from tclass.nation where id=#{nation_id}

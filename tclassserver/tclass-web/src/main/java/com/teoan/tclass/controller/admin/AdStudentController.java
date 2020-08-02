@@ -5,7 +5,10 @@ import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.teoan.tclass.entity.*;
 import com.teoan.tclass.service.*;
+import com.teoan.tclass.utils.POIStudentUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
@@ -25,6 +28,19 @@ public class AdStudentController extends ApiController {
      */
     @Resource
     private StudentService studentService;
+
+    @Resource
+    private NationService nationService;
+
+    @Resource
+    private PoliticsstatusService politicsstatusService;
+
+    @Resource
+    private RoleService roleService;
+
+    @Resource
+    private PositionService positionService;
+
 
     /**
      * 分页查询所有数据
@@ -75,6 +91,27 @@ public class AdStudentController extends ApiController {
     public R delete(@RequestParam("idList") List<Long> idList) {
         return success(this.studentService.removeByIds(idList));
     }
+
+    /**
+     * 导出学生数据
+     */
+    @GetMapping("/export")
+    public ResponseEntity<byte[]> exportData() {
+        return POIStudentUtils.students2Excel(studentService.list());
+    }
+
+    /**
+     * 导入学生数据
+     */
+    @PostMapping("/import")
+    public R importData(MultipartFile file){
+        List<Student> studentList = POIStudentUtils.excel2Student(file,roleService.list(),nationService.list(),politicsstatusService.list(),positionService.list());
+        if(studentService.saveBatch(studentList)){
+            return success("").setMsg("数据导入成功！");
+        }
+        return failed("数据导入失败！");
+    }
+
 
 
 }

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * (Nation)表实体类
@@ -24,6 +25,16 @@ public class Nation extends Model<Nation> {
     private Integer id;
 
     private String name;
+
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Nation nation = (Nation) o;
+        return Objects.equals(name, nation.name);
+    }
     /**
      * 获取主键值
      *

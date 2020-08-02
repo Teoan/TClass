@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * (Politicsstatus)表实体类
@@ -25,6 +26,13 @@ public class Politicsstatus extends Model<Politicsstatus> {
 
     private String name;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Politicsstatus politicsstatus = (Politicsstatus) o;
+        return Objects.equals(name, politicsstatus.name);
+    }
 
     /**
      * 获取主键值
