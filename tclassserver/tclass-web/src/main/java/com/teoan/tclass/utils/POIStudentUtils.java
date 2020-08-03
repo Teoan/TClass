@@ -1,22 +1,18 @@
 package com.teoan.tclass.utils;
 
 import com.teoan.tclass.entity.*;
-import org.apache.poi.hpsf.DocumentSummaryInformation;
-import org.apache.poi.hpsf.SummaryInformation;
-import org.apache.poi.hssf.usermodel.*;
+
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,41 +35,18 @@ public class POIStudentUtils {
         //获取当前登录用户
 //        Student currentStudent = (Student) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+        XSSFWorkbook workbook =new XSSFWorkbook();
+        
 
-        //1. 创建一个 Excel 文档
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        //2. 创建文档摘要
-        workbook.createInformationProperties();
-        //3. 获取并配置文档信息
-        DocumentSummaryInformation docInfo = workbook.getDocumentSummaryInformation();
-        //文档类别
-        docInfo.setCategory("学生信息");
-
-        //4. 获取文档摘要信息
-        SummaryInformation summInfo = workbook.getSummaryInformation();
-        //文档标题
-        summInfo.setTitle("学生信息表");
-//        if (currentStudent!=null){
-//            //文档管理员
-//            docInfo.setManager(currentStudent.getName());
-//
-//
-//            //文档作者
-//            summInfo.setAuthor(currentStudent.getName());
-//            // 文档备注
-//            summInfo.setComments("本文档由"+currentStudent.getName()+"提供");
-//
-//        }
-
-        //5. 创建样式
-        //创建标题行的样式
-        HSSFCellStyle headerStyle = workbook.createCellStyle();
+        XSSFCellStyle headerStyle = workbook.createCellStyle();
         headerStyle.setFillForegroundColor(IndexedColors.GREEN.index);
         headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        HSSFCellStyle dateCellStyle = workbook.createCellStyle();
-        dateCellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("m/d/yy"));
+        XSSFCellStyle dateCellStyle = workbook.createCellStyle();
+//        dateCellStyle.setDataFormat(XSSFDataFormat.getBuiltinFormat("m/d/yy"));
+        XSSFCreationHelper createHelper = workbook.getCreationHelper();
+        dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("m/d/yy"));
         dateCellStyle.setAlignment(HorizontalAlignment.CENTER_SELECTION);
-        HSSFSheet sheet = workbook.createSheet("学生信息表");
+        XSSFSheet sheet = workbook.createSheet("学生信息表");
         //设置列的宽度
         sheet.setColumnWidth(0, 12 * 256);
         sheet.setColumnWidth(1, 8 * 256);
@@ -90,46 +63,46 @@ public class POIStudentUtils {
 
 //        创建标题行
 
-        HSSFRow r0 = sheet.createRow(0);
-        HSSFCell c0 = r0.createCell(0);
+        XSSFRow r0 = sheet.createRow(0);
+        XSSFCell c0 = r0.createCell(0);
         c0.setCellValue("学号");
         c0.setCellStyle(headerStyle);
-        HSSFCell c1 = r0.createCell(1);
+        XSSFCell c1 = r0.createCell(1);
         c1.setCellStyle(headerStyle);
         c1.setCellValue("学生名字");
-        HSSFCell c2 = r0.createCell(2);
+        XSSFCell c2 = r0.createCell(2);
         c2.setCellStyle(headerStyle);
         c2.setCellValue("权限身份");
-        HSSFCell c3 = r0.createCell(3);
+        XSSFCell c3 = r0.createCell(3);
         c3.setCellStyle(headerStyle);
         c3.setCellValue("性别");
-        HSSFCell c4 = r0.createCell(4);
+        XSSFCell c4 = r0.createCell(4);
         c4.setCellStyle(headerStyle);
         c4.setCellValue("民族");
-        HSSFCell c5 = r0.createCell(5);
+        XSSFCell c5 = r0.createCell(5);
         c5.setCellStyle(headerStyle);
         c5.setCellValue("籍贯");
-        HSSFCell c6 = r0.createCell(6);
+        XSSFCell c6 = r0.createCell(6);
         c6.setCellStyle(headerStyle);
         c6.setCellValue("政治面貌");
-        HSSFCell c7 = r0.createCell(7);
+        XSSFCell c7 = r0.createCell(7);
         c7.setCellStyle(headerStyle);
         c7.setCellValue("邮箱");
-        HSSFCell c8 = r0.createCell(8);
+        XSSFCell c8 = r0.createCell(8);
         c8.setCellStyle(headerStyle);
         c8.setCellValue("电话");
-        HSSFCell c9 = r0.createCell(9);
+        XSSFCell c9 = r0.createCell(9);
         c9.setCellStyle(headerStyle);
         c9.setCellValue("家庭住址");
-        HSSFCell c10 = r0.createCell(10);
+        XSSFCell c10 = r0.createCell(10);
         c10.setCellStyle(headerStyle);
         c10.setCellValue("班级职位");
-        HSSFCell c11 = r0.createCell(11);
+        XSSFCell c11 = r0.createCell(11);
         c11.setCellStyle(headerStyle);
         c11.setCellValue("最近登录日期");
         for (int i =0;i<studentList.size();i++){
             Student student = studentList.get(i);
-            HSSFRow row = sheet.createRow(i + 1);
+            XSSFRow row = sheet.createRow(i + 1);
             row.createCell(0,CellType.STRING).setCellValue(student.getId());
             row.createCell(1,CellType.STRING).setCellValue(student.getName());
             row.createCell(2,CellType.STRING).setCellValue(student.getRole().getZhName());
@@ -142,7 +115,7 @@ public class POIStudentUtils {
             row.createCell(9,CellType.STRING).setCellValue(student.getAddress());
             String position=student.getPosition()!=null? student.getPosition().getName():"";
             row.createCell(10,CellType.STRING).setCellValue(position);
-            HSSFCell cell11 = row.createCell(11, CellType.STRING);
+            XSSFCell cell11 = row.createCell(11, CellType.STRING);
             cell11.setCellValue(student.getLoginTime());
             cell11.setCellStyle(dateCellStyle);
         }
@@ -150,7 +123,7 @@ public class POIStudentUtils {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         HttpHeaders headers = new HttpHeaders();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String fileName = "学生信息表("+simpleDateFormat.format(new Date())+").xls";
+        String fileName = "学生信息表("+simpleDateFormat.format(new Date())+").xlsx";
         try {
             headers.setContentDispositionFormData("attachment", new String(fileName.getBytes("UTF-8"),"ISO-8859-1"));
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
@@ -173,15 +146,15 @@ public class POIStudentUtils {
 
         try{
 
-            HSSFWorkbook hssfWorkbook = new HSSFWorkbook(file.getInputStream());
+            XSSFWorkbook XSSfWorkbook = new XSSFWorkbook(file.getInputStream());
 
-            int numberOfSheets = hssfWorkbook.getNumberOfSheets();
+            int numberOfSheets = XSSfWorkbook.getNumberOfSheets();
             for (int i = 0; i < numberOfSheets; i++) {
-                HSSFSheet sheet = hssfWorkbook.getSheetAt(i);
+                XSSFSheet sheet = XSSfWorkbook.getSheetAt(i);
                 int physicalNumberOfRows = sheet.getPhysicalNumberOfRows();
 //                跳过第一行标题
                 for (int j = 1; j < physicalNumberOfRows; j++) {
-                    HSSFRow row = sheet.getRow(j);
+                    XSSFRow row = sheet.getRow(j);
 
                     //防止中间空行
                     if (row==null){
@@ -192,7 +165,7 @@ public class POIStudentUtils {
                     student= new Student();
                     //学号为主键，自动生成，跳过第一列学号
                     for (int k = 1; k <physicalNumberOfCells ; k++) {
-                        HSSFCell cell = row.getCell(k);
+                        XSSFCell cell = row.getCell(k);
                         if(cell.getCellType()==CellType.STRING){
                             String cellValue = cell.getStringCellValue();
                             switch (k){
