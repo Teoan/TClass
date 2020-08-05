@@ -23,9 +23,9 @@ public class KaptchaConfig {
         //验证码字体颜色
         properties.setProperty("kaptcha.textproducer.font.color", "blue");
         //验证码整体宽度
-        properties.setProperty("kaptcha.image.width", "200");
+        properties.setProperty("kaptcha.image.width", "150");
         //验证码整体高度
-        properties.setProperty("kaptcha.image.height", "60");
+        properties.setProperty("kaptcha.image.height", "40");
         //文字个数
         properties.setProperty("kaptcha.textproducer.char.length", "4");
         //文字大小

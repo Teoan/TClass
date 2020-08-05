@@ -30,7 +30,7 @@ public class LoginController extends ApiController {
     @Resource
     StringRedisTemplate stringRedisTemplate;
 
-    @GetMapping("/vc.jpg")
+    @GetMapping("/verifyCode.jpg")
     public void getVerifyCode(HttpServletResponse resp, HttpSession session) throws IOException {
         resp.setContentType("image/jpeg");
         String text = producer.createText();
