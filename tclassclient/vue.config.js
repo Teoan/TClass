@@ -16,8 +16,8 @@ proxyObj['/'] = {
 module.exports = {
   devServer: {
     host: 'localhost',
-    port: 8080
-    // proxy:proxyObj
+    port: 8080,
+    proxy: proxyObj
   },
   configureWebpack: () => {
     if (process.env.NODE_ENV === 'production') {
@@ -34,7 +34,7 @@ module.exports = {
     }
   },
   lintOnSave: true,
-  publicPath: './',
+  publicPath: '/',
   assetsDir: './static',
   outputDir: '../tclassserver/tclass-web/src/main/resources/static'
 }

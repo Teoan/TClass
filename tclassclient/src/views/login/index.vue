@@ -46,6 +46,7 @@
         size="normal"
         type="dark"
         style="width: 100%;"
+        round
         @click="submitLogin"
       >登录</el-button>
     </el-form>
@@ -84,7 +85,7 @@ export default {
           this.postRequest('/login', this.loginForm).then(resp => {
             this.loading = false
             if (resp.code === 0) {
-              // this.$store.commit('INIT_CURRENTHR', resp.obj)
+              this.$store.commit('INIT_CURRENTUSER', resp.data)
               // window.sessionStorage.setItem('user', JSON.stringify(resp.obj))
               // const path = this.$route.query.redirect
               // this.$router.replace((path === '/' || path === undefined) ? '/home' : path)

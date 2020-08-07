@@ -74,9 +74,13 @@ public class Student extends Model<Student> implements UserDetails {
     */
     private String phone;
     /**
-    * 家庭住址
-    */
+     * 家庭住址
+     */
     private String address;
+    /**
+     * 用户头像地址
+     */
+    private String avatarUrl;
     /**
     * 班级职位Id
     */

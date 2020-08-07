@@ -2,6 +2,15 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import fontawesome from '@fortawesome/fontawesome'
+import solid from '@fortawesome/fontawesome-free-solid'
+import regular from '@fortawesome/fontawesome-free-regular'
+import brands from '@fortawesome/fontawesome-free-brands'
+
+fontawesome.library.add(solid)
+fontawesome.library.add(regular)
+fontawesome.library.add(brands)
+
 import {
   Button,
   Input,
@@ -18,7 +27,6 @@ import {
   Pagination,
   Badge,
   Loading,
-  Message,
   MessageBox,
   Menu,
   Tabs,
@@ -94,7 +102,6 @@ Vue.use(Icon)
 Vue.use(Select)
 Vue.use(Form)
 Vue.use(Tag)
-Vue.use(Message)
 
 Vue.prototype.$alert = MessageBox.alert
 Vue.prototype.$confirm = MessageBox.confirm
@@ -104,7 +111,6 @@ import { postKeyValueRequest } from './utils/api'
 import { putRequest } from './utils/api'
 import { deleteRequest } from './utils/api'
 import { getRequest } from './utils/api'
-import 'font-awesome/css/font-awesome.min.css'
 import 'element-theme-ink'
 // import 'element-theme-dark'
 
@@ -115,8 +121,10 @@ Vue.prototype.deleteRequest = deleteRequest
 Vue.prototype.getRequest = getRequest
 
 Vue.config.productionTip = false
+
 new Vue({
+  el: '#app',
   router,
   store,
   render: h => h(App)
-}).$mount('#app')
+})
