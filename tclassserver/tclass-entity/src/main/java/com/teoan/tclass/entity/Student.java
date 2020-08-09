@@ -1,6 +1,7 @@
 package com.teoan.tclass.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -100,7 +101,8 @@ public class Student extends Model<Student> implements UserDetails {
     /**
      * 用户是否可用
      */
-    private boolean enabled;
+    @TableLogic
+    private boolean deleted;
 
     /**
      * 权限
@@ -173,6 +175,6 @@ public class Student extends Model<Student> implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return !deleted;
     }
 }

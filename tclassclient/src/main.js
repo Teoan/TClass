@@ -28,6 +28,7 @@ import {
   Badge,
   Loading,
   MessageBox,
+  Message,
   Menu,
   Tabs,
   TabPane,
@@ -56,7 +57,8 @@ import {
   DatePicker,
   RadioGroup,
   CollapseItem,
-  Switch
+  Switch,
+  Notification
 } from 'element-ui'
 Vue.use(Switch)
 Vue.use(CollapseItem)
@@ -104,7 +106,9 @@ Vue.use(Form)
 Vue.use(Tag)
 
 Vue.prototype.$alert = MessageBox.alert
+Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
+Vue.prototype.$notify = Notification
 
 import { postRequest } from './utils/api'
 import { postKeyValueRequest } from './utils/api'

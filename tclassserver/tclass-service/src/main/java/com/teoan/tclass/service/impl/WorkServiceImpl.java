@@ -36,7 +36,13 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
         return workIPage;
     }
 
-
+    @Override
+    public Work getCurrentWork() {
+        QueryWrapper<Work> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("create_time");
+        wrapper.last("limit 1");
+        return getBaseMapper().selectOne(wrapper);
+    }
 
     @CacheEvict
     @Override

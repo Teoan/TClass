@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.teoan.tclass.entity.Role;
 import com.teoan.tclass.entity.Student;
+import com.teoan.tclass.mapper.NoticeMapper;
 import com.teoan.tclass.mapper.RoleMapper;
 import com.teoan.tclass.mapper.StudentMapper;
+import com.teoan.tclass.service.NoticeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,10 +28,12 @@ class TclassWebApplicationTests {
     @Resource
     RoleMapper roleMapper;
 
+    @Resource
+    NoticeService noticeService;
+
     @Test
     void contextLoads() {
-        List<Role> roleList = roleMapper.selectList(null);
-        System.out.println(roleList.indexOf(Role.builder().zhName("管理员").build()));
+        System.out.println(noticeService.getCurrentNotice());
 
     }
 

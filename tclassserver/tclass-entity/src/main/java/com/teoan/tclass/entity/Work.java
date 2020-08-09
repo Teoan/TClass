@@ -1,6 +1,8 @@
 package com.teoan.tclass.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +22,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@TableName(value = "work",resultMap = "WorkMap")
 public class Work extends Model<Work> {
 
 
@@ -28,6 +31,11 @@ public class Work extends Model<Work> {
      * 发布者
      */
     private Integer sId;
+    /**
+     * 发布者名字
+     */
+    @TableField(exist = false)
+    private String sName;
     /**
      * 作业启用状态
      */

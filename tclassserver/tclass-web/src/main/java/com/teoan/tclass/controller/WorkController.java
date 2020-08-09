@@ -53,4 +53,10 @@ public class WorkController extends ApiController {
         return success(this.workService.getById(id));
     }
 
+
+    @GetMapping("/current")
+    public R getCurrentWork(){
+        return success(workService.getCurrentWork());
+    }
+
 }

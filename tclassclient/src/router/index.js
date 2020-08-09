@@ -15,9 +15,10 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: Home,
-    redirect: '/homeInfo',
+    redirect: '/homeinfo',
+    // meta: { title: '首页', icon: 'fas fa-home', roles: ['ROLE_admin', 'ROLE_student'] },
     children: [{
-      path: '/homeInfo',
+      path: '/homeinfo',
       name: 'homeInfo',
       component: () => import('@/views/home/homeInfo'),
       meta: { title: '首页', icon: 'fas fa-home', roles: ['ROLE_admin', 'ROLE_student'] }
@@ -27,12 +28,12 @@ const routes = [
     path: '/home',
     name: '',
     component: Home,
-    meta: { title: '个人信息', icon: 'fas fa-info-circle', roles: ['ROLE_admin', 'ROLE_student'] },
+    meta: { title: '个人中心', icon: 'fas fa-info-circle', roles: ['ROLE_admin', 'ROLE_student'] },
     children: [{
       path: '/userinfo',
       name: 'userInfo',
       component: () => import('@/views/user/userInfo'),
-      meta: { title: '个人信息', icon: 'fas fa-address-card', roles: ['ROLE_admin', 'ROLE_student'] }
+      meta: { title: '个人中心', icon: 'fas fa-address-card', roles: ['ROLE_admin', 'ROLE_student'] }
     }]
   },
   {
@@ -44,7 +45,7 @@ const routes = [
       path: '/user',
       name: 'student',
       component: () => import('@/views/user/index'),
-      meta: { title: '学生管理', icon: 'fas fa-user-graduate' }
+      meta: { title: '学生管理', icon: 'fas fa-user-graduate', roles: ['ROLE_admin'] }
     }]
   },
   {
@@ -56,7 +57,7 @@ const routes = [
       path: '/natice',
       name: 'natice',
       component: () => import('@/views/natice/index'),
-      meta: { title: '查看通知' }
+      meta: { title: '查看通知', roles: ['ROLE_admin', 'ROLE_student'] }
     }, {
       path: '/naticemana',
       name: 'naticeMana',
@@ -73,7 +74,7 @@ const routes = [
       path: '/work',
       name: 'work',
       component: () => import('@/views/work/index'),
-      meta: { title: '查看作业' }
+      meta: { title: '查看作业', roles: ['ROLE_admin', 'ROLE_student'] }
     }, {
       path: '/workmana',
       name: 'workManae',

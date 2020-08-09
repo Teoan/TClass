@@ -86,9 +86,7 @@ export default {
             this.loading = false
             if (resp.code === 0) {
               this.$store.commit('INIT_CURRENTUSER', resp.data)
-              // window.sessionStorage.setItem('user', JSON.stringify(resp.obj))
-              // const path = this.$route.query.redirect
-              // this.$router.replace((path === '/' || path === undefined) ? '/home' : path)
+              window.sessionStorage.setItem('currentuser', JSON.stringify(resp.data))
               this.$router.replace('/home')
             } else {
               this.vcUrl = '/verifyCode.jpg?count=' + Math.random()

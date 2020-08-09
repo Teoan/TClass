@@ -24,4 +24,11 @@ public interface NoticeService extends IService<Notice> {
      * @return 所有数据
      */
     IPage selectNoticesByPage(Long current, Long size, Notice notice);
+
+    /**
+     * 获取最新的通知
+     *
+     * @return 所有数据
+     */
+    Notice getCurrentNotice();
 }

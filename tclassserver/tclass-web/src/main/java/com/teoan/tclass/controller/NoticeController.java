@@ -51,4 +51,15 @@ public class NoticeController extends ApiController {
         return success(this.noticeService.getById(id));
     }
 
+
+    /**
+     * 获取最新的通知
+     *
+     * @return 单条数据
+     */
+    @GetMapping("/current")
+    public R getCurrentNotice(){
+        return success(noticeService.getCurrentNotice());
+    }
+
 }
