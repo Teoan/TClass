@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style>
-.breadcrumb .el-breadcrumb__inner {
+.breadcrumb .el-breadcrumb__item .el-breadcrumb__inner {
   color:#fafbfc;
 }
 .breadcrumb .el-breadcrumb__item:last-child .el-breadcrumb__inner {

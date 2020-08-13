@@ -26,7 +26,7 @@
         <association property="nation" column="nation_id" javaType="com.teoan.tclass.entity.Nation" select="getNation"/>
         <association property="politicsstatus" column="politic_id" javaType="com.teoan.tclass.entity.Politicsstatus" select="getPoliticsstatus"/>
         <association property="position" column="pos_id" javaType="com.teoan.tclass.entity.Position" select="getPosition"/>
-        <collection property="departmentList" column="id" ofType="com.teoan.tclass.entity.Department" select="getDepartmentList"/>
+        <collection property="departmentIdList" column="id" ofType="java.lang.Integer" select="getDepartmentIdList"/>
     </resultMap>
 
 
@@ -42,7 +42,7 @@
     <select id="getPosition" resultType="com.teoan.tclass.entity.Position">
         select id, name from tclass.position where id=#{pos_id}
     </select>
-    <select id="getDepartmentList" resultType="com.teoan.tclass.entity.Department">
-        select department.id,department.name from tclass.department,tclass.stu_dep_ref where department.id=stu_dep_ref.dId and stu_dep_ref.sId=#{id};
+    <select id="getDepartmentIdList" resultType="java.lang.Integer">
+        select department.id from tclass.department,tclass.stu_dep_ref where department.id=stu_dep_ref.dId and stu_dep_ref.sId=#{id};
     </select>
 </mapper>

@@ -2,24 +2,58 @@
   <span class="div-card">
     <el-card class="box-card" shadow="hover">
       <div slot="header" class="clearfix">
-        <span>{{ notice.title }}</span>
-      </div>
-      <div class="text item">
+        <div class="title">通知：{{ notice.title }}</div>
+        <span class="homeinfo-icon">
+          <i class="fas fa-clock" />
+        </span>
         {{ notice.createTime }}
-      </div>
-      <div class="text item">
+        <span class="homeinfo-icon snamemargin">
+          <i class="fas fa-user" />
+        </span>
         {{ notice.sname }}
       </div>
-      <div class="text item">
-        {{ notice.content }}
+      <div class="box-text">
+        <!-- {{ notice.content.substr(0,120)+'...' }} -->
+        {{ getSubstr(notice.content,0,120)+'...' }}
+      </div>
+      <div class="read-more-btn">
+        <el-button
+          size="normal"
+          type="primary"
+          round
+          @click="readMoreNotice"
+        >阅读更多...</el-button>
       </div>
     </el-card>
     <el-card class="box-card" shadow="hover">
       <div slot="header" class="clearfix">
-        <span>卡片名称</span>
+        <div class="title">作业：{{ work.name }}</div>
+        <span class="homeinfo-icon">
+          <i class="fas fa-clock" />
+        </span>
+        {{ work.createTime }}
+        <span class="homeinfo-icon snamemargin">
+          <i class="fas fa-user" />
+        </span>
+        {{ work.sname }}
       </div>
-      <div v-for="o in 4" :key="o" class="text item">
-        {{ '列表内容 ' + o }}
+      <div class="box-text">
+        <div>
+          <i class="fas fa-italic" />
+          上传文件格式:{{ work.fileNameFormat }}
+        </div>
+        <div>
+          <i class="fas fa-hourglass-half" />
+          最晚提交时间:{{ work.lastTime }}
+        </div>
+      </div>
+      <div class="read-more-btn">
+        <el-button
+          size="normal"
+          type="primary"
+          round
+          @click="uploadFile"
+        >上传作业<i class="el-icon-upload el-icon--right" /></el-button>
       </div>
     </el-card>
   </span>
@@ -51,20 +85,35 @@ export default {
           this.work = resp.data
         }
       })
+    },
+    readMoreNotice() {
+      this.$message.info('readMoreNotice')
+    },
+    uploadFile() {
+      this.$message.info('uploadFile')
+    },
+    getSubstr(str, start, end) {
+      return str.substr(start, end)
     }
   }
 }
 </script>
 
 <style scoped>
-  .text {
-    font-size: 14px;
+  .read-more-btn {
+   display: flex;
+   justify-content: flex-end;
+   align-items:content;
+   margin-bottom: 10px;
+   margin-top: 10px;
   }
-
-  .item {
-    margin-bottom: 18px;
+  .box-text {
+    font-size: 22px;
+    height: 115px;
   }
-
+  .snamemargin {
+    margin-left: 10px;
+  }
   .clearfix:before,
   .clearfix:after {
     display: table;
@@ -74,15 +123,29 @@ export default {
     clear: both
   }
 
+  .clearfix {
+    font-size:15px;
+  }
+
   .box-card {
     width: 800px;
     height: 300px;
   }
+
   .div-card {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     height: 100%;
+  }
+  .title {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .homeinfo-icon {
+    font-size: 15px;
+    color: #909399;
   }
 </style>

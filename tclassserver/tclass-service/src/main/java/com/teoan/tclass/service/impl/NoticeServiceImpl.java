@@ -35,6 +35,7 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
         return getBaseMapper().selectPage(noticePage, wrapper);
     }
 
+    @Cacheable
     @Override
     public Notice getCurrentNotice() {
         QueryWrapper<Notice> wrapper = new QueryWrapper<>();

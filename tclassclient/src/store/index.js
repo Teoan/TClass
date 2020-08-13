@@ -18,5 +18,5 @@ export default new Vuex.Store({
   },
   actions: {},
   modules: {},
-  plugins: [vuexLocal.plugin]
+  plugins: [vuexLocal.plugin] // vuex 持久化
 })

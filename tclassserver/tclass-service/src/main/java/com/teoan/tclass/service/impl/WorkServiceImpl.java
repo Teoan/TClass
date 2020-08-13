@@ -36,6 +36,7 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
         return workIPage;
     }
 
+    @Cacheable
     @Override
     public Work getCurrentWork() {
         QueryWrapper<Work> wrapper = new QueryWrapper<>();

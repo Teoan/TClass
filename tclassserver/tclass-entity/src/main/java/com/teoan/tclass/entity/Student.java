@@ -124,11 +124,12 @@ public class Student extends Model<Student> implements UserDetails {
      */
     @TableField(exist = false)
     private Position position;
+
     /**
-     * 所属部门
+     * 所属部门id列表
      */
     @TableField(exist = false)
-    private List<Department> departmentList;
+    private List<Integer> departmentIdList;
 
 
     /**

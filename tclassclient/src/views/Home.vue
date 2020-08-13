@@ -1,13 +1,22 @@
 <template>
   <el-container class="home-container">
-    <el-aside width="200px" class="home-aside">
+    <el-drawer
+      :visible.sync="drawer"
+      :with-header="false"
+      direction="ltr"
+      size="15%"
+      class="drawer"
+    >
       <el-menu
         :router="true"
         :unique-opened="false"
+        background-color="#303133"
+        text-color="#fafbfc"
+        active-text-color="#fafbfc"
+        class="menu"
       >
         <template v-for="(item,index) in routes">
           <template v-if="!item.hidden">
-            <!-- <el-submenu v-if="item.children.length>1" :key="index" :index="index+''"> -->
             <el-submenu v-if="item.children.length>1&&isHaveRoles(item)" :key="index" :index="index+''">
               <template slot="title">
                 <span class="home-icon">
@@ -34,13 +43,20 @@
           </template>
         </template>
       </el-menu>
-    </el-aside>
+    </el-drawer>
     <el-container>
-      <el-header class="home-header">
-        <breadcrumb />
+      <el-header height="56px" class="home-header">
+        <div class="breadcrumb-div">
+          <el-button type="text" @click="drawer=true">
+            <span class="bars-icon">
+              <i class="fas fa-bars" />
+            </span>
+          </el-button>
+          <breadcrumb />
+        </div>
         <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link">
-            <img :src="currentUser.avatarUrl">
+            <el-avatar :src="currentUser.avatarUrl" />
             <i class="fas fa-caret-down el-icon--right" />
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -66,7 +82,7 @@ export default {
   components: { breadcrumb },
   data() {
     return {
-
+      drawer: false
     }
   },
   computed: {
@@ -93,14 +109,13 @@ export default {
           break
         }
         case 'logout': {
-          this.$confirm('是否注退出登录?', '提示', {
+          this.$confirm('确定退出登录?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
             this.getRequest('/logout')
             this.$store.commit('INIT_CURRENTUSER', [])
-            window.sessionStorage.removeItem('currentuser')
             this.$router.replace('/')
           }).catch(() => {
           })
@@ -128,12 +143,11 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    line-height: 56px;
   }
-  .home-aside {
-    line-height: 200px;
+  .breadcrumb-div {
+    display: flex;
+    align-items: center;
   }
-
   .home-main {
     background-color: #fafbfc;
     color: #333;
@@ -141,7 +155,7 @@ export default {
   .home-icon {
     margin: 0 8px 0 0;
     font-size: 18px;
-    color: #606266;
+    color: #DCDFE6;
   }
 
   .el-dropdown-link img {
@@ -161,6 +175,14 @@ export default {
 
   .home-router-view{
     margin: 10px;
+  }
+  .bars-icon {
+    font-size:22px;
+    margin-right: 15px;
+    color: #fafbfc
+  }
+  .menu {
+    height: 100%;
   }
 </style>
 

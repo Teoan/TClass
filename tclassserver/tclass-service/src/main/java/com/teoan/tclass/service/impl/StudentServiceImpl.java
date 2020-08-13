@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -42,6 +43,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
 
+
+
     @CacheEvict(allEntries = true)
     @Override
     public Boolean addStudent(Student student) {
@@ -59,6 +62,10 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     @CacheEvict(allEntries = true)
     @Override
     public boolean updateById(Student entity) {
+        String password = entity.getPassword();
+        if (password!=null&&!password.isEmpty()){
+            entity.setPassword(DigestUtils.md5DigestAsHex(password.getBytes()));
+        }
         return super.updateById(entity);
     }
 

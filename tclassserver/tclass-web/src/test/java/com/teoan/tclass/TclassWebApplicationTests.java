@@ -9,6 +9,7 @@ import com.teoan.tclass.mapper.NoticeMapper;
 import com.teoan.tclass.mapper.RoleMapper;
 import com.teoan.tclass.mapper.StudentMapper;
 import com.teoan.tclass.service.NoticeService;
+import com.teoan.tclass.service.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,7 +34,7 @@ class TclassWebApplicationTests {
 
     @Test
     void contextLoads() {
-        System.out.println(noticeService.getCurrentNotice());
+        System.out.println(studentMapper.selectList(null));
 
     }
 

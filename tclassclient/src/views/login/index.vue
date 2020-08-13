@@ -5,7 +5,7 @@
       v-loading="loading"
       element-loading-text="正在登录..."
       element-loading-spinner="el-icon-loading"
-      element-loading-background="rgba(0, 0, 0, 0.8)"
+      element-loading-background="rgba(235, 238, 245, 0.8)"
       :rules="rules"
       :model="loginForm"
       class="loginContainer"
@@ -18,6 +18,7 @@
           type="text"
           auto-complete="off"
           placeholder="请输入用户名"
+          suffix-icon="el-icon-user"
         />
       </el-form-item>
       <el-form-item prop="password">
@@ -27,6 +28,7 @@
           type="password"
           auto-complete="off"
           placeholder="请输入密码"
+          show-password
         />
       </el-form-item>
       <el-form-item prop="code">
@@ -44,7 +46,7 @@
       <el-checkbox v-model="loginForm.remember" class="loginRemember">记住我</el-checkbox>
       <el-button
         size="normal"
-        type="dark"
+        type="primary"
         style="width: 100%;"
         round
         @click="submitLogin"
@@ -69,7 +71,7 @@ export default {
       },
       rules: {
         username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-        password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }, { min: 6, message: '密码最少为6位', trigger: 'blur' }],
         code: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
       }
     }
@@ -86,7 +88,6 @@ export default {
             this.loading = false
             if (resp.code === 0) {
               this.$store.commit('INIT_CURRENTUSER', resp.data)
-              window.sessionStorage.setItem('currentuser', JSON.stringify(resp.data))
               this.$router.replace('/home')
             } else {
               this.vcUrl = '/verifyCode.jpg?count=' + Math.random()
