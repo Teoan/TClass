@@ -18,7 +18,7 @@
           <span>
             <i class="fas fa-map-marker-alt" />
           </span>
-          {{ currentUser.nativePlace }}
+          {{ currentUser.nativePlace.replace(/[,]/g,'') }}
         </div>
         <div class="item border-bottom">
           <span>
@@ -45,14 +45,15 @@
           <el-form-item label="电话" prop="phone">
             <el-input v-model="userData.phone" class="input-width" />
           </el-form-item>
+          <el-form-item label="籍贯">
+            <el-cascader
+              v-model="selectedNativePlaceOptions"
+              :options="options"
+              class="input-width"
+            />
+          </el-form-item>
           <el-form-item label="邮箱地址" prop="email">
             <el-input v-model="userData.email" class="input-width" />
-          </el-form-item>
-          <el-form-item label="性别">
-            <el-select v-model="userData.gender" placeholder="请选择性别">
-              <el-option label="男" value="男" />
-              <el-option label="女" value="女" />
-            </el-select>
           </el-form-item>
           <el-form-item label="民族">
             <el-select v-model="userData.nationId" placeholder="请选择您的民族" filterable>
@@ -74,8 +75,14 @@
               />
             </el-select>
           </el-form-item>
+          <el-form-item label="性别">
+            <el-select v-model="userData.gender" placeholder="请选择性别">
+              <el-option label="男" value="男" />
+              <el-option label="女" value="女" />
+            </el-select>
+          </el-form-item>
           <el-form-item label="校内部门">
-            <el-select v-model="userData.departmentIdList" multiple placeholder="请选择">
+            <el-select v-model="userData.departmentIdList" multiple placeholder="请选择" style="width:400px">
               <el-option
                 v-for="item in departments"
                 :key="item.value"
@@ -109,6 +116,8 @@
 </template>
 
 <script>
+import { regionData, CodeToText, TextToCode } from 'element-china-area-data'
+
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
@@ -139,6 +148,7 @@ export default {
         email: '',
         phone: '',
         address: '',
+        nativePlace: '',
         departmentIdList: []
       },
       rules: {
@@ -160,7 +170,9 @@ export default {
       pass: {
         password: '',
         checkPassword: ''
-      }
+      },
+      options: regionData,
+      selectedNativePlaceOptions: []
     }
   },
   computed: {
@@ -169,14 +181,7 @@ export default {
     }
   },
   created() {
-    this.userData.id = this.currentUser.id
-    this.userData.gender = this.currentUser.gender
-    this.userData.nationId = this.currentUser.nationId
-    this.userData.politicId = this.currentUser.politicId
-    this.userData.email = this.currentUser.email
-    this.userData.phone = this.currentUser.phone
-    this.userData.address = this.currentUser.address
-    this.userData.departmentIdList = this.currentUser.departmentIdList
+    this.initUserData()
     this.getNations()
     this.getDepartments()
     this.getPoliticsstatuses()
@@ -203,15 +208,44 @@ export default {
         }
       })
     },
+    nativePlaceCodeToText() {
+      var text = ''
+      for (var i in this.selectedNativePlaceOptions) {
+        text = text + CodeToText[this.selectedNativePlaceOptions[i]] + ','
+      }
+      this.userData.nativePlace = text.substring(0, text.lastIndexOf(','))
+    },
+    nativePlaceTextToCode() {
+      var code = []
+      var nativeText = this.userData.nativePlace.split(',')
+      code[0] = TextToCode[nativeText[0]].code
+      code[1] = TextToCode[nativeText[0]][nativeText[1]].code
+      code[2] = TextToCode[nativeText[0]][nativeText[1]][nativeText[2]].code
+      this.selectedNativePlaceOptions = code
+    },
+    initUserData() {
+      this.userData.id = this.currentUser.id
+      this.userData.gender = this.currentUser.gender
+      this.userData.nationId = this.currentUser.nationId
+      this.userData.politicId = this.currentUser.politicId
+      this.userData.email = this.currentUser.email
+      this.userData.phone = this.currentUser.phone
+      this.userData.address = this.currentUser.address
+      this.userData.nativePlace = this.currentUser.nativePlace
+      this.userData.departmentIdList = this.currentUser.departmentIdList
+      this.nativePlaceTextToCode()
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (formName === 'userData') {
             this.userDataLoading = true
+            this.nativePlaceCodeToText()
             this.putRequest('/student/', this.userData).then(resp => {
               if (resp.code === 0) {
                 this.$message.success('资料修改成功！')
                 this.userDataLoading = false
+                this.$store.commit('INIT_CURRENTUSER', resp.data)
               }
             }).catch(error => {
               this.userDataLoading = false
@@ -220,7 +254,7 @@ export default {
           } else if (formName === 'passData') {
             this.passDataLoading = true
             this.putRequest('/student/', { id: this.userData.id, password: this.pass.password }).then(resp => {
-              if (resp.code === 0) {
+              if (resp.code === 0 && resp.data) {
                 this.$message.success('密码修改成功！')
                 this.passDataLoading = false
                 this.pass.password = ''
@@ -288,7 +322,8 @@ export default {
   width: 1200px;
   height: 600px;
   display: flex;
-  align-items:content;
+  justify-content: center;
+  align-items: center;
 }
 .submit-btn {
   display: flex;
@@ -304,7 +339,6 @@ export default {
   border-bottom-color: rgb(235, 238, 245);
 }
 .address-textarea .el-textarea__inner {
-  height: 100px;
-  width: 700px;
+  width: 820px;
 }
 </style>

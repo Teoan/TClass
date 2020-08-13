@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.teoan.tclass.entity.StuDepRef;
 import com.teoan.tclass.entity.Student;
 import com.teoan.tclass.mapper.StudentMapper;
 import com.teoan.tclass.service.StudentService;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -63,9 +65,19 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     @Override
     public boolean updateById(Student entity) {
         String password = entity.getPassword();
+        List<Integer> departmentIdList = entity.getDepartmentIdList();
         if (password!=null&&!password.isEmpty()){
             entity.setPassword(DigestUtils.md5DigestAsHex(password.getBytes()));
         }
+        if(departmentIdList!=null&&departmentIdList.size()>0){
+            List<StuDepRef> stuDepRefList = new ArrayList<>();
+            departmentIdList.forEach(item->{
+                stuDepRefList.add(new StuDepRef(entity.getId(),item));
+            });
+            getBaseMapper().deleteDepartmentBySid(entity.getId());
+            return (getBaseMapper().updateDepartment(stuDepRefList)>0&&getBaseMapper().updateById(entity)>0);
+        }
+
         return super.updateById(entity);
     }
 

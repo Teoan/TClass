@@ -12,8 +12,7 @@
         </span>
         {{ notice.sname }}
       </div>
-      <div class="box-text">
-        <!-- {{ notice.content.substr(0,120)+'...' }} -->
+      <div v-if="notice.content" class="box-text">
         {{ getSubstr(notice.content,0,120)+'...' }}
       </div>
       <div class="read-more-btn">
@@ -93,7 +92,7 @@ export default {
       this.$message.info('uploadFile')
     },
     getSubstr(str, start, end) {
-      return str.substr(start, end)
+      return str.substring(start, end)
     }
   }
 }

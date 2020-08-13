@@ -34,7 +34,7 @@ class TclassWebApplicationTests {
 
     @Test
     void contextLoads() {
-        System.out.println(studentMapper.selectList(null));
+//        System.out.println(studentMapper.selectList(null));
 
     }
 

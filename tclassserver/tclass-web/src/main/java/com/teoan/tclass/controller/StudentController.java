@@ -75,7 +75,10 @@ public class StudentController extends ApiController {
      */
     @PutMapping("/")
     public R update(@RequestBody Student student) {
-        return success(this.studentService.updateById(student));
+        if(this.studentService.updateById(student)){
+            return success(studentService.getById(student.getId()));
+        }
+        return failed("资料修改失败！");
     }
 
     /**

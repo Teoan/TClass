@@ -43,6 +43,19 @@
         select id, name from tclass.position where id=#{pos_id}
     </select>
     <select id="getDepartmentIdList" resultType="java.lang.Integer">
-        select department.id from tclass.department,tclass.stu_dep_ref where department.id=stu_dep_ref.dId and stu_dep_ref.sId=#{id};
+        select dId from tclass.stu_dep_ref where sId=#{id};
     </select>
+
+    <insert id="updateDepartment" parameterType="java.util.List">
+        insert into tclass.stu_dep_ref (sId, dId) VALUES
+        <foreach item="item" collection="stuDepRefList" separator=",">
+            (#{item.sId}, #{item.dId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteDepartmentBySid" parameterType="java.lang.Integer">
+        delete from tclass.stu_dep_ref where sId=#{sId}
+    </delete>
+
+
 </mapper>

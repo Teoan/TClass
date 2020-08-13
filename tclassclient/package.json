@@ -16,6 +16,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.10",
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
+    "element-china-area-data": "^5.0.1",
     "element-ui": "^2.13.2",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",

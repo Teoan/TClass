@@ -120,8 +120,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     response.setContentType("application/json;charset=utf-8");
                     PrintWriter out = response.getWriter();
                     Student student = (Student) authentication.getPrincipal();
-                    student.setLoginTime(new Date());
-                    studentService.updateById(student);
+                    studentService.updateById(Student.builder().id(student.getId()).loginTime(new Date()).build());
                     student.setPassword(null);
                     R respBean = R.ok(student);
                     respBean.setMsg("登录成功！");

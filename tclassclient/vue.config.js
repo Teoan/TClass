@@ -29,14 +29,6 @@ module.exports = {
             threshold: 1024,
             deleteOriginalAssets: false
           }),
-          new CompressionPlugin({
-            test: /\.scss$/,
-            use: [
-              'vue-style-loader',
-              'css-loader',
-              'sass-loader'
-            ]
-          })
         ]
       }
     }
