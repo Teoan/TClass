@@ -18,7 +18,7 @@
           <span>
             <i class="fas fa-map-marker-alt" />
           </span>
-          {{ currentUser.nativePlace.replace(/[,]/g,'') }}
+          {{ currentUser.nativePlace.replace(/[,]/g, '') }}
         </div>
         <div class="item border-bottom">
           <span>
@@ -275,7 +275,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .userinfo-div {
     display: flex;
     flex-wrap: wrap;

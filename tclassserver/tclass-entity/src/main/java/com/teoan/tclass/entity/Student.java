@@ -31,7 +31,7 @@ import java.util.List;
 @Builder
 @TableName(value ="student",resultMap = "AllStudentInfo")
 //忽略从redis反序列化时的字段名
-@JsonIgnoreProperties({"accountNonExpired","accountNonLocked","username","authorities","credentialsNonExpired"})
+@JsonIgnoreProperties({"accountNonExpired","accountNonLocked","username","authorities","credentialsNonExpired","enabled"})
 public class Student extends Model<Student> implements UserDetails {
 
     /**

@@ -41,6 +41,14 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     public IPage getStudentsByPage(Long current, Long size, Student student) {
         Page<Student> studentPage = new Page<>(current,size);
         QueryWrapper<Student> wrapper = new QueryWrapper<>(student);
+        //根据名字模糊查询
+        if (student!=null && student.getName()!=null){
+            if (!student.getName().isEmpty()) {
+                QueryWrapper nameWrapper = new QueryWrapper();
+                nameWrapper.like("name", student.getName());
+                return getBaseMapper().selectPage(studentPage,nameWrapper);
+            }
+        }
         return getBaseMapper().selectPage(studentPage, wrapper);
     }
 
