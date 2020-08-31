@@ -12,16 +12,18 @@
         </span>
         {{ notice.sname }}
       </div>
-      <div v-if="notice.content" class="box-text">
-        {{ getSubstr(notice.content,0,120)+'...' }}
-      </div>
-      <div class="read-more-btn">
-        <el-button
-          size="normal"
-          type="primary"
-          round
-          @click="readMoreNotice"
-        >阅读更多...</el-button>
+      <div class="card-body">
+        <div v-if="notice.content" class="box-text">
+          {{ getSubstr(notice.content,0,120)+'...' }}
+        </div>
+        <div class="read-more-btn">
+          <el-button
+            size="normal"
+            type="primary"
+            round
+            @click="readMoreNotice"
+          >阅读更多...</el-button>
+        </div>
       </div>
     </el-card>
     <el-card class="box-card" shadow="hover">
@@ -36,23 +38,25 @@
         </span>
         {{ work.sname }}
       </div>
-      <div class="box-text">
-        <div>
-          <i class="fas fa-italic" />
-          上传文件格式:{{ work.fileNameFormat }}
+      <div class="card-body">
+        <div class="box-text">
+          <div>
+            <i class="fas fa-italic" />
+            上传文件格式:{{ work.fileNameFormat }}
+          </div>
+          <div>
+            <i class="fas fa-hourglass-half" />
+            最晚提交时间:{{ work.lastTime }}
+          </div>
         </div>
-        <div>
-          <i class="fas fa-hourglass-half" />
-          最晚提交时间:{{ work.lastTime }}
+        <div class="read-more-btn">
+          <el-button
+            size="normal"
+            type="primary"
+            round
+            @click="uploadFile"
+          >上传作业<i class="el-icon-upload el-icon--right" /></el-button>
         </div>
-      </div>
-      <div class="read-more-btn">
-        <el-button
-          size="normal"
-          type="primary"
-          round
-          @click="uploadFile"
-        >上传作业<i class="el-icon-upload el-icon--right" /></el-button>
       </div>
     </el-card>
   </span>
@@ -107,8 +111,8 @@ export default {
    margin-top: 10px;
   }
   .box-text {
-    font-size: 22px;
-    height: 115px;
+    font-size: 100%;
+    height: auto;
   }
   .snamemargin {
     margin-left: 10px;
@@ -127,8 +131,8 @@ export default {
   }
 
   .box-card {
-    width: 800px;
-    height: 300px;
+    width: 70%;
+    height: 40%;
   }
 
   .div-card {
@@ -146,5 +150,11 @@ export default {
   .homeinfo-icon {
     font-size: 15px;
     color: #909399;
+  }
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
   }
 </style>

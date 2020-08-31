@@ -53,6 +53,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
 
+    @Override
+    public List<Student> getStudentByIds(List<Long> idList){
+        QueryWrapper<Student> wrapper = new QueryWrapper<>();
+        wrapper.in("id",idList);
+        return  getBaseMapper().selectList(wrapper);
+    }
 
 
     @CacheEvict(allEntries = true)

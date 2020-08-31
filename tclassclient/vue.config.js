@@ -28,7 +28,7 @@ module.exports = {
             test: /\.js$|\.html$|\.css/,
             threshold: 1024,
             deleteOriginalAssets: false
-          }),
+          })
         ]
       }
     }

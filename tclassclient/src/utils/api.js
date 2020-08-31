@@ -77,3 +77,12 @@ export const deleteRequest = (url, params) => {
     params: params
   })
 }
+export const getDataRequest = (url, params) => {
+  return axios({
+    method: 'get',
+    url: `${base}${url}`,
+    params: params,
+    responseType: 'blob'
+  })
+}
+

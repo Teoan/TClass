@@ -108,9 +108,12 @@ public class POIStudentUtils {
             row.createCell(4,CellType.STRING).setCellValue(student.getNation().getName());
             row.createCell(5,CellType.STRING).setCellValue(student.getNativePlace());
             row.createCell(6,CellType.STRING).setCellValue(student.getPoliticsstatus().getName());
-            row.createCell(7,CellType.STRING).setCellValue(student.getEmail());
-            row.createCell(8,CellType.STRING).setCellValue(student.getPhone());
-            row.createCell(9,CellType.STRING).setCellValue(student.getAddress());
+            String email = student.getEmail()!=null? student.getEmail():"";
+            row.createCell(7,CellType.STRING).setCellValue(email);
+            String phone = student.getPhone()!=null? student.getPhone():"";
+            row.createCell(8,CellType.STRING).setCellValue(phone);
+            String address = student.getAddress()!=null? student.getAddress():"";
+            row.createCell(9,CellType.STRING).setCellValue(address);
             String position=student.getPosition()!=null? student.getPosition().getName():"";
             row.createCell(10,CellType.STRING).setCellValue(position);
             XSSFCell cell11 = row.createCell(11, CellType.STRING);
@@ -121,7 +124,7 @@ public class POIStudentUtils {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         HttpHeaders headers = new HttpHeaders();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String fileName = "学生信息表("+simpleDateFormat.format(new Date())+").xlsx";
+        String fileName = "学生数据表("+simpleDateFormat.format(new Date())+").xlsx";
         try {
             headers.setContentDispositionFormData("attachment", new String(fileName.getBytes("UTF-8"),"ISO-8859-1"));
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);

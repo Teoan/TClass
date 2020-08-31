@@ -42,18 +42,6 @@ public class AdStudentController extends ApiController {
     private PositionService positionService;
 
 
-    /**
-     * 分页查询所有数据
-     *
-     * @param current 分页对象
-     * @param size 查询数据量
-     * @return 所有数据
-     */
-    @GetMapping("/")
-    public R getStudentByPage(@RequestParam(defaultValue = "1")Long current,@RequestParam(defaultValue = "10")Long size,Student student) {
-        return success(studentService.getStudentsByPage(current,size,student));
-    }
-
 
     /**
      * 新增数据
@@ -96,7 +84,10 @@ public class AdStudentController extends ApiController {
      * 导出学生数据
      */
     @GetMapping("/export")
-    public ResponseEntity<byte[]> exportData() {
+    public ResponseEntity<byte[]> exportData(@RequestParam("idList") List<Long> idList) {
+        if(idList != null && !idList.isEmpty()){
+            return POIStudentUtils.students2Excel(studentService.getStudentByIds(idList));
+        }
         return POIStudentUtils.students2Excel(studentService.list());
     }
 

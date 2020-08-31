@@ -82,7 +82,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="校内部门">
-            <el-select v-model="userData.departmentIdList" multiple placeholder="请选择" style="width:400px">
+            <el-select v-model="userData.departmentIdList" multiple placeholder="请选择" style="width:600px">
               <el-option
                 v-for="item in departments"
                 :key="item.value"
@@ -91,9 +91,11 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="家庭住址">
-            <el-input v-model="userData.address" type="textarea" class="address-textarea" />
-          </el-form-item>
+          <div>
+            <el-form-item label="家庭住址">
+              <el-input v-model="userData.address" type="textarea" class="address-textarea" />
+            </el-form-item>
+          </div>
           <div class="submit-btn">
             <el-button type="primary" @click="submitForm('userData')">修改资料</el-button>
           </div>
@@ -277,14 +279,16 @@ export default {
 
 <style scoped>
 .userinfo-div {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items:center;
+  height: 100%;
 }
 .box-card-info {
   text-align: center;
-  width: 250px;
-  height: 600px;
+  width: 15%;
+  height: 100%;
 }
 .user-name {
   font-weight: 700;
@@ -319,8 +323,8 @@ export default {
   margin-bottom: 10px;
 }
 .box-card-data {
-  width: 1200px;
-  height: 600px;
+  width: 80%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -338,7 +342,7 @@ export default {
   border-bottom-style: solid;
   border-bottom-color: rgb(235, 238, 245);
 }
-.address-textarea .el-textarea__inner {
-  width: 820px;
+.address-textarea /deep/ .el-textarea__inner {
+  width: 600px;
 }
 </style>

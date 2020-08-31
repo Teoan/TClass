@@ -68,7 +68,7 @@
       </el-header>
       <el-main class="home-main">
         <transition name="el-fade-in-linear">
-          <router-view class="home-router-view" />
+          <router-view />
         </transition>
       </el-main>
     </el-container>
@@ -171,10 +171,6 @@ export default {
   .caret-down {
     font-size: 18px;
     color: #606266;
-  }
-
-  .home-router-view{
-    margin: 10px;
   }
   .bars-icon {
     font-size:22px;
