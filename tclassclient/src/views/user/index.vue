@@ -14,16 +14,72 @@
             <el-button type="primary" style="margin-right:20px" icon="el-icon-download" @click="exportAllStudentData">导出学生数据</el-button>
           </div>
         </el-dialog>
-        <el-button type="primary" style="margin-right:20px" icon="el-icon-s-data" @click="dialogDataVisible = true">学生数据管理</el-button>
-        <template v-if="multipleSelection.length>0">
-          <el-popconfirm
-            title="确定批量删除所选学生吗？"
-            @onConfirm="deleteStudents"
-          >
-            <el-button slot="reference" type="danger" style="margin-right:20px">批量删除</el-button>
-          </el-popconfirm>
-        </template>
-        <el-button v-if="multipleSelection.length>0" type="primary" style="margin-right:20px" @click="exportStudentData">批量导出</el-button>
+        <el-button type="primary" style="margin-right:20px" icon="el-icon-s-grid" @click="dialogDataVisible = true">学生数据管理</el-button>
+        <el-dialog title="高级搜索" :visible.sync="dialogSelectVisible">
+          <el-form ref="selectUserData" :model="selectUserData" label-width="auto" :inline="true" :status-icon="true">
+            <el-form-item label="籍贯">
+              <el-cascader
+                v-model="selectedNativePlaceOptions"
+                :options="regionData"
+              />
+            </el-form-item>
+            <el-form-item label="民族">
+              <el-select v-model="selectUserData.nationId" placeholder="请选择民族" filterable>
+                <el-option
+                  v-for="item in nations"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="政治面貌">
+              <el-select v-model="selectUserData.politicId" placeholder="请选择政治面貌" filterable>
+                <el-option
+                  v-for="item in politicsstatuses"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="班级职务">
+              <el-select v-model="selectUserData.posId" placeholder="请选择班级职务" filterable>
+                <el-option
+                  v-for="item in positions"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="性别">
+              <el-select v-model="selectUserData.gender" placeholder="请选择性别">
+                <el-option label="男" value="男" />
+                <el-option label="女" value="女" />
+              </el-select>
+            </el-form-item>
+          </el-form>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogSelectVisible = false">取消</el-button>
+            <el-button type="primary" @click="selectStudent">查询</el-button>
+          </span>
+        </el-dialog>
+        <el-button type="primary" style="margin-right:20px" icon="el-icon-info" @click="dialogSelectVisible = true">高级搜索</el-button>
+        <el-dialog title="批量管理" :visible.sync="dialogBatchVisible">
+          <div class="student-date-but-div">
+            <template>
+              <el-popconfirm
+                title="确定批量删除所选学生吗？"
+                @onConfirm="deleteStudents"
+              >
+                <el-button slot="reference" type="danger" style="margin-right:20px">批量删除</el-button>
+              </el-popconfirm>
+            </template>
+            <el-button type="primary" style="margin-right:20px" @click="exportStudentData">批量导出</el-button>
+          </div>
+        </el-dialog>
+        <el-button v-if="multipleSelection.length>0" type="primary" style="margin-right:20px" icon="el-icon-s-data" @click="dialogBatchVisible = true">批量管理</el-button>
       </div>
       <div class="table-div">
         <el-table
@@ -121,6 +177,8 @@
 </template>
 
 <script>
+import { regionData, CodeToText } from 'element-china-area-data'
+
 export default {
   data() {
     return {
@@ -134,15 +192,27 @@ export default {
         posId: null,
         nationId: null,
         politicId: null,
-        phone: null
+        nativePlace: null
       },
       tableLoading: false,
       multipleSelection: [],
-      dialogDataVisible: false
+      dialogDataVisible: false,
+      dialogBatchVisible: false,
+      dialogSelectVisible: false,
+      regionData: regionData,
+      selectedNativePlaceOptions: [],
+      nations: [],
+      departments: [],
+      politicsstatuses: [],
+      positions: []
     }
   },
   created() {
     this.getData(1, 10)
+    this.getNations()
+    this.getDepartments()
+    this.getPoliticsstatuses()
+    this.getPositions()
   },
   methods: {
     getData(current, size) {
@@ -164,8 +234,19 @@ export default {
     handleEdit(row) {
       console.log(row)
     },
+    // 重置密码
     handleResetPass(row) {
       console.log(row)
+      this.tableLoading = true
+      this.putRequest('/admin/student/', { id: row.id, password: '123456' }).then(resp => {
+        if (resp.code === 0 && resp.data) {
+          this.$message.success('密码重置成功！')
+          this.tableLoading = false
+        }
+      }).catch(error => {
+        this.tableLoading = false
+        console.log(error)
+      })
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -178,6 +259,8 @@ export default {
     },
     selectStudent() {
       this.tableLoading = true
+      this.dialogSelectVisible = false
+      this.nativePlaceCodeToText()
       this.getRequest('/student/', this.selectUserData).then(resp => {
         if (resp.code === 0) {
           this.pageInfo = resp.data
@@ -185,6 +268,9 @@ export default {
           this.tableLoading = false
           this.initSelectUserData()
         }
+      }).catch(error => {
+        this.tableLoading = false
+        console.log(error)
       })
     },
     initSelectUserData() {
@@ -195,8 +281,9 @@ export default {
         posId: null,
         nationId: null,
         politicId: null,
-        phone: null
+        nativePlace: null
       }
+      this.selectedNativePlaceOptions = null
     },
     deleteStudentByidList(idList) {
       this.tableLoading = true
@@ -205,6 +292,7 @@ export default {
           this.$message.success('删除成功')
           this.getData(this.pageInfo.current, 10)
           this.tableLoading = false
+          this.dialogBatchVisible = false
         }
       }).catch(error => {
         this.tableLoading = false
@@ -229,6 +317,44 @@ export default {
     },
     exportAllStudentData() {
       window.open('/admin/student/export?idList=', '_parent')
+    },
+    // 获取列表数据
+    getNations() {
+      this.getRequest('/student/nations').then(resp => {
+        if (resp.code === 0) {
+          this.nations = resp.data
+        }
+      })
+    },
+    getDepartments() {
+      this.getRequest('/student/departments').then(resp => {
+        if (resp.code === 0) {
+          this.departments = resp.data
+        }
+      })
+    },
+    getPoliticsstatuses() {
+      this.getRequest('/student/politicsstatuses').then(resp => {
+        if (resp.code === 0) {
+          this.politicsstatuses = resp.data
+        }
+      })
+    },
+    getPositions() {
+      this.getRequest('/student/positions').then(resp => {
+        if (resp.code === 0) {
+          this.positions = resp.data
+        }
+      })
+    },
+    nativePlaceCodeToText() {
+      if (this.selectedNativePlaceOptions.length > 0) {
+        var text = ''
+        for (var i in this.selectedNativePlaceOptions) {
+          text = text + CodeToText[this.selectedNativePlaceOptions[i]] + ','
+        }
+        this.selectUserData.nativePlace = text.substring(0, text.lastIndexOf(','))
+      }
     }
   }
 }

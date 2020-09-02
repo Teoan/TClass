@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.teoan.tclass.entity.*;
 import com.teoan.tclass.service.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -43,6 +44,8 @@ public class StudentController extends ApiController {
     @Resource
     private PositionService positionService;
 
+
+
     /**
      * 分页查询所有数据
      *
@@ -75,8 +78,11 @@ public class StudentController extends ApiController {
      */
     @PutMapping("/")
     public R update(@RequestBody Student student) {
-        if(this.studentService.updateById(student)){
-            return success(studentService.getById(student.getId()));
+        //获取当前登录用户
+        Student currentStudent = (Student) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //普通用户只能修改自己的资料信息
+        if(currentStudent.getId().equals(student.getId())&&this.studentService.updateById(student)){
+                return success(studentService.getById(student.getId()));
         }
         return failed("资料修改失败！");
     }
