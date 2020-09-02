@@ -283,7 +283,7 @@ export default {
         politicId: null,
         nativePlace: null
       }
-      this.selectedNativePlaceOptions = null
+      this.selectedNativePlaceOptions = []
     },
     deleteStudentByidList(idList) {
       this.tableLoading = true
