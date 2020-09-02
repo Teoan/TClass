@@ -61,7 +61,6 @@
             </el-form-item>
           </el-form>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogSelectVisible = false">取消</el-button>
             <el-button type="primary" @click="selectStudent">查询</el-button>
           </span>
         </el-dialog>
