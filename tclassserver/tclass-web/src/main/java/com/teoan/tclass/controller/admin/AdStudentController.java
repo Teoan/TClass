@@ -6,12 +6,20 @@ import com.baomidou.mybatisplus.extension.api.R;
 import com.teoan.tclass.entity.*;
 import com.teoan.tclass.service.*;
 import com.teoan.tclass.utils.POIStudentUtils;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -85,10 +93,25 @@ public class AdStudentController extends ApiController {
      */
     @GetMapping("/export")
     public ResponseEntity<byte[]> exportData(@RequestParam("idList") List<Long> idList) {
-        if(idList != null && !idList.isEmpty()){
-            return POIStudentUtils.students2Excel(studentService.getStudentByIds(idList));
+        XSSFWorkbook workbook;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        HttpHeaders headers = new HttpHeaders();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String fileName = "学生数据表("+simpleDateFormat.format(new Date())+").xlsx";
+        try {
+            headers.setContentDispositionFormData("attachment", new String(fileName.getBytes("UTF-8"),"ISO-8859-1"));
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            if(idList != null && !idList.isEmpty()){
+                workbook = POIStudentUtils.students2Excel(studentService.getStudentByIds(idList));
+            }else{
+                workbook = POIStudentUtils.students2Excel(studentService.list());
+            }
+            workbook.write(baos);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return POIStudentUtils.students2Excel(studentService.list());
+        return new ResponseEntity<byte[]>(baos.toByteArray(), headers, HttpStatus.CREATED);
+
     }
 
     /**
@@ -96,13 +119,19 @@ public class AdStudentController extends ApiController {
      */
     @PostMapping("/import")
     public R importData(MultipartFile file){
-        List<Student> studentList = POIStudentUtils.excel2Student(file,roleService.list(),nationService.list(),politicsstatusService.list(),positionService.list());
-        if(studentService.saveBatch(studentList)){
-            return success("").setMsg("数据导入成功！");
+        if(file!=null){
+            List<Student> studentList = POIStudentUtils.excel2Student(file,roleService.list(),nationService.list(),politicsstatusService.list(),positionService.list());
+
+            if(studentService.saveBatch(studentList)){
+                return success("").setMsg("已成功导入"+studentList.size()+"条数据！");
+            }else{
+                return failed("数据导入失败！");
+            }
         }
-        return failed("数据导入失败！");
+        else {
+            return failed("上传的文件为空");
+        }
+
     }
-
-
 
 }

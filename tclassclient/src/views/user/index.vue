@@ -10,8 +10,27 @@
         <el-button type="primary" style="margin-right:20px" icon="el-icon-search" @click="selectStudent">搜索</el-button>
         <el-dialog title="数据管理" :visible.sync="dialogDataVisible">
           <div class="student-date-but-div">
-            <el-button type="primary" style="margin-right:20px" icon="el-icon-upload2">导入学生数据</el-button>
-            <el-button type="primary" style="margin-right:20px" icon="el-icon-download" @click="exportAllStudentData">导出学生数据</el-button>
+            <div>
+              <el-upload
+                class="upload"
+                action="/admin/student/import"
+                :on-success="onSeccessUpload"
+                :on-error="onErrorUpload"
+                :before-upload="beforeUpload"
+                :disabled="uploadDisabled"
+                :multiple="false"
+                :show-file-list="false"
+              >
+                <el-button
+                  v-loading="uploadLoading"
+                  type="primary"
+                  icon="el-icon-upload2"
+                  :disabled="uploadDisabled"
+                  element-loading-text="正在导入。。"
+                >导入学生数据</el-button>
+              </el-upload>
+              <el-button type="primary" style="margin-left:20px" icon="el-icon-download" @click="exportAllStudentData">导出学生数据</el-button>
+            </div>
           </div>
         </el-dialog>
         <el-button type="primary" style="margin-right:20px" icon="el-icon-s-grid" @click="dialogDataVisible = true">学生数据管理</el-button>
@@ -203,7 +222,9 @@ export default {
       nations: [],
       departments: [],
       politicsstatuses: [],
-      positions: []
+      positions: [],
+      uploadDisabled: false,
+      uploadLoading: false
     }
   },
   created() {
@@ -354,6 +375,22 @@ export default {
         }
         this.selectUserData.nativePlace = text.substring(0, text.lastIndexOf(','))
       }
+    },
+    onSeccessUpload(response, file, fileList) {
+      console.log(response)
+      this.$message.success(response.msg)
+      this.uploadDisabled = false
+      this.uploadLoading = false
+      this.getData(1, 10)
+    },
+    onErrorUpload(err, file, fileList) {
+      this.uploadDisabled = false
+      console.log(err)
+      this.$message.error('文件上传失败')
+    },
+    beforeUpload(file) {
+      this.uploadDisabled = true
+      this.uploadLoading = true
     }
   }
 }
@@ -391,6 +428,15 @@ export default {
     margin: 0;
   }
   .student-date-but-div {
-    text-align:center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .upload {
+    display: inline-flex;
+  }
+  .progerss {
+    width: 80%;
+    margin-top: 10px;
   }
 </style>

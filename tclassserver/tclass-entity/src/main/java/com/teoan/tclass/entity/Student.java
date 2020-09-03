@@ -1,8 +1,6 @@
 package com.teoan.tclass.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -37,6 +35,7 @@ public class Student extends Model<Student> implements UserDetails {
     /**
     * 学号
     */
+    @TableId(type = IdType.AUTO)
     private Integer id;
     /**
     * 权限Id
@@ -89,10 +88,12 @@ public class Student extends Model<Student> implements UserDetails {
     /**
     * 创建时间
     */
+    @TableField(fill = FieldFill.DEFAULT)
     private Date createTime;
     /**
     * 更新时间
     */
+    @TableField(fill = FieldFill.DEFAULT)
     private Date updateTime;
     /**
     * 最近登录时间

@@ -4,17 +4,11 @@ import com.teoan.tclass.entity.*;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,10 +22,8 @@ public class POIStudentUtils {
      *
      * @param studentList 学生列表
      */
-    public static ResponseEntity<byte[]> students2Excel(List<Student> studentList){
+    public static XSSFWorkbook students2Excel(List<Student> studentList){
 
-        //获取当前登录用户
-//        Student currentStudent = (Student) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         XSSFWorkbook workbook =new XSSFWorkbook();
         
@@ -40,7 +32,6 @@ public class POIStudentUtils {
         headerStyle.setFillForegroundColor(IndexedColors.GREEN.index);
         headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         XSSFCellStyle dateCellStyle = workbook.createCellStyle();
-//        dateCellStyle.setDataFormat(XSSFDataFormat.getBuiltinFormat("m/d/yy"));
         XSSFCreationHelper createHelper = workbook.getCreationHelper();
         dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("m/d/yy"));
         dateCellStyle.setAlignment(HorizontalAlignment.CENTER_SELECTION);
@@ -120,19 +111,20 @@ public class POIStudentUtils {
             cell11.setCellValue(student.getLoginTime());
             cell11.setCellStyle(dateCellStyle);
         }
+        return workbook;
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        HttpHeaders headers = new HttpHeaders();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String fileName = "学生数据表("+simpleDateFormat.format(new Date())+").xlsx";
-        try {
-            headers.setContentDispositionFormData("attachment", new String(fileName.getBytes("UTF-8"),"ISO-8859-1"));
-            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            workbook.write(baos);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<byte[]>(baos.toByteArray(), headers, HttpStatus.CREATED);
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        HttpHeaders headers = new HttpHeaders();
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        String fileName = "学生数据表("+simpleDateFormat.format(new Date())+").xlsx";
+//        try {
+//            headers.setContentDispositionFormData("attachment", new String(fileName.getBytes("UTF-8"),"ISO-8859-1"));
+//            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+//            workbook.write(baos);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return new ResponseEntity<byte[]>(baos.toByteArray(), headers, HttpStatus.CREATED);
 
     }
 
@@ -195,10 +187,14 @@ public class POIStudentUtils {
                                     }
                                     break;}
                             }
+
                         }else {
                             student.setLoginTime(cell.getDateCellValue());
+                            System.out.println(cell.getDateCellValue());
                         }
                     }
+                    //设置默认密码
+                    student.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
                     studentList.add(student);
                 }
             }

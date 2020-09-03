@@ -80,9 +80,11 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     public boolean updateById(Student entity) {
         String password = entity.getPassword();
         List<Integer> departmentIdList = entity.getDepartmentIdList();
+        //处理密码更新
         if (password!=null&&!password.isEmpty()){
             entity.setPassword(DigestUtils.md5DigestAsHex(password.getBytes()));
         }
+        //处理学生与部门映射
         if(departmentIdList!=null&&departmentIdList.size()>0){
             List<StuDepRef> stuDepRefList = new ArrayList<>();
             departmentIdList.forEach(item->{
@@ -99,6 +101,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     @Override
     public boolean removeByIds(Collection<? extends Serializable> idList) {
         return super.removeByIds(idList);
+    }
+
+    @CacheEvict(allEntries = true)
+    @Override
+    public boolean saveBatch(Collection<Student> entityList) {
+        return super.saveBatch(entityList);
     }
 
     //springSecurity
