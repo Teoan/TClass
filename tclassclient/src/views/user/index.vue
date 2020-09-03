@@ -26,7 +26,6 @@
                   type="primary"
                   icon="el-icon-upload2"
                   :disabled="uploadDisabled"
-                  element-loading-text="正在导入。。"
                 >导入学生数据</el-button>
               </el-upload>
               <el-button type="primary" style="margin-left:20px" icon="el-icon-download" @click="exportAllStudentData">导出学生数据</el-button>
@@ -385,6 +384,7 @@ export default {
     },
     onErrorUpload(err, file, fileList) {
       this.uploadDisabled = false
+      this.uploadLoading = false
       console.log(err)
       this.$message.error('文件上传失败')
     },

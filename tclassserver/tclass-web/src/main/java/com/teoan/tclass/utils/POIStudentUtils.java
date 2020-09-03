@@ -112,20 +112,6 @@ public class POIStudentUtils {
             cell11.setCellStyle(dateCellStyle);
         }
         return workbook;
-
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        HttpHeaders headers = new HttpHeaders();
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        String fileName = "学生数据表("+simpleDateFormat.format(new Date())+").xlsx";
-//        try {
-//            headers.setContentDispositionFormData("attachment", new String(fileName.getBytes("UTF-8"),"ISO-8859-1"));
-//            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-//            workbook.write(baos);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return new ResponseEntity<byte[]>(baos.toByteArray(), headers, HttpStatus.CREATED);
-
     }
 
 
@@ -135,7 +121,6 @@ public class POIStudentUtils {
     public static List<Student> excel2Student(MultipartFile file, List<Role> allRoles, List<Nation> allNations, List<Politicsstatus> allPoliticsstatuses, List<Position> allPositions){
         List<Student> studentList=new ArrayList<>();
         Student student = null;
-
 
         try{
 
@@ -193,8 +178,9 @@ public class POIStudentUtils {
                             System.out.println(cell.getDateCellValue());
                         }
                     }
-                    //设置默认密码
+                    //设置默认密码和头像
                     student.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
+                    student.setAvatarUrl("https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png");
                     studentList.add(student);
                 }
             }
