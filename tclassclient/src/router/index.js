@@ -28,13 +28,20 @@ const routes = [
     path: '/home',
     name: '',
     component: Home,
-    meta: { title: '个人中心', icon: 'fas fa-info-circle', roles: ['ROLE_admin', 'ROLE_student'] },
+    meta: { title: '个人中心', icon: 'fas fa-address-card', roles: ['ROLE_admin', 'ROLE_student'] },
     children: [{
       path: '/userinfo',
       name: 'userInfo',
-      component: () => import('@/views/user/userInfo'),
+      component: () => import('@/components/UserInfo/userInfo'),
       meta: { title: '个人中心', icon: 'fas fa-address-card', roles: ['ROLE_admin', 'ROLE_student'] }
-    }]
+    }, {
+      path: '/useredit',
+      name: 'edit',
+      component: () => import('@/components/UserInfo/userInfo'),
+      meta: { title: '用户编辑', icon: 'fas fa-address-card', roles: ['ROLE_admin', 'ROLE_student'] },
+      hidden: true
+    }
+    ]
   },
   {
     path: '/home',
@@ -54,14 +61,14 @@ const routes = [
     component: Home,
     meta: { title: '通知', icon: 'fas fa-comment-alt', roles: ['ROLE_admin', 'ROLE_student'] },
     children: [{
-      path: '/natice',
-      name: 'natice',
-      component: () => import('@/views/natice/index'),
+      path: '/notice',
+      name: 'notice',
+      component: () => import('@/views/notice/index'),
       meta: { title: '查看通知', roles: ['ROLE_admin', 'ROLE_student'] }
     }, {
-      path: '/naticemana',
-      name: 'naticeMana',
-      component: () => import('@/views/natice/naticeMana'),
+      path: '/noticemana',
+      name: 'noticeMana',
+      component: () => import('@/views/notice/noticeMana'),
       meta: { title: '通知管理', roles: ['ROLE_admin'] }
     }]
   },

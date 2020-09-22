@@ -1,0 +1,90 @@
+<template>
+  <div class="div-card">
+    <div class="select-div">
+      <el-input v-model="selectNoticeTitle" placeholder="请输入通知标题搜索" style="width: 500px;" />
+      <el-button type="primary" icon="el-icon-search" style="margin-left: 20px;" @click="selectNoticeByName">搜索</el-button>
+    </div>
+    <el-row v-for="item in noticeList" :key="item.id" v-loading="" class="el-row-div">
+      <el-col :span="24" class="el-col-div">
+        <noticeInfo :notice="item" />
+      </el-col>
+    </el-row>
+    <el-pagination
+      background
+      :page-count="pageInfo.pages"
+      :current-page="pageInfo.current"
+      hide-on-single-page
+      @current-change="currentChange"
+    />
+  </div>
+</template>
+
+<script>
+import noticeInfo from '@/components/Notice/noticeInfo'
+// markdown编辑器
+// import 'codemirror/lib/codemirror.css'
+// import '@toast-ui/editor/dist/toastui-editor.css'
+// import { Editor } from '@toast-ui/vue-editor'
+export default {
+  components: {
+    noticeInfo: noticeInfo
+  },
+  data() {
+    return {
+      noticeList: [],
+      pageInfo: '',
+      selectNoticeTitle: null
+    }
+  },
+  created() {
+    this.getNationsData(1, 3)
+  },
+  mounted() {
+  },
+  methods: {
+    currentChange(current) {
+      this.getNationsData(current, 3)
+    },
+    getNationsData(current, size) {
+      if (this.selectNoticeTitle === '') {
+        this.selectNoticeTitle = null
+      }
+      this.getRequest('/notice/', { current: current, size: size, title: this.selectNoticeTitle }).then(resp => {
+        if (resp.code === 0) {
+          this.pageInfo = resp.data
+          this.noticeList = this.pageInfo.records
+          this.$message.success('查询到' + this.pageInfo.total + '条记录!')
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    selectNoticeByName() {
+      this.getNationsData(1, 3)
+    }
+  }
+}
+</script>
+
+<style>
+  .div-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .el-row-div {
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content:space-around;
+  }
+  .el-col-div {
+    width: 70%;
+  }
+  .select-div {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+  }
+</style>

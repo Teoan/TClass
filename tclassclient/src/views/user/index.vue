@@ -199,7 +199,7 @@ import { regionData, CodeToText } from 'element-china-area-data'
 export default {
   data() {
     return {
-      userDataList: '',
+      userDataList: [],
       pageInfo: '',
       selectInput: '',
       selectUserData: {
@@ -252,10 +252,13 @@ export default {
     },
     handleEdit(row) {
       console.log(row)
+      this.$router.push({
+        path: '/useredit',
+        query: { id: row.id }
+      })
     },
     // 重置密码
     handleResetPass(row) {
-      console.log(row)
       this.tableLoading = true
       this.putRequest('/admin/student/', { id: row.id, password: '123456' }).then(resp => {
         if (resp.code === 0 && resp.data) {
