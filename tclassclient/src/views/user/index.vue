@@ -6,7 +6,7 @@
       :body-style="{height:'100%'}"
     >
       <div class="select-div">
-        <el-input v-model="selectUserData.name" prefix-icon="el-icon-search" placeholder="根据学生姓名搜索" style="width: 400px;margin-right:20px" />
+        <el-input v-model="selectUserData.name" prefix-icon="el-icon-search" placeholder="根据学生姓名搜索" style="width: 400px;margin-right:20px" @keydown.enter.native="selectStudent" />
         <el-button type="primary" style="margin-right:20px" icon="el-icon-search" @click="selectStudent">搜索</el-button>
         <el-dialog title="数据管理" :visible.sync="dialogDataVisible">
           <div class="student-date-but-div">
@@ -432,8 +432,7 @@ export default {
   }
   .student-date-but-div {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content:center;
   }
   .upload {
     display: inline-flex;

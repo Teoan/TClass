@@ -1,7 +1,16 @@
 <template>
   <div class="div-card">
     <div class="select-div">
-      <el-input v-model="selectNoticeTitle" placeholder="请输入通知标题搜索" style="width: 500px;" />
+      <el-input v-model="selectNoticeTitle" placeholder="请输入通知标题搜索" style="width: 500px;" @keydown.enter.native="selectNoticeByName" />
+      <el-date-picker
+        v-model="selectCreateTime"
+        align="right"
+        type="date"
+        value-format="yyyy-MM-dd HH:mm:ss"
+        placeholder="选择日期"
+        :picker-options="pickerOptions"
+        style="margin-left: 20px;"
+      />
       <el-button type="primary" icon="el-icon-search" style="margin-left: 20px;" @click="selectNoticeByName">搜索</el-button>
     </div>
     <el-row v-for="item in noticeList" :key="item.id" v-loading="" class="el-row-div">
@@ -33,7 +42,21 @@ export default {
     return {
       noticeList: [],
       pageInfo: '',
-      selectNoticeTitle: null
+      selectNoticeTitle: null,
+      selectCreateTime: null,
+      shortcuts: [{
+        text: '今天',
+        onClick(picker) {
+          picker.$emit('pick', new Date())
+        }
+      }, {
+        text: '昨天',
+        onClick(picker) {
+          const date = new Date()
+          date.setTime(date.getTime() - 3600 * 1000 * 24)
+          picker.$emit('pick', date)
+        }
+      }]
     }
   },
   created() {
@@ -49,11 +72,10 @@ export default {
       if (this.selectNoticeTitle === '') {
         this.selectNoticeTitle = null
       }
-      this.getRequest('/notice/', { current: current, size: size, title: this.selectNoticeTitle }).then(resp => {
+      this.getRequest('/notice/', { current: current, size: size, title: this.selectNoticeTitle, createTime: this.selectCreateTime }).then(resp => {
         if (resp.code === 0) {
           this.pageInfo = resp.data
           this.noticeList = this.pageInfo.records
-          this.$message.success('查询到' + this.pageInfo.total + '条记录!')
         }
       }).catch(error => {
         console.log(error)
