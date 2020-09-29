@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import noticeInfo from '@/components/Notice/noticeInfo'
+import noticeInfo from '@/components/Notice/notice'
 // markdown编辑器
 // import 'codemirror/lib/codemirror.css'
 // import '@toast-ui/editor/dist/toastui-editor.css'
@@ -44,19 +44,24 @@ export default {
       pageInfo: '',
       selectNoticeTitle: null,
       selectCreateTime: null,
-      shortcuts: [{
-        text: '今天',
-        onClick(picker) {
-          picker.$emit('pick', new Date())
-        }
-      }, {
-        text: '昨天',
-        onClick(picker) {
-          const date = new Date()
-          date.setTime(date.getTime() - 3600 * 1000 * 24)
-          picker.$emit('pick', date)
-        }
-      }]
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now()
+        },
+        shortcuts: [{
+          text: '今天',
+          onClick(picker) {
+            picker.$emit('pick', new Date())
+          }
+        }, {
+          text: '昨天',
+          onClick(picker) {
+            const date = new Date()
+            date.setTime(date.getTime() - 3600 * 1000 * 24)
+            picker.$emit('pick', date)
+          }
+        }]
+      }
     }
   },
   created() {

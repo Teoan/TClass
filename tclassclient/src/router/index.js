@@ -70,6 +70,12 @@ const routes = [
       name: 'noticeMana',
       component: () => import('@/views/notice/noticeMana'),
       meta: { title: '通知管理', roles: ['ROLE_admin'] }
+    }, {
+      path: '/noticeinfo',
+      name: 'noticeinfo',
+      component: () => import('@/views/notice/noticeInfo'),
+      hidden: true,
+      meta: { title: '通知详情', roles: ['ROLE_student', 'ROLE_admin'] }
     }]
   },
   {

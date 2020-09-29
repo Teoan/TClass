@@ -15,7 +15,7 @@
       <!-- <div v-if="notice.content" class="box-text">
         {{ getSubstr(notice.content,0,120)+'...' }}
       </div> -->
-      <viewer :initial-value="notice.content" />
+      <viewer :initial-value="getSubstr(notice.content,0,120)+'...'" class="viewer" />
       <div class="read-more-btn">
         <el-button
           size="normal"
@@ -49,7 +49,10 @@ export default {
   },
   methods: {
     readMoreNotice() {
-      this.$message.info('readMoreNotice')
+      this.$router.push({
+        path: '/noticeinfo',
+        query: { id: this.$props.notice.id }
+      })
     },
     getSubstr(str, start, end) {
       return str.substring(start, end)
@@ -59,10 +62,6 @@ export default {
 </script>
 
 <style>
-  .box-text {
-    font-size: 100%;
-    height: auto;
-  }
   .read-more-btn {
    display: flex;
    justify-content: flex-end;
@@ -103,5 +102,8 @@ export default {
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+  }
+  .viewer p{
+    font-size: 150%;
   }
 </style>

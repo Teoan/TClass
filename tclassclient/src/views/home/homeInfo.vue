@@ -1,69 +1,78 @@
 <template>
-  <span class="div-card">
-    <el-card class="box-card" shadow="hover">
-      <div slot="header" class="clearfix">
-        <div class="title">通知：{{ notice.title }}</div>
-        <span class="homeinfo-icon">
-          <i class="fas fa-clock" />
-        </span>
-        {{ notice.createTime }}
-        <span class="homeinfo-icon snamemargin">
-          <i class="fas fa-user" />
-        </span>
-        {{ notice.sname }}
-      </div>
-      <div class="card-body">
-        <div v-if="notice.content" class="box-text">
-          {{ getSubstr(notice.content,0,120)+'...' }}
-        </div>
-        <div class="read-more-btn">
-          <el-button
-            size="normal"
-            type="primary"
-            round
-            @click="readMoreNotice"
-          >阅读更多...</el-button>
-        </div>
-      </div>
-    </el-card>
-    <el-card class="box-card" shadow="hover">
-      <div slot="header" class="clearfix">
-        <div class="title">作业：{{ work.name }}</div>
-        <span class="homeinfo-icon">
-          <i class="fas fa-clock" />
-        </span>
-        {{ work.createTime }}
-        <span class="homeinfo-icon snamemargin">
-          <i class="fas fa-user" />
-        </span>
-        {{ work.sname }}
-      </div>
-      <div class="card-body">
-        <div class="box-text">
-          <div>
-            <i class="fas fa-italic" />
-            上传文件格式:{{ work.fileNameFormat }}
+  <div class="homeinfo-div">
+    <el-row>
+      <el-col :span="24" class="el-row-div">
+        <el-card class="box-card" shadow="hover" :body-style="{ padding: '20px', height:'100%'}">
+          <div slot="header" class="clearfix">
+            <div class="title">{{ notice.title }}</div>
+            <span class="homeinfo-icon">
+              <i class="fas fa-clock" />
+            </span>
+            {{ notice.createTime }}
+            <span class="homeinfo-icon snamemargin">
+              <i class="fas fa-user" />
+            </span>
+            {{ notice.sname }}
           </div>
-          <div>
-            <i class="fas fa-hourglass-half" />
-            最晚提交时间:{{ work.lastTime }}
+          <div class="card-body">
+            <viewer :initial-value="getSubstr(notice.content,0,120)+'...'" class="viewer" />
+            <div class="read-more-btn">
+              <el-button
+                size="normal"
+                type="primary"
+                round
+                @click="readMoreNotice"
+              >阅读更多...</el-button>
+            </div>
           </div>
-        </div>
-        <div class="read-more-btn">
-          <el-button
-            size="normal"
-            type="primary"
-            round
-            @click="uploadFile"
-          >上传作业<i class="el-icon-upload el-icon--right" /></el-button>
-        </div>
-      </div>
-    </el-card>
-  </span>
+        </el-card>
+      </el-col>
+      <el-col :span="24" class="el-row-div" :body-style="{ padding: '20px', height:'100%'}">
+        <el-card class="box-card" shadow="hover">
+          <div slot="header" class="clearfix">
+            <div class="title">作业：{{ work.name }}</div>
+            <span class="homeinfo-icon">
+              <i class="fas fa-clock" />
+            </span>
+            {{ work.createTime }}
+            <span class="homeinfo-icon snamemargin">
+              <i class="fas fa-user" />
+            </span>
+            {{ work.sname }}
+          </div>
+          <div class="card-body">
+            <div class="box-text">
+              <div>
+                <i class="fas fa-italic" />
+                上传文件格式:{{ work.fileNameFormat }}
+              </div>
+              <div>
+                <i class="fas fa-hourglass-half" />
+                最晚提交时间:{{ work.lastTime }}
+              </div>
+            </div>
+            <div class="read-more-btn">
+              <el-button
+                size="normal"
+                type="primary"
+                round
+                @click="uploadFile"
+              >提交作业<i class="el-icon-upload el-icon--right" /></el-button>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
+import '@toast-ui/editor/dist/toastui-editor-viewer.css'
+import { Viewer } from '@toast-ui/vue-editor'
 export default {
+  components: {
+    viewer: Viewer
+  },
   data() {
     return {
       work: '',
@@ -90,7 +99,10 @@ export default {
       })
     },
     readMoreNotice() {
-      this.$message.info('readMoreNotice')
+      this.$router.push({
+        path: '/noticeinfo',
+        query: { id: this.notice.id }
+      })
     },
     uploadFile() {
       this.$message.info('uploadFile')
@@ -155,6 +167,21 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    height: 100%;
+  }
+  .viewer /deep/ p{
+    font-size: 150%;
+  }
+  .el-row-div {
+    margin-bottom: 8%;
+    width: 100%;
+    display: flex;
+    justify-content:space-around;
+  }
+  .homeinfo-div {
+    display: flex;
+    justify-content:center;
+    align-items: center;
     height: 100%;
   }
 </style>

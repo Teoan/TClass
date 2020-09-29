@@ -251,7 +251,6 @@ export default {
       this.deleteStudentByidList([row.id])
     },
     handleEdit(row) {
-      console.log(row)
       this.$router.push({
         path: '/useredit',
         query: { id: row.id }
