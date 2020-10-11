@@ -12,9 +12,6 @@
       {{ notice.sname }}
     </div>
     <div class="card-body">
-      <!-- <div v-if="notice.content" class="box-text">
-        {{ getSubstr(notice.content,0,120)+'...' }}
-      </div> -->
       <viewer :initial-value="getSubstr(notice.content,0,120)+'...'" class="viewer" />
       <div class="read-more-btn">
         <el-button

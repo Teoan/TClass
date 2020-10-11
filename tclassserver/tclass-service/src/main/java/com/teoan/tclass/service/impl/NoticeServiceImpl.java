@@ -42,6 +42,7 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
          wrapper.like("create_time",new SimpleDateFormat("yyyy-MM-dd").format(notice.getCreateTime()));
          notice.setCreateTime(null);
         }
+        wrapper.orderByDesc("create_time");
         return getBaseMapper().selectPage(noticePage, wrapper);
     }
 
@@ -54,7 +55,7 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
         return getBaseMapper().selectOne(wrapper);
     }
 
-    @CacheEvict
+    @CacheEvict(allEntries = true)
     @Override
     public boolean save(Notice entity) {
         return super.save(entity);

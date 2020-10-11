@@ -24,6 +24,7 @@ import { postKeyValueRequest } from './utils/api'
 import { putRequest } from './utils/api'
 import { deleteRequest } from './utils/api'
 import { getRequest } from './utils/api'
+import { loginPostRequest } from './utils/api'
 import '@/style/element-variables.scss'
 
 Vue.prototype.postRequest = postRequest
@@ -31,6 +32,7 @@ Vue.prototype.postKeyValueRequest = postKeyValueRequest
 Vue.prototype.putRequest = putRequest
 Vue.prototype.deleteRequest = deleteRequest
 Vue.prototype.getRequest = getRequest
+Vue.prototype.loginPostRequest = loginPostRequest
 
 Vue.config.productionTip = false
 

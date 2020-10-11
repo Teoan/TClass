@@ -49,11 +49,18 @@ export const postKeyValueRequest = (url, params) => {
     }
   })
 }
-export const postRequest = (url, params) => {
+export const loginPostRequest = (url, params) => {
   return axios({
     method: 'post',
     url: `${base}${url}`,
     data: qs.stringify(params)
+  })
+}
+export const postRequest = (url, params) => {
+  return axios({
+    method: 'post',
+    url: `${base}${url}`,
+    data: params
   })
 }
 export const putRequest = (url, params) => {

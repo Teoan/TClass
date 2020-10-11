@@ -76,7 +76,14 @@ const routes = [
       component: () => import('@/views/notice/noticeInfo'),
       hidden: true,
       meta: { title: '通知详情', roles: ['ROLE_student', 'ROLE_admin'] }
-    }]
+    }, {
+      path: '/noticeedit',
+      name: 'noticeedit',
+      component: () => import('@/components/Notice/noticeEdit'),
+      hidden: true,
+      meta: { title: '通知编辑与发布', roles: ['ROLE_admin'] }
+    }
+    ]
   },
   {
     path: '/home',

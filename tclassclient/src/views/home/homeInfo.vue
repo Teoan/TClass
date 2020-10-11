@@ -1,6 +1,6 @@
 <template>
   <div class="homeinfo-div">
-    <el-row>
+    <el-row style="width:100%">
       <el-col :span="24" class="el-row-div">
         <el-card class="box-card" shadow="hover" :body-style="{ padding: '20px', height:'100%'}">
           <div slot="header" class="clearfix">
@@ -174,7 +174,6 @@ export default {
   }
   .el-row-div {
     margin-bottom: 8%;
-    width: 100%;
     display: flex;
     justify-content:space-around;
   }
@@ -182,6 +181,5 @@ export default {
     display: flex;
     justify-content:center;
     align-items: center;
-    height: 100%;
   }
 </style>

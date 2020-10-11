@@ -1,8 +1,6 @@
 package com.teoan.tclass.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +23,7 @@ import java.util.Date;
 @TableName(value = "notice",resultMap = "NoticeMap")
 public class Notice extends Model<Notice> {
 
+    @TableId(type = IdType.AUTO)
     private Integer id;
     /**
      * 通知发起人
@@ -54,10 +53,12 @@ public class Notice extends Model<Notice> {
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.DEFAULT)
     private Date createTime;
     /**
      * 更新时间
      */
+    @TableField(fill = FieldFill.DEFAULT)
     private Date updateTime;
 
     /**

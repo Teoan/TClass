@@ -84,7 +84,7 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true
-          this.postRequest('/login', this.loginForm).then(resp => {
+          this.loginPostRequest('/login', this.loginForm).then(resp => {
             this.loading = false
             if (resp.code === 0) {
               this.$store.commit('INIT_CURRENTUSER', resp.data)
