@@ -10,6 +10,12 @@
         <i class="fas fa-user" />
       </span>
       {{ notice.sname }}
+      <span v-if="notice.editSName!==null">
+        <span class="homeinfo-icon snamemargin">
+          <i class="fas fa-user-edit" />
+        </span>
+        {{ notice.editSName }}
+      </span>
     </div>
     <div class="card-body">
       <viewer :initial-value="getSubstr(notice.content,0,120)+'...'" class="viewer" />

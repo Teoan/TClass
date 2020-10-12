@@ -26,16 +26,25 @@ public class Notice extends Model<Notice> {
     @TableId(type = IdType.AUTO)
     private Integer id;
     /**
-     * 通知发起人
+     * 通知发起人Id
      */
     private Integer sId;
 
+    /**
+     * 通知编辑人Id
+     */
+    private Integer editSId;
     /**
      * 通知发起人名字
      */
     @TableField(exist = false)
     private String sName;
 
+    /**
+     * 通知编辑人名字
+     */
+    @TableField(exist = false)
+    private String editSName;
     /**
      * 逻辑删除
      */

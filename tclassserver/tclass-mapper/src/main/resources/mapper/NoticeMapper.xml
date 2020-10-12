@@ -5,15 +5,20 @@
     <resultMap type="com.teoan.tclass.entity.Notice" id="NoticeMap">
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="sId" column="s_id" jdbcType="INTEGER"/>
+        <result property="editSId" column="edit_s_id" jdbcType="INTEGER"/>
         <result property="deleted" column="deleted" jdbcType="BIT"/>
         <result property="title" column="title" jdbcType="VARCHAR"/>
         <result property="content" column="content" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <association property="sName" column="s_id" javaType="String" select="getStudentName"/>
+        <association property="editSName" column="edit_s_id" javaType="String" select="getEditStudentName"/>
     </resultMap>
 
     <select id="getStudentName" resultType="String" >
         select name from tclass.student where id = #{s_id}
+    </select>
+    <select id="getEditStudentName" resultType="String" >
+        select name from tclass.student where id = #{edit_s_id}
     </select>
 </mapper>

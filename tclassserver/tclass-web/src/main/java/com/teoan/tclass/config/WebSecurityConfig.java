@@ -99,14 +99,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 //        http.authorizeRequests()
-////                .anyRequest()
-////                .permitAll()
-////                .and()
-////                .logout()
-////                .permitAll()
-////                .and()
-////                .csrf()
-////                .disable();
+//                .anyRequest()
+//                .permitAll()
+//                .and()
+//                .logout()
+//                .permitAll()
+//                .and()
+//                .csrf()
+//                .disable();
         http.authorizeRequests()
                 .antMatchers("/admin/**")
                 .hasRole("admin")///admin/**URL都需要有超级管理员角色，如果使用.hasAuthority()方法来配置，需要在参数中加上ROLE_,如下.hasAuthority("ROLE_超级管理员")

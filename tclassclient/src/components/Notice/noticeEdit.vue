@@ -37,7 +37,8 @@ export default {
         title: '',
         sid: '',
         content: '',
-        id: null
+        id: null,
+        editSId: null
       },
       editorOptions: {
         minHeight: '200px',
@@ -73,7 +74,6 @@ export default {
   },
   created() {
     this.getNoticeById()
-    this.notice.sid = this.currentUser.id
   },
   methods: {
     getNoticeById() {
@@ -89,6 +89,7 @@ export default {
       }
     },
     commitEdit() {
+      this.notice.editSId = this.currentUser.id
       this.putRequest('/admin/notice/', this.notice).then(resp => {
         if (resp.code === 0) {
           this.$message.success('编辑成功!')
@@ -97,6 +98,7 @@ export default {
       })
     },
     commitNotice() {
+      this.notice.sid = this.currentUser.id
       this.postRequest('/admin/notice/', this.notice).then(resp => {
         if (resp.code === 0) {
           this.$message.success('发布成功!')

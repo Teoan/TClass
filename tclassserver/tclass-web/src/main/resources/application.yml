@@ -6,7 +6,7 @@ spring:
     url: jdbc:mysql://localhost:3306/tclass?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
   redis:
     host: localhost
-#    host: 172.30.223.151
+#    host: 172.27.116.158
     database: 0
     port: 6379
     password: 277077411
