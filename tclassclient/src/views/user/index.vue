@@ -406,7 +406,6 @@ export default {
   .box-card-userdata /deep/ .el-card__body {
     display: flex;
     flex-direction: column;
-    justify-content: center;
   }
   .userMana-div {
     display: flex;
@@ -416,7 +415,7 @@ export default {
   }
   .table-div {
     margin: 20px 0;
-    height: 70%;
+    height: 80%;
   }
   .select-div {
     display: flex;

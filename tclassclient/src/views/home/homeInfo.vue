@@ -9,12 +9,12 @@
               <i class="fas fa-clock" />
             </span>
             {{ notice.createTime }}
-            <span class="homeinfo-icon snamemargin">
+            <span class="homeinfo-icon sname-margin">
               <i class="fas fa-user" />
             </span>
-            {{ notice.sname }}
+            通知：{{ notice.sname }}
             <span v-if="notice.editSName!==null">
-              <span class="homeinfo-icon snamemargin">
+              <span class="homeinfo-icon sname-margin">
                 <i class="fas fa-user-edit" />
               </span>
               {{ notice.editSName }}
@@ -41,7 +41,7 @@
               <i class="fas fa-clock" />
             </span>
             {{ work.createTime }}
-            <span class="homeinfo-icon snamemargin">
+            <span class="homeinfo-icon sname-margin">
               <i class="fas fa-user" />
             </span>
             {{ work.sname }}
@@ -132,7 +132,7 @@ export default {
     font-size: 100%;
     height: auto;
   }
-  .snamemargin {
+  .sname-margin {
     margin-left: 10px;
   }
   .clearfix:before,
@@ -187,5 +187,6 @@ export default {
     display: flex;
     justify-content:center;
     align-items: center;
+    height: 100%;
   }
 </style>

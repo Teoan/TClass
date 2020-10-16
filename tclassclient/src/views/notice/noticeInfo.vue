@@ -14,7 +14,7 @@
             </span>
             {{ notice.sname }}
             <span v-if="notice.editSName!==null">
-              <span class="homeinfo-icon snamemargin">
+              <span class="homeinfo-icon sname-margin">
                 <i class="fas fa-user-edit" />
               </span>
               {{ notice.editSName }}

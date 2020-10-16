@@ -17,7 +17,14 @@
       />
       <el-button type="primary" style="margin-left:20px" icon="el-icon-search" @click="selectNoticeByName">搜索</el-button>
       <el-button type="primary" style="margin-left:20px" icon="el-icon-edit" @click="addNotice">发布通知</el-button>
-      <el-button v-if="multipleSelection.length > 0" type="danger" style="margin-left:20px" icon="el-icon-delete" @click="deleteNotices">批量删除</el-button>
+      <template v-if="multipleSelection.length > 0">
+        <el-popconfirm
+          title="确定批量删除所选通知吗？"
+          @onConfirm="deleteNotices"
+        >
+          <el-button slot="reference" type="danger" style="margin-left:20px" icon="el-icon-delete">批量删除</el-button>
+        </el-popconfirm>
+      </template>
       <div class="table-div">
         <el-table
           v-loading="tableLoading"
@@ -109,11 +116,11 @@ export default {
     }
   },
   created() {
-    this.getNationsData(1, 10)
+    this.getNationsData(1, 12)
   },
   methods: {
     currentChange(current) {
-      this.getNationsData(current, 10)
+      this.getNationsData(current, 12)
     },
     getNationsData(current, size) {
       if (this.selectNoticeTitle === '') {
@@ -129,7 +136,7 @@ export default {
       })
     },
     selectNoticeByName() {
-      this.getNationsData(1, 10)
+      this.getNationsData(1, 12)
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -157,7 +164,7 @@ export default {
       this.deleteRequest('/admin/notice/', { idList: idList + '' }).then(resp => {
         if (resp.code === 0 && resp.data) {
           this.$message.success('删除成功')
-          this.getNationsData(this.pageInfo.current, 10)
+          this.getNationsData(this.pageInfo.current, 12)
           this.tableLoading = false
         }
       }).catch(error => {
@@ -188,7 +195,7 @@ export default {
 }
 .table-div {
     margin: 20px 0;
-    height: 70%;
+    height: 80%;
 }
 
 </style>
