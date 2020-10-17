@@ -5,13 +5,13 @@
       <span class="homeinfo-icon">
         <i class="fas fa-clock" />
       </span>
-      {{ notice.createTime }}
-      <span class="homeinfo-icon snamemargin">
+      {{ formatDate(notice.createTime) }}
+      <span class="homeinfo-icon sname-margin">
         <i class="fas fa-user" />
       </span>
       {{ notice.sname }}
       <span v-if="notice.editSName!==null">
-        <span class="homeinfo-icon snamemargin">
+        <span class="homeinfo-icon sname-margin">
           <i class="fas fa-user-edit" />
         </span>
         {{ notice.editSName }}
@@ -59,12 +59,23 @@ export default {
     },
     getSubstr(str, start, end) {
       return str.substring(start, end)
+    },
+    formatDate(date) {
+      var d = new Date(date)
+      var month = '' + (d.getMonth() + 1)
+      var day = '' + d.getDate()
+      var year = d.getFullYear()
+
+      if (month.length < 2) month = '0' + month
+      if (day.length < 2) day = '0' + day
+
+      return [year, month, day].join('-')
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
   .read-more-btn {
    display: flex;
    justify-content: flex-end;
@@ -76,7 +87,7 @@ export default {
     font-size: 100%;
     height: auto;
   }
-  .snamemargin {
+  .sname-margin {
     margin-left: 10px;
   }
   .clearfix:before,
@@ -107,6 +118,9 @@ export default {
     height: 100%;
   }
   .viewer p{
+    font-size: 150%;
+  }
+  .viewer /deep/ p{
     font-size: 150%;
   }
 </style>

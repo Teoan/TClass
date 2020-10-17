@@ -22,11 +22,4 @@ public interface WorkService extends IService<Work> {
      */
     IPage getWorksByPage(Long current, Long size, Work work);
 
-    /**
-     * 获取最新发布的作业
-     *
-     * @return 作业
-     */
-
-    Work getCurrentWork();
 }

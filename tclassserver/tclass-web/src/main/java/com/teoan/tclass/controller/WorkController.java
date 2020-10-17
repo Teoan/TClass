@@ -37,7 +37,7 @@ public class WorkController extends ApiController {
      * @return 所有数据
      */
     @GetMapping("/")
-    public R selectAll(@RequestParam(value = "corrent",defaultValue = "1")Long current,@RequestParam(value = "size",defaultValue = "10")Long size,Work work) {
+    public R selectAll(@RequestParam(value = "current",defaultValue = "1")Long current,@RequestParam(value = "size",defaultValue = "10")Long size,Work work) {
         IPage worksByPage = workService.getWorksByPage(current, size, work);
         return success(worksByPage);
     }
@@ -51,12 +51,6 @@ public class WorkController extends ApiController {
     @GetMapping("{id}")
     public R selectOne(@PathVariable Serializable id) {
         return success(this.workService.getById(id));
-    }
-
-
-    @GetMapping("/current")
-    public R getCurrentWork(){
-        return success(workService.getCurrentWork());
     }
 
 }

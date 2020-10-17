@@ -14,6 +14,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.List;
 
@@ -32,20 +33,21 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
     public IPage getWorksByPage(Long current, Long size, Work work) {
         Page<Work> page = new Page<>(current,size);
         QueryWrapper<Work> wrapper = new QueryWrapper<>(work);
+        wrapper.orderByDesc("create_time");
+        //实现标题模糊查询
+        if(work.getName() != null){
+            wrapper.like("name",work.getName());
+            //避免精准查询
+            work.setName(null);
+        }
+        if(work.getCreateTime()!=null){
+            wrapper.like("create_time",new SimpleDateFormat("yyyy-MM-dd").format(work.getCreateTime()));
+            work.setCreateTime(null);
+        }
         IPage<Work> workIPage = getBaseMapper().selectPage(page, wrapper);
         return workIPage;
     }
-
-    @Cacheable
-    @Override
-    public Work getCurrentWork() {
-        QueryWrapper<Work> wrapper = new QueryWrapper<>();
-        wrapper.orderByDesc("create_time");
-        wrapper.last("limit 1");
-        return getBaseMapper().selectOne(wrapper);
-    }
-
-    @CacheEvict
+    @CacheEvict(allEntries = true)
     @Override
     public boolean save(Work entity) {
         return super.save(entity);

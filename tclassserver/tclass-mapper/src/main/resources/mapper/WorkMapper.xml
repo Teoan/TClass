@@ -5,17 +5,21 @@
     <resultMap type="com.teoan.tclass.entity.Work" id="WorkMap">
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="sId" column="s_id" jdbcType="INTEGER"/>
+        <result property="editSId" column="edit_s_id" jdbcType="INTEGER"/>
         <result property="deleted" column="deleted" jdbcType="OTHER"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="remarks" column="remarks" jdbcType="VARCHAR"/>
         <result property="fileNameFormat" column="file_name_format" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="lastTime" column="last_time" jdbcType="TIMESTAMP"/>
         <association property="sName" column="s_id" javaType="String" select="getStudentName"/>
+        <association property="editSName" column="edit_s_id" javaType="String" select="getStudentName"/>
     </resultMap>
 
     <select id="getStudentName" resultType="String" >
-        select name from tclass.student where id = #{s_id}
+        select name from tclass.student where id = #{value}
     </select>
+
 
 </mapper>

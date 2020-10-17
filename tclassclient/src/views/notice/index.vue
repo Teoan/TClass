@@ -1,5 +1,5 @@
 <template>
-  <div class="div-card">
+  <div v-loading.fullscreen.lock="noticeDataLoading" class="div-card">
     <div class="select-div">
       <el-input v-model="selectNoticeTitle" placeholder="请输入通知标题搜索" style="width: 500px;" @keydown.enter.native="selectNoticeByName" />
       <el-date-picker
@@ -13,7 +13,7 @@
       />
       <el-button type="primary" icon="el-icon-search" style="margin-left: 20px;" @click="selectNoticeByName">搜索</el-button>
     </div>
-    <el-row v-for="item in noticeList" :key="item.id" v-loading="" class="el-row-div">
+    <el-row v-for="item in noticeList" :key="item.id" class="el-row-div">
       <el-col :span="24" class="el-col-div">
         <noticeInfo :notice="item" />
       </el-col>
@@ -28,8 +28,8 @@
   </div>
 </template>
 
-<script>
-import noticeInfo from '@/components/Notice/notice'
+<script scoped>
+import noticeInfo from '@/components/Notice/'
 export default {
   components: {
     noticeInfo: noticeInfo
@@ -38,8 +38,9 @@ export default {
     return {
       noticeList: [],
       pageInfo: '',
-      selectNoticeTitle: null,
+      selectNoticeTitle: '',
       selectCreateTime: null,
+      noticeDataLoading: false,
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now()
@@ -70,16 +71,16 @@ export default {
       this.getNationsData(current, 3)
     },
     getNationsData(current, size) {
-      if (this.selectNoticeTitle === '') {
-        this.selectNoticeTitle = null
-      }
+      this.noticeDataLoading = true
       this.getRequest('/notice/', { current: current, size: size, title: this.selectNoticeTitle, createTime: this.selectCreateTime }).then(resp => {
         if (resp.code === 0) {
           this.pageInfo = resp.data
           this.noticeList = this.pageInfo.records
         }
+        this.noticeDataLoading = false
       }).catch(error => {
         console.log(error)
+        this.noticeDataLoading = false
       })
     },
     selectNoticeByName() {

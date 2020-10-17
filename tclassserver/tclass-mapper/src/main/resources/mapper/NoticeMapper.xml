@@ -12,13 +12,10 @@
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <association property="sName" column="s_id" javaType="String" select="getStudentName"/>
-        <association property="editSName" column="edit_s_id" javaType="String" select="getEditStudentName"/>
+        <association property="editSName" column="edit_s_id" javaType="String" select="getStudentName"/>
     </resultMap>
 
     <select id="getStudentName" resultType="String" >
-        select name from tclass.student where id = #{s_id}
-    </select>
-    <select id="getEditStudentName" resultType="String" >
-        select name from tclass.student where id = #{edit_s_id}
+        select name from tclass.student where id = #{value}
     </select>
 </mapper>

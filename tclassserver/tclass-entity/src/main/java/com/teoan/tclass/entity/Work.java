@@ -36,6 +36,18 @@ public class Work extends Model<Work> {
      */
     @TableField(exist = false)
     private String sName;
+
+    /**
+     * 作业编辑人Id
+     */
+    private Integer editSId;
+
+    /**
+     * 通知编辑人名字
+     */
+    @TableField(exist = false)
+    private String editSName;
+
     /**
      * 作业启用状态
      */
@@ -61,6 +73,10 @@ public class Work extends Model<Work> {
      * 最晚提交时间
      */
     private Date lastTime;
+    /**
+     * 备注
+     */
+    private String remarks;
     /**
      * 获取主键值
      *
