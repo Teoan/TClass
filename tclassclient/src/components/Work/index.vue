@@ -38,7 +38,7 @@
             size="normal"
             type="primary"
             round
-            style="width:100%"
+            style="width:60%"
             @click="uploadFile"
           >提交作业<i class="el-icon-upload el-icon--right" /></el-button>
         </div>
@@ -76,8 +76,9 @@ export default {
 
 <style scoped>
   .read-more-btn {
-   margin-bottom: 10px;
    margin-top: 10px;
+   display: flex;
+   justify-content:center;
   }
   .clearfix {
     font-size:15px;

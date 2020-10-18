@@ -149,7 +149,7 @@ export default {
     align-items: center;
   }
   .home-main {
-    background-color: #fafbfc;
+    background-color: #f2f6fc;
     color: #333;
   }
   .home-icon {

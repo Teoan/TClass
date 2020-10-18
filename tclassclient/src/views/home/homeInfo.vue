@@ -81,7 +81,6 @@ export default {
     display: flex;
     justify-content:center;
     align-items: center;
-    height: 100%;
   }
   .work-list-div {
     display: flex;

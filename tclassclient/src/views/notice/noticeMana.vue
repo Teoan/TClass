@@ -39,6 +39,11 @@
             width="55"
           />
           <el-table-column
+            prop="title"
+            label="标题"
+            min-width="100"
+          />
+          <el-table-column
             prop="sname"
             label="发布人"
             min-width="110"
@@ -47,11 +52,6 @@
             prop="editSName"
             label="最近编辑"
             min-width="110"
-          />
-          <el-table-column
-            prop="title"
-            label="标题"
-            min-width="100"
           />
           <el-table-column
             prop="createTime"

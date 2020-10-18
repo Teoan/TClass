@@ -117,7 +117,7 @@
           </el-form-item>
           <div>
             <el-form-item label="家庭住址">
-              <el-input v-model="userData.address" type="textarea" maxlength="50" class="address-textarea" />
+              <el-input v-model="userData.address" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" class="address-textarea" />
             </el-form-item>
           </div>
           <div class="submit-btn">

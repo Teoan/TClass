@@ -112,14 +112,14 @@
             width="55"
           />
           <el-table-column
-            prop="id"
-            label="学号"
-            min-width="110"
-          />
-          <el-table-column
             prop="name"
             label="学生姓名"
             min-width="100"
+          />
+          <el-table-column
+            prop="id"
+            label="学号"
+            min-width="110"
           />
           <el-table-column
             prop="gender"
