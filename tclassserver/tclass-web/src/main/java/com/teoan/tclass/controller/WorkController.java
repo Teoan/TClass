@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.teoan.tclass.entity.Extension;
 import com.teoan.tclass.entity.Work;
+import com.teoan.tclass.service.ExtensionService;
 import com.teoan.tclass.service.WorkService;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +26,17 @@ import java.util.List;
 @RequestMapping("/work")
 public class WorkController extends ApiController {
     /**
-     * 服务对象
+     * 作业服务对象
      */
     @Resource
     private WorkService workService;
+
+    /**
+     * 拓展名服务对象
+     */
+    @Resource
+    private ExtensionService extensionService;
+
 
     /**
      * 分页查询所有数据
@@ -53,4 +62,14 @@ public class WorkController extends ApiController {
         return success(this.workService.getById(id));
     }
 
+    /**
+     * 获取拓展名列表
+     *
+     * @return 拓展名列表
+     */
+    @GetMapping("/extensions")
+    public R getExtensionList(){
+        List<Extension> extensionList = extensionService.list();
+        return success(extensionList);
+    }
 }

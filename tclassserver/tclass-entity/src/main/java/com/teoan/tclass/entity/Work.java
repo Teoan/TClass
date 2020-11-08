@@ -1,8 +1,6 @@
 package com.teoan.tclass.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +24,7 @@ import java.util.Date;
 public class Work extends Model<Work> {
 
 
+    @TableId(type = IdType.AUTO)
     private Integer id;
     /**
      * 发布者
@@ -43,7 +42,7 @@ public class Work extends Model<Work> {
     private Integer editSId;
 
     /**
-     * 通知编辑人名字
+     * 作业编辑人名字
      */
     @TableField(exist = false)
     private String editSName;
@@ -58,16 +57,18 @@ public class Work extends Model<Work> {
      */
     private String name;
     /**
-     * 文件名规范
+     * 文件名规则枚举值
      */
-    private String fileNameFormat;
+    private Integer fileNameFormatEnum;
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.DEFAULT)
     private Date createTime;
     /**
      * 更新时间
      */
+    @TableField(fill = FieldFill.DEFAULT)
     private Date updateTime;
     /**
      * 最晚提交时间
@@ -77,6 +78,18 @@ public class Work extends Model<Work> {
      * 备注
      */
     private String remarks;
+
+    /**
+     * 文件拓展名id
+     */
+    private Integer extensionId;
+
+    /**
+     * 文件拓展名
+     */
+    @TableField(exist = false)
+    private String extensionName;
+
     /**
      * 获取主键值
      *

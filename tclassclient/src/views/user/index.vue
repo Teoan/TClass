@@ -99,87 +99,89 @@
         <el-button v-if="multipleSelection.length>0" type="primary" style="margin-right:20px" icon="el-icon-s-data" @click="dialogBatchVisible = true">批量管理</el-button>
       </div>
       <div class="table-div">
-        <el-table
-          v-loading="tableLoading"
-          :data="userDataList"
-          style="width: 100%"
-          height="100%"
-          border
-          @selection-change="handleSelectionChange"
-        >
-          <el-table-column
-            type="selection"
-            width="55"
-          />
-          <el-table-column
-            prop="name"
-            label="学生姓名"
-            min-width="100"
-          />
-          <el-table-column
-            prop="id"
-            label="学号"
-            min-width="110"
-          />
-          <el-table-column
-            prop="gender"
-            label="性别"
-            min-width="50"
-          />
-          <el-table-column
-            prop="nation.name"
-            label="民族"
-            min-width="80"
-          />
-          <el-table-column
-            prop="nativePlace"
-            label="籍贯"
-            :formatter="formatNativePlace"
-            min-width="100"
-          />
-          <el-table-column
-            prop="position.name"
-            label="班级职务"
-            min-width="80"
-          />
-          <el-table-column
-            prop="politicsstatus.name"
-            label="政治面貌"
-            min-width="100"
-          />
-          <el-table-column
-            prop="email"
-            label="邮箱"
-            min-width="100"
-          />
-          <el-table-column
-            prop="phone"
-            label="手机号码"
-            min-width="100"
-          />
-          <el-table-column
-            prop="address"
-            label="住址"
-            min-width="100"
-          />
-          <el-table-column
-            prop="loginTime"
-            label="最近登录时间"
-            min-width="120"
-          />
-          <el-table-column
-            fixed="right"
-            label="操作"
-            width="180"
+        <el-tooltip content="选中可进行批量删除" placement="top-start">
+          <el-table
+            v-loading="tableLoading"
+            :data="userDataList"
+            style="width: 100%"
+            height="100%"
+            border
+            @selection-change="handleSelectionChange"
           >
-            <template slot-scope="scope">
-              <div class="cell-contain">
-                <el-button size="small" type="primary" @click="handleEdit(scope.row)">编辑</el-button>
-                <el-button size="small" type="warning" @click="handleResetPass(scope.row)">重置密码</el-button>
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
+            <el-table-column
+              type="selection"
+              width="55"
+            />
+            <el-table-column
+              prop="name"
+              label="学生姓名"
+              min-width="100"
+            />
+            <el-table-column
+              prop="id"
+              label="学号"
+              min-width="110"
+            />
+            <el-table-column
+              prop="gender"
+              label="性别"
+              min-width="50"
+            />
+            <el-table-column
+              prop="nation.name"
+              label="民族"
+              min-width="80"
+            />
+            <el-table-column
+              prop="nativePlace"
+              label="籍贯"
+              :formatter="formatNativePlace"
+              min-width="100"
+            />
+            <el-table-column
+              prop="position.name"
+              label="班级职务"
+              min-width="80"
+            />
+            <el-table-column
+              prop="politicsstatus.name"
+              label="政治面貌"
+              min-width="100"
+            />
+            <el-table-column
+              prop="email"
+              label="邮箱"
+              min-width="100"
+            />
+            <el-table-column
+              prop="phone"
+              label="手机号码"
+              min-width="100"
+            />
+            <el-table-column
+              prop="address"
+              label="住址"
+              min-width="100"
+            />
+            <el-table-column
+              prop="loginTime"
+              label="最近登录时间"
+              min-width="120"
+            />
+            <el-table-column
+              fixed="right"
+              label="操作"
+              width="180"
+            >
+              <template slot-scope="scope">
+                <div class="cell-contain">
+                  <el-button size="small" type="primary" @click="handleEdit(scope.row)">编辑</el-button>
+                  <el-button size="small" type="warning" @click="handleResetPass(scope.row)">重置密码</el-button>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tooltip>
       </div>
       <el-pagination
         background

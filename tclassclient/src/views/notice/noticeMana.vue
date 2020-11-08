@@ -116,13 +116,13 @@ export default {
     }
   },
   created() {
-    this.getNationsData(1, 12)
+    this.refreshTableData(1, 12)
   },
   methods: {
     currentChange(current) {
-      this.getNationsData(current, 12)
+      this.refreshTableData(current, 12)
     },
-    getNationsData(current, size) {
+    getNoticesData(current, size) {
       if (this.selectNoticeTitle === '') {
         this.selectNoticeTitle = null
       }
@@ -130,13 +130,15 @@ export default {
         if (resp.code === 0) {
           this.pageInfo = resp.data
           this.noticeDataList = this.pageInfo.records
+          this.tableLoading = false
         }
       }).catch(error => {
+        this.tableLoading = false
         console.log(error)
       })
     },
     selectNoticeByName() {
-      this.getNationsData(1, 12)
+      this.refreshTableData(1, 12)
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -164,7 +166,7 @@ export default {
       this.deleteRequest('/admin/notice/', { idList: idList + '' }).then(resp => {
         if (resp.code === 0 && resp.data) {
           this.$message.success('删除成功')
-          this.getNationsData(this.pageInfo.current, 12)
+          this.getNoticesData(this.pageInfo.current, 12)
           this.tableLoading = false
         }
       }).catch(error => {
@@ -176,9 +178,12 @@ export default {
       this.$router.push({
         path: '/noticeedit'
       })
+    },
+    refreshTableData(current, size) {
+      this.tableLoading = true
+      this.getNoticesData(current, size)
     }
   }
-
 }
 </script>
 

@@ -28,19 +28,17 @@ import java.util.List;
 @CacheConfig(cacheNames ="notice_cache")
 public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> implements NoticeService {
 
+    @Cacheable
     @Override
     public IPage selectNoticesByPage(Long current, Long size, Notice notice) {
         Page<Notice> noticePage = new Page(current,size);
-        QueryWrapper<Notice> wrapper = new QueryWrapper<>(notice);
+        QueryWrapper<Notice> wrapper = new QueryWrapper<>();
         //实现标题模糊查询
         if(notice.getTitle()!=null){
          wrapper.like("title",notice.getTitle());
-         //避免精准查询
-         notice.setTitle(null);
         }
         if(notice.getCreateTime()!=null){
          wrapper.like("create_time",new SimpleDateFormat("yyyy-MM-dd").format(notice.getCreateTime()));
-         notice.setCreateTime(null);
         }
         wrapper.orderByDesc("create_time");
         return getBaseMapper().selectPage(noticePage, wrapper);

@@ -32,17 +32,14 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
     @Override
     public IPage getWorksByPage(Long current, Long size, Work work) {
         Page<Work> page = new Page<>(current,size);
-        QueryWrapper<Work> wrapper = new QueryWrapper<>(work);
+        QueryWrapper<Work> wrapper = new QueryWrapper<>();
         wrapper.orderByDesc("create_time");
         //实现标题模糊查询
         if(work.getName() != null){
             wrapper.like("name",work.getName());
-            //避免精准查询
-            work.setName(null);
         }
         if(work.getCreateTime()!=null){
             wrapper.like("create_time",new SimpleDateFormat("yyyy-MM-dd").format(work.getCreateTime()));
-            work.setCreateTime(null);
         }
         IPage<Work> workIPage = getBaseMapper().selectPage(page, wrapper);
         return workIPage;
