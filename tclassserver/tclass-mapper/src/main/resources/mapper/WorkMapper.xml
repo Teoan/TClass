@@ -15,7 +15,7 @@
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="lastTime" column="last_time" jdbcType="TIMESTAMP"/>
         <association property="sName" column="s_id" javaType="String" select="getStudentName"/>
-        <association property="editSName" column="edit_s_id" javaType="String" select="getStudentName"/>
+        <association property="editorName" column="edit_s_id" javaType="String" select="getStudentName"/>
         <association property="extensionName" column="extension_id" javaType="String" select="getExtensionName"/>
     </resultMap>
 

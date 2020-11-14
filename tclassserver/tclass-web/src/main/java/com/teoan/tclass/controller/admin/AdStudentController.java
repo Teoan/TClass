@@ -18,6 +18,7 @@ import javax.annotation.Resource;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -99,7 +100,7 @@ public class AdStudentController extends ApiController {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String fileName = "学生数据表("+simpleDateFormat.format(new Date())+").xlsx";
         try {
-            headers.setContentDispositionFormData("attachment", new String(fileName.getBytes("UTF-8"),"ISO-8859-1"));
+            headers.setContentDispositionFormData("attachment", URLEncoder.encode(fileName,"UTF-8"));
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             if(idList != null && !idList.isEmpty()){
                 workbook = POIStudentUtils.students2Excel(studentService.getStudentByIds(idList));

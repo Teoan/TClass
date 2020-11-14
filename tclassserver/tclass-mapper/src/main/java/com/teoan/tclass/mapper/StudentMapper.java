@@ -17,7 +17,6 @@ import java.util.List;
 public interface StudentMapper extends BaseMapper<Student> {
 
     int updateDepartment(@Param("stuDepRefList") List<StuDepRef> stuDepRefList);
-//    int updateDepartment(List<StuDepRef> stuDepRefList);
 
 
     int deleteDepartmentBySid(Integer sId);

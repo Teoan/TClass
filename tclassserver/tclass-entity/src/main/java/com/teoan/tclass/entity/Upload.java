@@ -23,8 +23,10 @@ public class Upload extends Model<Upload> {
     private Integer wId;
     //文件类型
     private String fileType;
+    //文件名
+    private String fileName;
     //文件大小
-    private Double size;
+    private long size;
     //上传时间
     private Date createTime;
     //修改时间

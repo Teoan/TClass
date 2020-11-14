@@ -7,11 +7,11 @@
           <i class="fas fa-user" />
         </span>
         {{ work.sname }}
-        <span v-if="work.editSName!==null">
+        <span v-if="work.editorName!==null">
           <span class="homeinfo-icon sname-margin">
             <i class="fas fa-user-edit" />
           </span>
-          {{ work.editSName }}
+          {{ work.editorName }}
         </span>
       </div>
       <div class="card-body">

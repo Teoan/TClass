@@ -45,7 +45,7 @@ public class Work extends Model<Work> {
      * 作业编辑人名字
      */
     @TableField(exist = false)
-    private String editSName;
+    private String editorName;
 
     /**
      * 作业启用状态
