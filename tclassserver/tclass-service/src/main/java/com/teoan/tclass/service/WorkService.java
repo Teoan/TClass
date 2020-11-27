@@ -22,4 +22,11 @@ public interface WorkService extends IService<Work> {
      */
     IPage getWorksByPage(Long current, Long size, Work work);
 
+    /**
+     * 将作业扩展名id设置为默认
+     * @param EId 拓展名id
+     * @return 是否成功
+     */
+    boolean setDefaultWorkExtensionByEId(Integer EId);
+
 }

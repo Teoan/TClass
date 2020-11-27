@@ -35,22 +35,16 @@ public class WorkController extends ApiController {
      */
     @Resource
     private WorkService workService;
-
-
     /**
      * 上传相关服务对象
      */
     @Resource
     private UploadService uploadService;
-
-
     /**
      * 拓展名服务对象
      */
     @Resource
     private ExtensionService extensionService;
-
-
     /**
      * 分页查询所有数据
      *
@@ -94,7 +88,7 @@ public class WorkController extends ApiController {
     @PostMapping("/{wId}")
     public R uploadWorkFile(@PathVariable("wId")Integer wId, @RequestParam("file")MultipartFile file,@RequestParam("sId")Integer sId){
         uploadService.uploadFile(wId,sId,file);
-        return R.ok("上传成功");
+        return success("").setMsg("上传成功！");
     }
 
 

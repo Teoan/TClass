@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import { setLoginInfo } from '@/utils/auth'
+import { getLoginInfo } from '@/utils/auth'
 
 export default {
   name: 'Login',
@@ -64,8 +66,8 @@ export default {
       loading: false,
       vcUrl: '/verifyCode.jpg?comut=' + Math.random(),
       loginForm: {
-        username: '1724111400',
-        password: '123456',
+        username: '',
+        password: '',
         code: '',
         remember: true
       },
@@ -76,6 +78,10 @@ export default {
       }
     }
   },
+  created() {
+    this.loginForm = getLoginInfo()
+    this.loginForm.code = ''
+  },
   methods: {
     updateVerifyCode() {
       this.vcUrl = '/verifyCode.jpg?count=' + Math.random()
@@ -84,6 +90,7 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true
+          setLoginInfo(this.loginForm, this.loginForm.remember)
           this.loginPostRequest('/login', this.loginForm).then(resp => {
             this.loading = false
             if (resp.code === 0) {

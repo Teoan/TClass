@@ -7,6 +7,10 @@ import com.teoan.tclass.exception.MarkDirException;
 import com.teoan.tclass.service.FileService;
 import com.teoan.tclass.utils.ZipUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +33,7 @@ public class FileServiceImpl implements FileService {
     @Value("${file.upload.url}")
     private String path;
     @Override
+    @CacheEvict(cacheNames = "zipFile_cache",key = "#wId")
     public void saveFile(MultipartFile file, String fileName,Integer wId) {
         File f = new File(path);
         if(f.exists()){
@@ -43,26 +48,36 @@ public class FileServiceImpl implements FileService {
                     }
                 }
                 File saveFile = new File(workDir+File.separator+fileName);
-                file.transferTo(saveFile);
-                if(!saveFile.exists()){
-                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"文件上传失败！");
+                if(saveFile.exists()){
+                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"文件名已存在，请重命名!");
+                }else {
+                    file.transferTo(saveFile);
+                    if(!saveFile.exists()){
+                        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"文件上传失败！");
+                    }
                 }
             }catch (Exception e){
                 e.printStackTrace();
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"文件操作发生错误！",e);
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
             }
         }else {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"存储目录不存在，请联系管理员");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"存储目录不存在，请联系管理员!");
         }
     }
 
     @Override
+
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "getFile_cache",key = "#wId+#fileName"),
+            @CacheEvict(cacheNames = "zipFile_cache",key = "#wId")
+    })
     public boolean deleteFile(String fileName, Integer wId) {
       File deleteFile =  new File(path+File.separator+wId+File.separator+fileName);
       return deleteFile.delete();
     }
 
     @Override
+    @Cacheable( cacheNames = "zipFile_cache",key = "#wId")
     public File getZipByWId(Integer wId) {
 
         File workDir = new File(path+File.separator+wId);
@@ -88,6 +103,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+    @Cacheable(cacheNames = "getFile_cache",key = "#wId+#fileName")
     public File getFile(Integer wId, String fileName) {
         File file = new File(path+File.separator+wId+File.separator+fileName);
         if (file.exists()){
@@ -95,5 +111,21 @@ public class FileServiceImpl implements FileService {
         }else{
             throw new FileNotExistsException(HttpStatus.INTERNAL_SERVER_ERROR,"文件获取失败");
         }
+    }
+
+
+    @Override
+    public boolean deleteFilesByWId(Integer wId) {
+        File deleteDir = new File(path+File.separator+wId);
+        if(deleteDir.exists()){
+            File[] deleteFiles = deleteDir.listFiles();
+            for (File file : deleteFiles) {
+                if(!file.delete()){
+                    return false;
+                }
+            }
+            return deleteDir.delete();
+        }
+        return true;
     }
 }

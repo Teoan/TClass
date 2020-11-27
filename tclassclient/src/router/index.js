@@ -100,6 +100,12 @@ const routes = [
       name: 'workManae',
       component: () => import('@/views/work/workMana'),
       meta: { title: '作业管理', roles: ['ROLE_admin'] }
+    }, {
+      path: '/workuploadinfo',
+      name: 'workUploadInfo',
+      component: () => import('@/views/work/workUploadInfo'),
+      meta: { title: '作业提交情况', roles: ['ROLE_admin'] },
+      hidden: true
     }]
   }
 ]

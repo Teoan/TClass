@@ -45,27 +45,13 @@ public class StudentController extends ApiController {
     private PositionService positionService;
 
 
-
-    /**
-     * 分页查询所有数据
-     *
-     * @param current 分页对象
-     * @param size 查询数据量
-     * @return 所有数据
-     */
-    @GetMapping("/")
-    public R getStudentByPage(@RequestParam(defaultValue = "1")Long current,@RequestParam(defaultValue = "10")Long size,Student student) {
-
-        return success(studentService.getStudentsByPage(current,size,student));
-    }
-
     /**
      * 通过主键查询单条数据
      *
      * @param id 主键
      * @return 单条数据
      */
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public R selectOne(@PathVariable Serializable id) {
         return success(this.studentService.getById(id));
     }
@@ -89,8 +75,6 @@ public class StudentController extends ApiController {
 
     /**
      * 获取民族列表
-     *
-     * @param
      * @return 结果
      */
     @GetMapping("/nations")
@@ -100,8 +84,6 @@ public class StudentController extends ApiController {
     }
     /**
      * 获取部门列表
-     *
-     * @param
      * @return 结果
      */
     @GetMapping("/departments")
@@ -111,19 +93,15 @@ public class StudentController extends ApiController {
     }
     /**
      * 获取政治面貌列表
-     *
-     * @param
      * @return 结果
      */
-    @GetMapping("/politicsstatuses")
-    public R getPoliticsstatuses(){
-        List<Politicsstatus> politicsstatusList = politicsstatusService.list();
-        return success(politicsstatusList);
+    @GetMapping("/political")
+    public R getPoliticsStatusList(){
+        List<Politicsstatus> politicsStatusList = politicsstatusService.list();
+        return success(politicsStatusList);
     }
     /**
      * 获取班级职位列表
-     *
-     * @param
      * @return 结果
      */
     @GetMapping("/positions")

@@ -5,7 +5,7 @@
       shadow="hover"
       :body-style="{height:'100%'}"
     >
-      <el-input v-model="selectWorkName" placeholder="请输入作业名字搜索" style="width: 500px;" @keydown.enter.native="selectWorkByName" />
+      <el-input v-model="selectWorkName" placeholder="请输入作业名字搜索" style="width: 500px;margin-top:20px" @keydown.enter.native="selectWorkByName" />
       <el-date-picker
         v-model="selectCreateTime"
         align="right"
@@ -13,10 +13,10 @@
         value-format="yyyy-MM-dd HH:mm:ss"
         placeholder="选择发布日期"
         :picker-options="pickerOptions"
-        style="margin-left: 20px;"
+        style="margin-left:20px;margin-top:20px"
       />
-      <el-button type="primary" style="margin-left:20px" icon="el-icon-search" @click="selectWorkByName">搜索</el-button>
-      <el-button type="primary" style="margin-left:20px" icon="el-icon-edit" @click="showDialog('发布')">发布作业</el-button>
+      <el-button type="primary" style="margin-left:20px;margin-top:20px" icon="el-icon-search" @click="selectWorkByName">搜索</el-button>
+      <el-button type="primary" style="margin-left:20px;margin-top:20px" icon="el-icon-edit" @click="showDialog('发布')">发布作业</el-button>
       <el-dialog :title="dialogTitle" :visible.sync="dialogSelectVisible" width="30%" @close="initData">
         <el-form ref="workDataForm" v-loading="workFormLoading" :rules="rules" :model="workData" label-width="auto" :status-icon="true" label-position="left">
           <el-form-item label="作业名称" prop="name">
@@ -37,11 +37,11 @@
               </el-select>
             </el-tooltip>
           </el-form-item>
-          <el-form-item label="文件拓展名" prop="extensionId">
-            <el-tooltip content="将对用户上传的文件进行拓展名验证" placement="top">
+          <el-form-item label="文件扩展名" prop="extensionId">
+            <el-tooltip content="将对用户上传的文件进行扩展名验证" placement="top">
               <el-select
                 v-model="workData.extensionId"
-                placeholder="请选择文件拓展名"
+                placeholder="请选择文件扩展名"
               >
                 <el-option
                   v-for="item in extensions"
@@ -66,9 +66,50 @@
           <el-button v-else type="primary" @click="doAddWork">发布</el-button>
         </span>
       </el-dialog>
+      <el-button type="primary" style="margin-left:20px;margin-top:20px" icon="el-icon-edit" @click="dialogExtensionVisible = true">编辑扩展名列表</el-button>
+      <el-dialog title="编辑扩展名列表" :visible.sync="dialogExtensionVisible" width="18%" @close="whenDialogExtensionClose('extensionValidateForm')">
+        <el-form ref="extensionValidateForm" label-width="auto" :model="extensionValidateForm" :inline="true" :status-icon="true">
+          <el-form-item
+            prop="extension"
+            label="扩展名"
+            :rules="[
+              { required: true, message: '请输入扩展名', trigger: 'blur' },
+              { pattern: /^\.[0-9a-zA-Z]+$/, message: '请输入正确的扩展名', trigger: ['blur', 'change'] }
+            ]"
+          >
+            <el-input v-model="extensionValidateForm.extension" size="small" />
+          </el-form-item>
+          <el-form-item>
+            <el-button size="small" type="primary" @click="addExtension">添加</el-button>
+          </el-form-item>
+        </el-form>
+        <el-table
+          v-loading="extensionTableLoading"
+          :data="extensions"
+          style="width: 100%;"
+          max-height="200px"
+          :row-class-name="tableRowClassName"
+        >
+          <el-table-column
+            prop="name"
+            label="扩展名"
+            width="200"
+          />
+          <el-table-column label="操作" min-width="80" fixed="right">
+            <template slot-scope="scope">
+              <div class="cell-contain">
+                <el-button size="small" type="danger" :disabled="scope.row.id===1" @click="deleteExtension(scope.row)">删除</el-button>
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="dialogExtensionVisible = false">完成编辑</el-button>
+        </span>
+      </el-dialog>
       <template v-if="multipleSelection.length > 0">
         <el-popconfirm
-          title="确定批量删除所选作业吗？"
+          title="删除作业会将已提交的文件一并删除"
           @onConfirm="deleteWorks"
         >
           <el-button slot="reference" type="danger" style="margin-left:20px" icon="el-icon-delete">批量删除</el-button>
@@ -104,8 +145,8 @@
             />
             <el-table-column
               prop="extensionName"
-              label="文件拓展名"
-              min-width="40"
+              label="文件扩展名"
+              min-width="60"
             />
             <el-table-column
               prop="lastTime"
@@ -135,8 +176,12 @@
             <el-table-column label="操作" fixed="right" min-width="110">
               <template slot-scope="scope">
                 <div class="cell-contain">
-                  <el-button size="small" type="primary" @click="handleEdit(scope.row)">编辑</el-button>
-                  <el-button size="small" type="info" @click="handleUpload(scope.row)">查看提交情况</el-button>
+                  <template class="handle-div">
+                    <el-button size="small" type="primary" @click="handleEdit(scope.row)">编辑</el-button>
+                  </template>
+                  <el-badge :value="scope.row.uploadFileCount" class="handle-div">
+                    <el-button size="small" type="info" :disabled="scope.row.uploadFileCount===0" @click="handleUpload(scope.row)">查看提交情况</el-button>
+                  </el-badge>
                 </div>
               </template>
             </el-table-column>
@@ -166,8 +211,14 @@ export default {
       selectWorkName: null,
       selectCreateTime: null,
       dialogSelectVisible: false,
+      dialogExtensionVisible: false,
       dialogTitle: '',
       workFormLoading: false,
+      extensionTableLoading: false,
+      isExtensionsChange: false,
+      extensionValidateForm: {
+        extension: ''
+      },
       extensions: [],
       isEditWork: false,
       fileNameFormats: [{ enum: 1, format: '无' },
@@ -222,12 +273,12 @@ export default {
     }
   },
   created() {
-    this.getWorksData(1, 12)
+    this.getWorksData(1, 10)
     this.getExtension()
   },
   methods: {
     currentChange(current) {
-      this.getWorksData(current, 12)
+      this.getWorksData(current, 10)
     },
     getWorksData(current, size) {
       if (this.selectWorkName === '') {
@@ -245,7 +296,7 @@ export default {
       })
     },
     selectWorkByName() {
-      this.refreshTableData(1, 12)
+      this.refreshTableData(1, 10)
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -280,14 +331,14 @@ export default {
     },
     deleteWorksidList(idList) {
       this.tableLoading = true
-      this.deleteRequest('/admin/work/', { idList: idList + '' }).then(resp => {
+      this.deleteRequest('/admin/work/', { idList: idList }).then(resp => {
         if (resp.code === 0 && resp.data) {
           this.$message.success('删除成功!')
-          this.refreshTableData(this.pageInfo.current, 12)
+          this.refreshTableData(this.pageInfo.current, 10)
         }
       }).catch(error => {
         this.tableLoading = false
-        this.$message.error('删除失败!')
+        this.$message.error(error.msg)
         console.log(error)
       })
     },
@@ -301,7 +352,7 @@ export default {
               this.$message.success('发布成功!')
               this.workFormLoading = false
               this.dialogSelectVisible = false
-              this.refreshTableData(1, 12)
+              this.refreshTableData(1, 10)
             }
           }).catch(error => {
             this.$message.success('发布失败!')
@@ -342,7 +393,7 @@ export default {
             if (resp.code === 0) {
               this.$message.success('编辑成功!')
               this.dialogSelectVisible = false
-              this.refreshTableData(this.pageInfo.current, 12)
+              this.refreshTableData(this.pageInfo.current, 10)
             }
           }).catch(error => {
             this.$message.error('编辑失败!')
@@ -365,7 +416,64 @@ export default {
       return this.fileNameFormats[row.fileNameFormatEnum - 1].format
     },
     handleUpload(row) {
-
+      this.$router.push({
+        path: '/workuploadinfo'
+      })
+      // 将work对象保存到本地
+      localStorage.setItem('work', JSON.stringify(row))
+    },
+    deleteExtension(extension) {
+      this.extensionTableLoading = true
+      this.deleteRequest('/admin/work/extensions', { eId: extension.id }).then(resp => {
+        if (resp.code === 0 && resp.data === true) {
+          this.$message.success('删除成功！')
+          this.getExtension()
+          this.isExtensionsChange = true
+        } else {
+          this.$message.error('删除失败！')
+        }
+        this.extensionTableLoading = false
+      }).catch(error => {
+        this.$message.error('删除失败！')
+        this.extensionTableLoading = false
+        console.log(error)
+      })
+    },
+    addExtension() {
+      this.$refs['extensionValidateForm'].validate((valid) => {
+        if (valid) {
+          this.extensionTableLoading = true
+          this.postRequest('/admin/work/extensions', { name: this.extensionValidateForm.extension }).then(resp => {
+            if (resp.code === 0 && resp.data === true) {
+              this.$message.success('添加成功！')
+              this.getExtension()
+              this.isExtensionsChange = true
+            } else {
+              this.$message.error('添加失败！')
+            }
+            this.extensionTableLoading = false
+          }).catch(error => {
+            this.extensionTableLoading = false
+            console.log(error)
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    whenDialogExtensionClose(formName) {
+      this.$refs[formName].resetFields()
+      if (this.isExtensionsChange) {
+        this.refreshTableData(1, 10)
+        this.isExtensionsChange = false
+      }
+    },
+    tableRowClassName(row, index) {
+      if (row.id === 1) {
+        return 'hidden-row'
+      }
+      return ''
     }
   }
 
@@ -387,5 +495,9 @@ export default {
     margin: 20px 0;
     height: 80%;
 }
-
+.handle-div {
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
 </style>

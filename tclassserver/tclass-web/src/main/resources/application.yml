@@ -5,8 +5,8 @@ spring:
     password: 277077411
     url: jdbc:mysql://localhost:3306/tclass?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
   redis:
-#    host: localhost
-    host: 172.31.29.242
+    host: localhost
+#    host: 172.20.228.240
     database: 0
     port: 6379
     password: 277077411
@@ -17,8 +17,8 @@ spring:
   servlet:
     multipart:
       max-request-size: 30MB
-      max-file-size: 10MB
-  #   将前端传来的String解析为Data
+      max-file-size: 50MB
+  #将前端传来的String解析为Data
   mvc:
     format:
       date: yyyy-MM-dd HH:mm:ss
@@ -26,10 +26,11 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
-  port: 7777
+  port: 8081
   error:
     include-message: always
   #设置文件上传目录
 file:
   upload:
-    url: F:/Linux/git_clone/TClass/tclassserver/tclass-web/src/main/resources/static/upload
+#    url: F:/Linux/git_clone/TClass/tclassserver/tclass-web/src/main/resources/static/upload
+    url: /home/teoan/upload

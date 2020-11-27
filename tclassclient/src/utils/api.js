@@ -4,6 +4,7 @@ import router from '../router'
 import qs from 'qs'
 
 axios.interceptors.response.use(success => {
+  // console.log('请求成功:' + qs.stringify(success))
   if (success.status && success.status === 200 && success.data.status === 500) {
     Message.error({ message: success.data.msg })
     return
@@ -13,6 +14,7 @@ axios.interceptors.response.use(success => {
   }
   return success.data
 }, error => {
+  // console.log('请求错误：' + qs.stringify(error))
   if (error.response.status === 504 || error.response.status === 404) {
     Message.error({ message: '找不到服务器' })
   } else if (error.response.status === 403) {
@@ -21,8 +23,8 @@ axios.interceptors.response.use(success => {
     Message.error({ message: error.response.data.msg ? error.response.data.msg : '尚未登录，请登录' })
     router.replace('/')
   } else {
-    if (error.response.data.msg) {
-      Message.error({ message: error.response.data.msg })
+    if (error.response.data.message) {
+      Message.error({ message: error.response.data.message })
     } else {
       Message.error({ message: '未知错误!' })
     }
@@ -81,7 +83,17 @@ export const deleteRequest = (url, params) => {
   return axios({
     method: 'delete',
     url: `${base}${url}`,
-    params: params
+    data: params,
+    transformRequest: [function(data) {
+      let ret = ''
+      for (const i in data) {
+        ret += encodeURIComponent(i) + '=' + encodeURIComponent(data[i]) + '&'
+      }
+      return ret
+    }],
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
   })
 }
 export const getDataRequest = (url, params) => {

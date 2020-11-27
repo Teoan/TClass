@@ -33,9 +33,6 @@ import java.util.List;
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService, UserDetailsService {
 
 
-
-
-
     @Override
     @Cacheable(unless = "#result.records.size()==0")
     public IPage getStudentsByPage(Long current, Long size, Student student) {
@@ -54,6 +51,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
 
     @Override
+    @Cacheable
     public List<Student> getStudentByIds(List<Long> idList){
         QueryWrapper<Student> wrapper = new QueryWrapper<>();
         wrapper.in("id",idList);

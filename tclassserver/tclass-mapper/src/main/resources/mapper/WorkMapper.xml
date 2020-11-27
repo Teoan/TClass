@@ -17,6 +17,7 @@
         <association property="sName" column="s_id" javaType="String" select="getStudentName"/>
         <association property="editorName" column="edit_s_id" javaType="String" select="getStudentName"/>
         <association property="extensionName" column="extension_id" javaType="String" select="getExtensionName"/>
+        <association property="uploadFileCount" column="id" javaType="Integer" select="getUploadFileCount"/>
     </resultMap>
 
     <select id="getStudentName" resultType="String" >
@@ -25,6 +26,10 @@
 
     <select id="getExtensionName" resultType="String" >
         select name from tclass.extension where id = #{value}
+    </select>
+
+    <select id="getUploadFileCount" resultType="Integer">
+        select count(*) from tclass.upload where w_id = #{value}
     </select>
 
 </mapper>

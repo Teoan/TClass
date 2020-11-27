@@ -238,7 +238,7 @@ export default {
   methods: {
     getData(current, size) {
       this.tableLoading = true
-      this.getRequest('/student/', { current: current, size: size }).then(resp => {
+      this.getRequest('/admin/student/', { current: current, size: size }).then(resp => {
         if (resp.code === 0) {
           this.pageInfo = resp.data
           this.userDataList = this.pageInfo.records
@@ -310,7 +310,7 @@ export default {
     },
     deleteStudentByidList(idList) {
       this.tableLoading = true
-      this.deleteRequest('/admin/student/', { idList: idList + '' }).then(resp => {
+      this.deleteRequest('/admin/student/', { idList: idList }).then(resp => {
         if (resp.code === 0 && resp.data) {
           this.$message.success('删除成功')
           this.getData(this.pageInfo.current, 10)

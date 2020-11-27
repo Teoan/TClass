@@ -30,7 +30,7 @@ public interface StudentService extends IService<Student> {
     Boolean addStudent(Student student);
 
     /**
-     * 通过id列表获取学生
+     * 通过id列表获取学生对象
      *
      */
     List<Student> getStudentByIds(List<Long> idList);

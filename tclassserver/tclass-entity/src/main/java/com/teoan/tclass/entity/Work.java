@@ -91,6 +91,12 @@ public class Work extends Model<Work> {
     private String extensionName;
 
     /**
+     * 已提交文件数量
+     */
+    @TableField(exist = false)
+    private Integer uploadFileCount;
+
+    /**
      * 获取主键值
      *
      * @return 主键值

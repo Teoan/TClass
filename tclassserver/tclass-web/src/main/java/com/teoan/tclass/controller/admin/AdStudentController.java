@@ -68,6 +68,20 @@ public class AdStudentController extends ApiController {
     }
 
     /**
+     * 分页查询所有数据
+     *
+     * @param current 分页对象
+     * @param size 查询数据量
+     * @return 所有数据
+     */
+    @GetMapping("/")
+    public R getStudentByPage(@RequestParam(defaultValue = "1")Long current,@RequestParam(defaultValue = "10")Long size,Student student) {
+
+        return success(studentService.getStudentsByPage(current,size,student));
+    }
+
+
+    /**
      * 修改数据
      *
      * @param student 实体对象

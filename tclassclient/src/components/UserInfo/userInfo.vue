@@ -82,7 +82,7 @@
           <el-form-item label="政治面貌">
             <el-select v-model="userData.politicId" placeholder="请选择政治面貌" filterable>
               <el-option
-                v-for="item in politicsstatuses"
+                v-for="item in politicsStatusList"
                 :key="item.id"
                 :label="item.name"
                 :value="item.id"
@@ -207,7 +207,7 @@ export default {
       userDepartmentList: [],
       nations: [],
       departments: [],
-      politicsstatuses: [],
+      politicsStatusList: [],
       positions: [],
       roles: [],
       pass: {
@@ -227,7 +227,7 @@ export default {
     this.initUserData()
     this.getNations()
     this.getDepartments()
-    this.getPoliticsstatuses()
+    this.getpoliticsStatusList()
     this.getPositions()
     this.getRoles()
   },
@@ -246,10 +246,10 @@ export default {
         }
       })
     },
-    getPoliticsstatuses() {
-      this.getRequest('/student/politicsstatuses').then(resp => {
+    getpoliticsStatusList() {
+      this.getRequest('/student/political').then(resp => {
         if (resp.code === 0) {
-          this.politicsstatuses = resp.data
+          this.politicsStatusList = resp.data
         }
       })
     },
@@ -284,29 +284,29 @@ export default {
     },
     initUserData() {
       if (this.isEditOrderUserDate) {
-        this.getRequest('/student/', { id: this.$route.query.id }).then(resp => {
+        this.getRequest('/student/' + this.$route.query.id).then(resp => {
           if (resp.code === 0) {
             // 初始化需要显示的数据
-            this.userInfo.name = resp.data.records[0].name
-            this.userInfo.email = resp.data.records[0].email
-            this.userInfo.phone = resp.data.records[0].phone
-            this.userInfo.nativePlace = resp.data.records[0].nativePlace
-            this.userInfo.loginTime = resp.data.records[0].loginTime
-            this.userInfo.role = resp.data.records[0].role
-            this.userInfo.avatarUrl = resp.data.records[0].avatarUrl
+            this.userInfo.name = resp.data.name
+            this.userInfo.email = resp.data.email
+            this.userInfo.phone = resp.data.phone
+            this.userInfo.nativePlace = resp.data.nativePlace
+            this.userInfo.loginTime = resp.data.loginTime
+            this.userInfo.role = resp.data.role
+            this.userInfo.avatarUrl = resp.data.avatarUrl
             // 初始化需要修改的数据
-            this.userData.id = resp.data.records[0].id
-            this.userData.name = resp.data.records[0].name
-            this.userData.roleId = resp.data.records[0].roleId
-            this.userData.gender = resp.data.records[0].gender
-            this.userData.nationId = resp.data.records[0].nationId
-            this.userData.politicId = resp.data.records[0].politicId
-            this.userData.posId = resp.data.records[0].posId
-            this.userData.email = resp.data.records[0].email
-            this.userData.phone = resp.data.records[0].phone
-            this.userData.address = resp.data.records[0].address
-            this.userData.nativePlace = resp.data.records[0].nativePlace
-            this.userData.departmentIdList = resp.data.records[0].departmentIdList
+            this.userData.id = resp.data.id
+            this.userData.name = resp.data.name
+            this.userData.roleId = resp.data.roleId
+            this.userData.gender = resp.data.gender
+            this.userData.nationId = resp.data.nationId
+            this.userData.politicId = resp.data.politicId
+            this.userData.posId = resp.data.posId
+            this.userData.email = resp.data.email
+            this.userData.phone = resp.data.phone
+            this.userData.address = resp.data.address
+            this.userData.nativePlace = resp.data.nativePlace
+            this.userData.departmentIdList = resp.data.departmentIdList
             this.nativePlaceTextToCode()
           }
         })

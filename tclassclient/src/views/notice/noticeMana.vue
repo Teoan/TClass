@@ -5,7 +5,7 @@
       shadow="hover"
       :body-style="{height:'100%'}"
     >
-      <el-input v-model="selectNoticeTitle" placeholder="请输入通知标题搜索" style="width: 500px;" @keydown.enter.native="selectNoticeByName" />
+      <el-input v-model="selectNoticeTitle" placeholder="请输入通知标题搜索" style="width: 500px;margin-top:20px" @keydown.enter.native="selectNoticeByName" />
       <el-date-picker
         v-model="selectCreateTime"
         align="right"
@@ -13,10 +13,10 @@
         value-format="yyyy-MM-dd HH:mm:ss"
         placeholder="选择日期"
         :picker-options="pickerOptions"
-        style="margin-left: 20px;"
+        style="margin-left:20px;margin-top:20px"
       />
-      <el-button type="primary" style="margin-left:20px" icon="el-icon-search" @click="selectNoticeByName">搜索</el-button>
-      <el-button type="primary" style="margin-left:20px" icon="el-icon-edit" @click="addNotice">发布通知</el-button>
+      <el-button type="primary" style="margin-left:20px;margin-top:20px" icon="el-icon-search" @click="selectNoticeByName">搜索</el-button>
+      <el-button type="primary" style="margin-left:20px;margin-top:20px" icon="el-icon-edit" @click="addNotice">发布通知</el-button>
       <template v-if="multipleSelection.length > 0">
         <el-popconfirm
           title="确定批量删除所选通知吗？"

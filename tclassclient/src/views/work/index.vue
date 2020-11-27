@@ -40,7 +40,7 @@ export default {
     return {
       workList: [],
       pageInfo: '',
-      selectWorkName: '',
+      selectWorkName: null,
       selectCreateTime: null,
       workDataLoading: false,
       pickerOptions: {

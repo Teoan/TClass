@@ -1,11 +1,8 @@
 package com.teoan.tclass.service;
 
-import com.teoan.tclass.entity.Work;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * @author Teoan
@@ -42,5 +39,12 @@ public interface FileService {
      * @return 文件对象
      */
     File getFile(Integer wId,String fileName);
+
+    /**
+     * 根据作业id删除所有文件
+     * @param wId 作业id
+     * @return 是否成功
+     */
+    boolean deleteFilesByWId(Integer wId);
 
 }
