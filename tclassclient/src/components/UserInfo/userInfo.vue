@@ -6,7 +6,7 @@
         <span v-else>关于我</span>
       </div>
       <div>
-        <el-avatar :src="userInfo.avatarUrl" :size="150" />
+        <el-avatar :size="150" :src="userInfo.avatarUrl" />
       </div>
       <div class="user-name">
         {{ userInfo.name }}
@@ -41,6 +41,20 @@
 
     </el-card>
     <el-card class="box-card-data" shadow="hover">
+      <el-tooltip v-if="!isEditOrderUserDate" effect="dark" content="点击更换头像" placement="top">
+        <el-upload
+          class="avatar-uploader"
+          action="/student/avatar"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+          :on-error="handleAvatarError"
+          :data="{sId:currentUser.id}"
+        >
+          <img v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon" />
+        </el-upload>
+      </el-tooltip>
       <div>
         <el-form ref="userData" v-loading="userDataLoading" :model="userData" label-width="auto" :rules="rules" :inline="true" :status-icon="true">
           <el-form-item v-if="isEditOrderUserDate" label="名字">
@@ -220,7 +234,11 @@ export default {
   },
   computed: {
     currentUser() {
-      return this.$store.state.currentUser
+      if (this.$store.state.currentUser.role !== undefined) {
+        return this.$store.state.currentUser
+      } else {
+        return JSON.parse(localStorage.getItem('INIT_CURRENTUSER'))
+      }
     }
   },
   created() {
@@ -378,6 +396,34 @@ export default {
           return false
         }
       })
+    },
+    handleAvatarSuccess(res, file) {
+      this.getRequest('/student/' + this.currentUser.id).then(resp => {
+        if (resp.code === 0) {
+          // 刷新当前用户数据
+          this.$store.commit('INIT_CURRENTUSER', resp.data)
+          localStorage.setItem('INIT_CURRENTUSER', JSON.stringify(resp.data))
+          this.userInfo.avatarUrl = resp.data.avatarUrl + '?count=' + Math.random()
+          this.$message.success('头像修改成功！')
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
+    },
+    handleAvatarError(err, file, fileList) {
+      err = JSON.parse(err.message)
+      this.$message.error(err.message)
     }
   }
 }
@@ -450,5 +496,32 @@ export default {
 }
 .address-textarea /deep/ .el-textarea__inner {
   width: 600px;
+}
+.avatar-uploader {
+  width: 178px;
+  height: 178px;
+  margin-bottom: 20px;
+  margin-left: 30px;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>

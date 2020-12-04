@@ -95,6 +95,7 @@ export default {
             this.loading = false
             if (resp.code === 0) {
               this.$store.commit('INIT_CURRENTUSER', resp.data)
+              localStorage.setItem('INIT_CURRENTUSER', JSON.stringify(resp.data))
               this.$router.replace('/home')
             } else {
               this.vcUrl = '/verifyCode.jpg?count=' + Math.random()

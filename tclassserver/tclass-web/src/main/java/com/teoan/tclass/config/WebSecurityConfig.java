@@ -5,30 +5,21 @@ import com.baomidou.mybatisplus.extension.enums.ApiErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.teoan.tclass.entity.Student;
 import com.teoan.tclass.service.StudentService;
-import com.teoan.tclass.service.impl.StudentServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.*;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -45,7 +36,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
     StudentService studentService;
-
 
 
 
@@ -186,11 +176,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     R respBean = new R();
                     respBean.setData("访问失败！");
                     respBean.setCode(ApiErrorCode.FAILED.getCode());
-                    if (e instanceof InsufficientAuthenticationException) {
-                        respBean.setMsg("请求失败，请联系管理员!");
-                    }else{
-                        respBean.setMsg("尚未登录，请先登录");
-                    }
+                    respBean.setMsg("尚未登录，请先登录");
+                    out.write(new ObjectMapper().writeValueAsString(respBean));
+                    out.flush();
+                    out.close();
+                })
+                .accessDeniedHandler((request, response, e) -> {
+                    response.setContentType("application/json;charset=utf-8");
+                    response.setStatus(403);
+                    PrintWriter out = response.getWriter();
+                    R respBean = new R();
+                    respBean.setData("访问失败！");
+                    respBean.setCode(ApiErrorCode.FAILED.getCode());
+                    respBean.setMsg("权限不足，请联系管理员");
                     out.write(new ObjectMapper().writeValueAsString(respBean));
                     out.flush();
                     out.close();

@@ -47,4 +47,19 @@ public interface FileService {
      */
     boolean deleteFilesByWId(Integer wId);
 
+    /**
+     * 更新用户头像
+     * @param file 头像文件
+     * @param sId 用户id
+     * @return 是否成功
+     */
+    boolean updateUserAvatarFile(MultipartFile file,Integer sId);
+
+    /**
+     * 获取用户头像文件
+     * @param photoPath 用户id
+     * @return 是否成功
+     */
+    File getUserAvatarFile(String photoPath);
+
 }

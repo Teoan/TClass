@@ -50,6 +50,9 @@ public class AdWorkController extends ApiController {
     @Resource
     private UploadService uploadService;
 
+    /**
+     * 扩展名服务对象
+     */
     @Resource
     private ExtensionService extensionService;
 

@@ -68,7 +68,11 @@ export default {
   },
   computed: {
     currentUser() {
-      return this.$store.state.currentUser
+      if (this.$store.state.currentUser.role !== undefined) {
+        return this.$store.state.currentUser
+      } else {
+        return JSON.parse(localStorage.getItem('INIT_CURRENTUSER'))
+      }
     }
   },
   created() {

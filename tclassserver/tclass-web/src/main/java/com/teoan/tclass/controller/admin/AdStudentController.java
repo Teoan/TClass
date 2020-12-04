@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.teoan.tclass.entity.*;
 import com.teoan.tclass.service.*;
+import com.teoan.tclass.utils.FileUtils;
 import com.teoan.tclass.utils.POIStudentUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +19,7 @@ import javax.annotation.Resource;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -125,7 +127,7 @@ public class AdStudentController extends ApiController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<byte[]>(baos.toByteArray(), headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.CREATED);
 
     }
 
@@ -134,9 +136,10 @@ public class AdStudentController extends ApiController {
      */
     @PostMapping("/import")
     public R importData(MultipartFile file){
-        if(file!=null){
-            List<Student> studentList = POIStudentUtils.excel2Student(file,roleService.list(),nationService.list(),politicsstatusService.list(),positionService.list());
+        String extensionName = FileUtils.getExtensionName(file).toLowerCase();
 
+        if(extensionName.equals(".xlsx")){
+            List<Student> studentList = POIStudentUtils.excel2Student(file,roleService.list(),nationService.list(),politicsstatusService.list(),positionService.list());
             if(studentService.saveBatch(studentList)){
                 return success("").setMsg("已成功导入"+studentList.size()+"条数据！");
             }else{
@@ -144,9 +147,27 @@ public class AdStudentController extends ApiController {
             }
         }
         else {
-            return failed("上传的文件为空");
+            return failed("上传文件扩展名不符合要求！");
         }
 
+    }
+
+
+    @GetMapping("/template")
+    public ResponseEntity<byte[]> getTemplate() throws UnsupportedEncodingException {
+
+        XSSFWorkbook xssfWorkbook = POIStudentUtils.getTemplate();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            xssfWorkbook.write(baos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment",URLEncoder.encode("学生数据导入模板"+".xlsx","UTF-8"));
+
+        return new ResponseEntity<>(baos.toByteArray(),headers,HttpStatus.OK);
     }
 
 }

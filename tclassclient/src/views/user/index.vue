@@ -19,6 +19,7 @@
                 :before-upload="beforeUpload"
                 :disabled="uploadDisabled"
                 :multiple="false"
+                accept=".xlsx"
                 :show-file-list="false"
               >
                 <el-button
@@ -29,6 +30,9 @@
                 >导入学生数据</el-button>
               </el-upload>
               <el-button type="primary" style="margin-left:20px" icon="el-icon-download" @click="exportAllStudentData">导出学生数据</el-button>
+              <el-tooltip effect="dark" content="模板内容请参考导出的学生数据！" placement="top">
+                <el-link style="margin-left:20px" :underline="false" icon="el-icon-download" type="success" @click="getTemplate">下载导入模板</el-link>
+              </el-tooltip>
             </div>
           </div>
         </el-dialog>
@@ -357,7 +361,7 @@ export default {
       })
     },
     getPoliticsstatuses() {
-      this.getRequest('/student/politicsstatuses').then(resp => {
+      this.getRequest('/student/political').then(resp => {
         if (resp.code === 0) {
           this.politicsstatuses = resp.data
         }
@@ -380,8 +384,11 @@ export default {
       }
     },
     onSeccessUpload(response, file, fileList) {
-      console.log(response)
-      this.$message.success(response.msg)
+      if (response.code === -1) {
+        this.$message.error(response.msg)
+      } else {
+        this.$message.success(response.msg)
+      }
       this.uploadDisabled = false
       this.uploadLoading = false
       this.getData(1, 10)
@@ -389,12 +396,15 @@ export default {
     onErrorUpload(err, file, fileList) {
       this.uploadDisabled = false
       this.uploadLoading = false
-      console.log(err)
-      this.$message.error('文件上传失败')
+      err = JSON.parse(err.message)
+      this.$message.error(err.message)
     },
     beforeUpload(file) {
       this.uploadDisabled = true
       this.uploadLoading = true
+    },
+    getTemplate() {
+      window.open('/admin/student/template', '_parent')
     }
   }
 }

@@ -1,10 +1,8 @@
 package com.teoan.tclass.service.impl;
 
-import com.teoan.tclass.exception.DeleteFileException;
-import com.teoan.tclass.exception.DirPathIsFileException;
-import com.teoan.tclass.exception.FileNotExistsException;
-import com.teoan.tclass.exception.MarkDirException;
+import com.teoan.tclass.exception.*;
 import com.teoan.tclass.service.FileService;
+import com.teoan.tclass.utils.FileUtils;
 import com.teoan.tclass.utils.ZipUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
@@ -127,5 +125,36 @@ public class FileServiceImpl implements FileService {
             return deleteDir.delete();
         }
         return true;
+    }
+
+    @Override
+    public boolean updateUserAvatarFile(MultipartFile file, Integer sId) {
+        File avatarDir = new File(path+File.separator+"avatar");
+        if(!avatarDir.exists()){
+            if(!avatarDir.mkdir()){
+                throw new MarkDirException(HttpStatus.INTERNAL_SERVER_ERROR,"文件目录创建失败！");
+            }
+        }
+        String extensionName = FileUtils.getExtensionName(file).toLowerCase();
+        if(!extensionName.equals(".jpg")){
+            throw new ExtensionNameNotEqualException(HttpStatus.INTERNAL_SERVER_ERROR,"头像扩展名不符合要求！");
+        }
+        File avatarFile = new File(path+File.separator+"avatar"+File.separator+sId+".jpg");
+        try {
+            file.transferTo(avatarFile);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+        }
+        return avatarFile.exists();
+    }
+
+    @Override
+    public File getUserAvatarFile(String photoPath) {
+        File avatarFile = new File(path+File.separator+"avatar"+File.separator+photoPath);
+        if (avatarFile.exists()){
+            return avatarFile;
+        }
+        return null;
     }
 }

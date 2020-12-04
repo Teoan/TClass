@@ -4,7 +4,6 @@ import router from '../router'
 import qs from 'qs'
 
 axios.interceptors.response.use(success => {
-  // console.log('请求成功:' + qs.stringify(success))
   if (success.status && success.status === 200 && success.data.status === 500) {
     Message.error({ message: success.data.msg })
     return
@@ -14,7 +13,6 @@ axios.interceptors.response.use(success => {
   }
   return success.data
 }, error => {
-  // console.log('请求错误：' + qs.stringify(error))
   if (error.response.status === 504 || error.response.status === 404) {
     Message.error({ message: '找不到服务器' })
   } else if (error.response.status === 403) {

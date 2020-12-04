@@ -7,10 +7,19 @@ import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.teoan.tclass.entity.*;
 import com.teoan.tclass.service.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -43,6 +52,9 @@ public class StudentController extends ApiController {
 
     @Resource
     private PositionService positionService;
+
+    @Resource
+    private FileService fileService;
 
 
     /**
@@ -120,6 +132,45 @@ public class StudentController extends ApiController {
     public R getRoles(){
         List<Role> roleList = roleService.list();
         return success(roleList);
+    }
+
+
+    /**
+     * 更新用户头像
+     * @param avatarFile 用户头像文件
+     * @return
+     */
+    @PostMapping("/avatar")
+    public void updateUserAvatar(@RequestParam("file")MultipartFile avatarFile,@RequestParam("sId") Integer sId){
+        if(fileService.updateUserAvatarFile(avatarFile, sId)){
+            studentService.updateById(Student.builder().id(sId).avatarUrl("/student/avatar/"+sId+".jpg").build());
+        }else {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"上传头像失败！");
+        }
+
+    }
+
+    /**
+     * 获取用户头像
+     * @param photoPath 用户id
+     * @return
+     */
+    @GetMapping("/avatar/{photoPath}")
+    public void getUserAvatar(HttpServletResponse resp , @PathVariable("photoPath") String photoPath){
+        File avayarFile = fileService.getUserAvatarFile(photoPath);
+        if(avayarFile!=null){
+            resp.setContentType("image/jpeg");
+            try {
+                BufferedImage bufferedImage = ImageIO.read(avayarFile);
+                // 剪切图片
+                int imageWidth = Math.min(bufferedImage.getWidth(), bufferedImage.getHeight());
+                bufferedImage = bufferedImage.getSubimage(0,0,imageWidth,imageWidth);
+                ServletOutputStream outputStream = resp.getOutputStream();
+                ImageIO.write(bufferedImage,"jpg",outputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 

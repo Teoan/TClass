@@ -71,7 +71,7 @@ public class UploadServiceImpl extends ServiceImpl<UploadMapper, Upload> impleme
     @Caching(evict = {
             @CacheEvict(cacheNames = "work_cache",allEntries = true),
             @CacheEvict(cacheNames = "upload_cache",allEntries = true),
-            @CacheEvict(cacheNames = "isUploadedWorkFile",key = "#wId+#sId")
+            @CacheEvict(cacheNames = "isUploadedWorkFile",key = "T(String).valueOf(#wId).concat('-').concat(#sId)")
     })
     public boolean deleteUploadFile(Integer wId, Integer sId, String fileName) {
         if(fileService.deleteFile(fileName,wId)){
@@ -85,7 +85,7 @@ public class UploadServiceImpl extends ServiceImpl<UploadMapper, Upload> impleme
 
 
     @Override
-    @Cacheable(cacheNames = "isUploadedWorkFile",key = "#wId+#sId",unless="#result == null")
+    @Cacheable(cacheNames = "isUploadedWorkFile",key = "T(String).valueOf(#wId).concat('-').concat(#sId)",unless="#result == null")
     public Upload isUploadedWorkFile(Integer wId, Integer sId) {
         QueryWrapper<Upload> wrapper = new QueryWrapper<>();
         wrapper.eq("s_id",sId).eq("w_id",wId);
