@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.teoan</groupId>
-    <artifactId>tclassserver</artifactId>
+    <artifactId>tclass-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>tclassserver</name>

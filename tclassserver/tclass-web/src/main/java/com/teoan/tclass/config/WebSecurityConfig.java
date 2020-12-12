@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.Resource;
 import java.io.PrintWriter;
@@ -86,6 +87,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/static/**","/index.html", "/favicon.ico","/verifyCode.jpg");
     }
 
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 //        http.authorizeRequests()
@@ -98,7 +101,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .csrf()
 //                .disable();
         http.authorizeRequests()
-                .antMatchers("/admin/**")
+                .antMatchers("/admin/**","/druid/**")
                 .hasRole("admin")///admin/**URL都需要有超级管理员角色，如果使用.hasAuthority()方法来配置，需要在参数中加上ROLE_,如下.hasAuthority("ROLE_超级管理员")
                 .anyRequest()
                 .authenticated()//其他的路径都是登录后即可访问
@@ -170,28 +173,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .exceptionHandling()
                 .authenticationEntryPoint((request, response, e) -> {
-                    response.setContentType("application/json;charset=utf-8");
-                    response.setStatus(401);
-                    PrintWriter out = response.getWriter();
-                    R respBean = new R();
-                    respBean.setData("访问失败！");
-                    respBean.setCode(ApiErrorCode.FAILED.getCode());
-                    respBean.setMsg("尚未登录，请先登录");
-                    out.write(new ObjectMapper().writeValueAsString(respBean));
-                    out.flush();
-                    out.close();
+//                    response.setContentType("application/json;charset=utf-8");
+//                    response.setStatus(401);
+//                    PrintWriter out = response.getWriter();
+//                    R respBean = new R();
+//                    respBean.setData("访问失败！");
+//                    respBean.setCode(ApiErrorCode.FAILED.getCode());
+//                    respBean.setMsg("尚未登录，请先登录");
+//                    out.write(new ObjectMapper().writeValueAsString(respBean));
+//                    out.flush();
+//                    out.close();
+                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"尚未登录，请先登录");
                 })
                 .accessDeniedHandler((request, response, e) -> {
-                    response.setContentType("application/json;charset=utf-8");
-                    response.setStatus(403);
-                    PrintWriter out = response.getWriter();
-                    R respBean = new R();
-                    respBean.setData("访问失败！");
-                    respBean.setCode(ApiErrorCode.FAILED.getCode());
-                    respBean.setMsg("权限不足，请联系管理员");
-                    out.write(new ObjectMapper().writeValueAsString(respBean));
-                    out.flush();
-                    out.close();
+//                    response.setContentType("application/json;charset=utf-8");
+//                    response.setStatus(403);
+//                    PrintWriter out = response.getWriter();
+//                    R respBean = new R();
+//                    respBean.setData("访问失败！");
+//                    respBean.setCode(ApiErrorCode.FAILED.getCode());
+//                    respBean.setMsg("权限不足，请联系管理员");
+//                    out.write(new ObjectMapper().writeValueAsString(respBean));
+//                    out.flush();
+//                    out.close();
+                    throw new ResponseStatusException(HttpStatus.FORBIDDEN,"权限不足，请联系管理员");
                 });
     }
 }

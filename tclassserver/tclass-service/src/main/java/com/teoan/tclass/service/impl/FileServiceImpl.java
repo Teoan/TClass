@@ -34,32 +34,31 @@ public class FileServiceImpl implements FileService {
     @CacheEvict(cacheNames = "zipFile_cache",key = "#wId")
     public void saveFile(MultipartFile file, String fileName,Integer wId) {
         File f = new File(path);
-        if(f.exists()){
-            try{
-                if(f.isFile()){
-                    throw new DirPathIsFileException(HttpStatus.INTERNAL_SERVER_ERROR,"所创建的目录存在但是个文件，联系管理员解决此问题");
-                }
-                File workDir = new File(f+File.separator+wId);
-                if(!workDir.exists()){
-                    if(!workDir.mkdir()){
-                        throw new MarkDirException(HttpStatus.INTERNAL_SERVER_ERROR,"文件目录创建失败！");
-                    }
-                }
-                File saveFile = new File(workDir+File.separator+fileName);
-                if(saveFile.exists()){
-                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"文件名已存在，请重命名!");
-                }else {
-                    file.transferTo(saveFile);
-                    if(!saveFile.exists()){
-                        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"文件上传失败！");
-                    }
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+        if(!f.exists()){
+            f.mkdirs();
+        }
+        try{
+            if(f.isFile()){
+                throw new DirPathIsFileException(HttpStatus.INTERNAL_SERVER_ERROR,"所创建的目录存在但是个文件，联系管理员解决此问题");
             }
-        }else {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"存储目录不存在，请联系管理员!");
+            File workDir = new File(f+File.separator+wId);
+            if(!workDir.exists()){
+                if(!workDir.mkdir()){
+                    throw new MarkDirException(HttpStatus.INTERNAL_SERVER_ERROR,"文件目录创建失败！");
+                }
+            }
+            File saveFile = new File(workDir+File.separator+fileName);
+            if(saveFile.exists()){
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"文件名已存在，请重命名!");
+            }else {
+                file.transferTo(saveFile);
+                if(!saveFile.exists()){
+                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"文件上传失败！");
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
         }
     }
 
@@ -131,7 +130,7 @@ public class FileServiceImpl implements FileService {
     public boolean updateUserAvatarFile(MultipartFile file, Integer sId) {
         File avatarDir = new File(path+File.separator+"avatar");
         if(!avatarDir.exists()){
-            if(!avatarDir.mkdir()){
+            if(!avatarDir.mkdirs()){
                 throw new MarkDirException(HttpStatus.INTERNAL_SERVER_ERROR,"文件目录创建失败！");
             }
         }

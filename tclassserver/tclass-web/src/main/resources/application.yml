@@ -4,9 +4,12 @@ spring:
     username: Teoan
     password: 277077411
     url: jdbc:mysql://localhost:3306/tclass?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    druid:
+      stat-view-servlet:
+        login-username: Teoan
+        login-password: 277077411
   redis:
     host: localhost
-#    host: 172.20.228.240
     database: 0
     port: 6379
     password: 277077411
@@ -22,15 +25,20 @@ spring:
   mvc:
     format:
       date: yyyy-MM-dd HH:mm:ss
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
-  port: 8081
+  port: 8080
   error:
     include-message: always
-  #设置文件上传目录
+#限制最大吞吐量
+  tomcat:
+    max-swallow-size: 100MB
+#设置文件上传目录
 file:
   upload:
-#    url: F:/Linux/git_clone/TClass/tclassserver/tclass-web/src/main/resources/static/upload
-    url: /home/teoan/upload
+#    Window
+    url: F:/Linux/git_clone/TClass/tclassserver/tclass-web/src/main/resources/static/upload
+#    Linux
+#    url: /home/root/tclass/upload

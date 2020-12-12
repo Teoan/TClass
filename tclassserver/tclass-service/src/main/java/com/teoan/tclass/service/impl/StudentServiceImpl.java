@@ -11,6 +11,7 @@ import com.teoan.tclass.service.StudentService;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,7 +31,7 @@ import java.util.List;
  */
 @Service("studentService")
 @CacheConfig(cacheNames = "student_cache")
-public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService, UserDetailsService {
+public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService,UserDetailsService {
 
 
     @Override
@@ -49,6 +50,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         return getBaseMapper().selectPage(studentPage, wrapper);
     }
 
+
+    @Cacheable(cacheNames = "getStudentById",key = "#id")
+    @Override
+    public Student getById(Serializable id) {
+        return super.getById(id);
+    }
 
     @Override
     @Cacheable
@@ -72,8 +79,10 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         return true;
     }
 
-
-    @CacheEvict(allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "student_cache",allEntries = true),
+            @CacheEvict(cacheNames = "getStudentById",key = "#entity.id")
+    })
     @Override
     public boolean updateById(Student entity) {
         String password = entity.getPassword();
@@ -107,7 +116,10 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         return super.saveBatch(entityList);
     }
 
-    //springSecurity
+
+
+
+//    //springSecurity
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         QueryWrapper<Student> wrapper = new QueryWrapper<>();
