@@ -124,6 +124,12 @@
                 <artifactId>poi-ooxml</artifactId>
                 <version>4.1.2</version>
             </dependency>
+            <!--flyway数据库管理-->
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+                <version>6.5.7</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

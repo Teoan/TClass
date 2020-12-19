@@ -288,7 +288,7 @@ export default {
       this.tableLoading = true
       this.dialogSelectVisible = false
       this.nativePlaceCodeToText()
-      this.getRequest('/student/', this.selectUserData).then(resp => {
+      this.getRequest('/admin/student/', this.selectUserData).then(resp => {
         if (resp.code === 0) {
           this.pageInfo = resp.data
           this.userDataList = this.pageInfo.records

@@ -34,7 +34,7 @@
           {{ userInfo.phone }}
         </div>
         <div class="login-time">
-          <div>最近登录时间</div>
+          <div>上一次登录时间</div>
           <div>{{ userInfo.loginTime }}</div>
         </div>
       </div>

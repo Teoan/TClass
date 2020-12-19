@@ -41,7 +41,9 @@
           style="width: 200px"
           @keydown.enter.native="submitLogin"
         />
-        <img :src="vcUrl" alt="" style="cursor: pointer" @click="updateVerifyCode">
+        <el-tooltip content="点击可刷新验证码" placement="top">
+          <img :src="vcUrl" alt="" style="cursor: pointer" @click="updateVerifyCode">
+        </el-tooltip>
       </el-form-item>
       <el-checkbox v-model="loginForm.remember" class="loginRemember">记住我</el-checkbox>
       <el-button
@@ -79,7 +81,9 @@ export default {
     }
   },
   created() {
-    this.loginForm = getLoginInfo()
+    if (getLoginInfo() !== null) {
+      this.loginForm = getLoginInfo()
+    }
     this.loginForm.code = ''
   },
   methods: {
@@ -90,10 +94,14 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true
-          setLoginInfo(this.loginForm, this.loginForm.remember)
           this.loginPostRequest('/login', this.loginForm).then(resp => {
             this.loading = false
             if (resp.code === 0) {
+              if (this.loginForm.remember) {
+                setLoginInfo(this.loginForm)
+              } else {
+                setLoginInfo(null)
+              }
               this.$store.commit('INIT_CURRENTUSER', resp.data)
               localStorage.setItem('INIT_CURRENTUSER', JSON.stringify(resp.data))
               this.$router.replace('/home')

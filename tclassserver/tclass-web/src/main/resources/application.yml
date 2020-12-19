@@ -39,6 +39,6 @@ server:
 file:
   upload:
 #    Window
-    url: F:/Linux/git_clone/TClass/tclassserver/tclass-web/src/main/resources/static/upload
+#    url: F:/Linux/git_clone/TClass/tclassserver/tclass-web/src/main/resources/static/upload
 #    Linux
-#    url: /home/root/tclass/upload
+    url: /home/root/tclass/upload

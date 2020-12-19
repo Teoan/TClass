@@ -7,7 +7,7 @@
     >
       <el-form label-width="60px">
         <el-form-item label="标题">
-          <el-input v-model="notice.title" maxlength="20" placeholder="请输入标题" style="width: 100%" />
+          <el-input v-model="notice.title" placeholder="请输入标题" />
         </el-form-item>
       </el-form>
       <editor

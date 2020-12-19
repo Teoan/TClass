@@ -173,30 +173,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .exceptionHandling()
                 .authenticationEntryPoint((request, response, e) -> {
-//                    response.setContentType("application/json;charset=utf-8");
-//                    response.setStatus(401);
-//                    PrintWriter out = response.getWriter();
-//                    R respBean = new R();
-//                    respBean.setData("访问失败！");
-//                    respBean.setCode(ApiErrorCode.FAILED.getCode());
-//                    respBean.setMsg("尚未登录，请先登录");
-//                    out.write(new ObjectMapper().writeValueAsString(respBean));
-//                    out.flush();
-//                    out.close();
-                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"尚未登录，请先登录");
+                    response.setContentType("application/json;charset=utf-8");
+                    response.setStatus(401);
+                    PrintWriter out = response.getWriter();
+                    R respBean = new R();
+                    respBean.setData("访问失败！");
+                    respBean.setCode(ApiErrorCode.FAILED.getCode());
+                    respBean.setMsg("尚未登录，请先登录");
+                    out.write(new ObjectMapper().writeValueAsString(respBean));
+                    out.flush();
+                    out.close();
                 })
                 .accessDeniedHandler((request, response, e) -> {
-//                    response.setContentType("application/json;charset=utf-8");
-//                    response.setStatus(403);
-//                    PrintWriter out = response.getWriter();
-//                    R respBean = new R();
-//                    respBean.setData("访问失败！");
-//                    respBean.setCode(ApiErrorCode.FAILED.getCode());
-//                    respBean.setMsg("权限不足，请联系管理员");
-//                    out.write(new ObjectMapper().writeValueAsString(respBean));
-//                    out.flush();
-//                    out.close();
-                    throw new ResponseStatusException(HttpStatus.FORBIDDEN,"权限不足，请联系管理员");
+                    response.setContentType("application/json;charset=utf-8");
+                    response.setStatus(403);
+                    PrintWriter out = response.getWriter();
+                    R respBean = new R();
+                    respBean.setData("访问失败！");
+                    respBean.setCode(ApiErrorCode.FAILED.getCode());
+                    respBean.setMsg("权限不足，请联系管理员");
+                    out.write(new ObjectMapper().writeValueAsString(respBean));
+                    out.flush();
+                    out.close();
                 });
     }
 }

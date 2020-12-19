@@ -14,7 +14,6 @@ import com.teoan.tclass.mapper.WorkMapper;
 import com.teoan.tclass.service.FileService;
 import com.teoan.tclass.service.UploadService;
 import com.teoan.tclass.utils.FileUtils;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
