@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.teoan</groupId>
     <artifactId>tclass-server</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-BETA</version>
     <packaging>pom</packaging>
     <name>tclassserver</name>
 

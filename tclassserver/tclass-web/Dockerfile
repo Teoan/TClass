@@ -1,6 +1,6 @@
 FROM java:latest
 VOLUME ["/tmp","/home/root/tclass/upload"]
-ADD target/tclass-web-0.0.1-SNAPSHOT.jar app.jar
+ADD target/tclass-web-1.0.0-BETA.jar app.jar
 RUN bash -c "touch /app.jar"
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","app.jar","--java.security.egd=file:/dev/./urandom","--spring.datasource.url=jdbc:mysql://${MYSQL_URL}/tclass?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai","--spring.datasource.username=${MYSQL_USERNAME}","--spring.datasource.password=${MYSQL_PASSWORD}","--spring.redis.host=${REDIS_HOST}","--spring.redis.port=${REDIS_PORT}","--spring.redis.password=${REDIS_PASSWORD}"]

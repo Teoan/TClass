@@ -5,9 +5,8 @@
     <parent>
         <groupId>com.teoan</groupId>
         <artifactId>tclass-server</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0-BETA</version>
     </parent>
-    <groupId>com.teoan</groupId>
     <artifactId>tclass-mapper</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>tclass-mapper</name>
