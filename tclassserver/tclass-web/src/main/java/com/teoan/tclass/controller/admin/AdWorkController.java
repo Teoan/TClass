@@ -56,6 +56,16 @@ public class AdWorkController extends ApiController {
     @Resource
     private ExtensionService extensionService;
 
+    /**
+     * 通过主键查询单条数据
+     *
+     * @param id 主键
+     * @return 单条数据
+     */
+    @GetMapping("{id}")
+    public R selectOne(@PathVariable Serializable id) {
+        return success(this.workService.getById(id));
+    }
 
     /**
      * 新增数据

@@ -140,7 +140,7 @@ public class AdStudentController extends ApiController {
         if(extensionName.equals(".xlsx")){
             List<Student> studentList = POIStudentUtils.excel2Student(file,roleService.list(),nationService.list(),politicsstatusService.list(),positionService.list());
             if(studentService.saveBatch(studentList)){
-                return success("").setMsg("已成功导入"+studentList.size()+"条数据！");
+                return success(true).setMsg("已成功导入"+studentList.size()+"条数据！");
             }else{
                 return failed("数据导入失败！");
             }

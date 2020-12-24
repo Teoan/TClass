@@ -23,7 +23,7 @@
             <el-input v-model="workData.name" />
           </el-form-item>
           <el-form-item label="文件命名格式" prop="fileNameFormatEnum">
-            <el-tooltip content="若选择无，则不强制修改用户提交文件的文件名" placement="top">
+            <el-tooltip content="若选择无，则不强制修改用户提交文件的文件名" placement="right">
               <el-select
                 v-model="workData.fileNameFormatEnum"
                 placeholder="请选择文件命名格式"
@@ -38,7 +38,7 @@
             </el-tooltip>
           </el-form-item>
           <el-form-item label="文件扩展名" prop="extensionId">
-            <el-tooltip content="将对用户上传的文件进行扩展名验证" placement="top">
+            <el-tooltip content="将对用户上传的文件进行扩展名验证" placement="right">
               <el-select
                 v-model="workData.extensionId"
                 placeholder="请选择文件扩展名"
@@ -53,7 +53,7 @@
             </el-tooltip>
           </el-form-item>
           <el-form-item label="截止提交时间" prop="lastTime">
-            <el-tooltip content="超过截止提交时间，则用户无法提交文件">
+            <el-tooltip content="超过截止提交时间，则用户无法提交文件" placement="right">
               <el-date-picker v-model="workData.lastTime" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="WorkLastTimePickerOptions" />
             </el-tooltip>
           </el-form-item>
@@ -318,7 +318,7 @@ export default {
       this.showDialog('编辑')
       this.isEditWork = true
       this.workFormLoading = true
-      this.getRequest('/work/' + row.id).then(resp => {
+      this.getRequest('/admin/work/' + row.id).then(resp => {
         if (resp.code === 0) {
           this.workData.id = resp.data.id
           this.workData.fileNameFormatEnum = resp.data.fileNameFormatEnum

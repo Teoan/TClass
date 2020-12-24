@@ -38,7 +38,7 @@ server:
 #设置文件上传目录
 file:
   upload:
-#    Window
+#    Windows
 #    url: F:/Linux/git_clone/TClass/tclassserver/tclass-web/src/main/resources/static/upload
 #    Linux
     url: /home/root/tclass/upload

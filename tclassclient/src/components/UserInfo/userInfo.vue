@@ -49,7 +49,6 @@
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
           :on-error="handleAvatarError"
-          :data="{sId:currentUser.id}"
         >
           <img v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon" />

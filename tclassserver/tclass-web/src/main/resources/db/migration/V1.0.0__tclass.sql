@@ -11,7 +11,7 @@
  Target Server Version : 50728
  File Encoding         : 65001
 
- Date: 19/12/2020 13:31:47
+ Date: 20/12/2020 22:04:59
 */
 
 SET NAMES utf8mb4;
@@ -23,7 +23,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `department`;
 CREATE TABLE `department`  (
                                `id` int(11) NOT NULL AUTO_INCREMENT,
-                               `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门名称',
+                               `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '部门名称',
                                PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -47,7 +47,7 @@ INSERT INTO `department` VALUES (10, '摄影协会');
 DROP TABLE IF EXISTS `extension`;
 CREATE TABLE `extension`  (
                               `id` int(11) NOT NULL AUTO_INCREMENT,
-                              `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+                              `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
                               PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -66,36 +66,12 @@ INSERT INTO `extension` VALUES (10, '.java');
 INSERT INTO `extension` VALUES (11, '.jpeg');
 
 -- ----------------------------
--- Table structure for flyway_schema_history
--- ----------------------------
-DROP TABLE IF EXISTS `flyway_schema_history`;
-CREATE TABLE `flyway_schema_history`  (
-                                          `installed_rank` int(11) NOT NULL,
-                                          `version` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-                                          `description` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                                          `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                                          `script` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                                          `checksum` int(11) NULL DEFAULT NULL,
-                                          `installed_by` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                                          `installed_on` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
-                                          `execution_time` int(11) NOT NULL,
-                                          `success` tinyint(1) NOT NULL,
-                                          PRIMARY KEY (`installed_rank`) USING BTREE,
-                                          INDEX `flyway_schema_history_s_idx`(`success`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of flyway_schema_history
--- ----------------------------
-INSERT INTO `flyway_schema_history` VALUES (1, '1.0.0', 'tclass', 'SQL', 'V1.0.0__tclass.sql', -2051240447, 'Teoan', '2020-12-17 22:24:59', 1899, 1);
-
--- ----------------------------
 -- Table structure for nation
 -- ----------------------------
 DROP TABLE IF EXISTS `nation`;
 CREATE TABLE `nation`  (
                            `id` int(11) NOT NULL AUTO_INCREMENT,
-                           `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+                           `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
                            PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 57 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -220,7 +196,7 @@ INSERT INTO `politicsstatus` VALUES (13, '普通公民');
 DROP TABLE IF EXISTS `position`;
 CREATE TABLE `position`  (
                              `id` int(11) NOT NULL AUTO_INCREMENT,
-                             `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+                             `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
                              PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -245,8 +221,8 @@ INSERT INTO `position` VALUES (11, '无');
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role`  (
                          `id` int(11) NOT NULL AUTO_INCREMENT,
-                         `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-                         `zh_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+                         `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+                         `zh_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
                          PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -384,8 +360,8 @@ CREATE TABLE `student`  (
                             `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
                             `update_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
                             `login_time` datetime(0) NULL DEFAULT NULL COMMENT '最近登录时间',
-                            `avatar_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '头像链接',
-                            `deleted` tinyint(1) NULL DEFAULT 0,
+                            `avatar_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '头像链接',
+                            `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '逻辑删除',
                             PRIMARY KEY (`id`) USING BTREE,
                             INDEX `roleId`(`role_id`) USING BTREE,
                             INDEX `id`(`id`) USING BTREE,
@@ -401,7 +377,7 @@ CREATE TABLE `student`  (
 -- ----------------------------
 -- Records of student
 -- ----------------------------
-INSERT INTO `student` VALUES (1724111400, 1, '王涛', 'e10adc3949ba59abbe56e057f20f883e', '男', 53, '广东省,广州市,天河区', 1, 'wang@qq.com', '15644442252', '陕西西安新城区', 1, '2020-07-23 16:32:47', '2020-12-19 12:42:22', '2020-12-19 12:42:23', 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png', 0);
+INSERT INTO `student` VALUES (1724111400, 1, '王涛', 'e10adc3949ba59abbe56e057f20f883e', '男', 53, '广东省,广州市,天河区', 1, 'wang@qq.com', '15644442252', '陕西西安新城区', 1, '2020-07-23 16:32:47', '2020-12-20 21:51:57', '2020-12-20 21:51:58', 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png', 0);
 INSERT INTO `student` VALUES (1724111401, 2, '陈静', 'e10adc3949ba59abbe56e057f20f883e', '女', 44, '广东省,广州市,天河区', 11, 'chenjing@qq.com', '18795556693', '海南省海口市美兰区', 11, '2020-07-23 16:38:45', '2020-12-14 22:41:13', '2020-12-14 22:11:45', 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png', 0);
 INSERT INTO `student` VALUES (1724111402, 2, '赵琳浩', 'e10adc3949ba59abbe56e057f20f883e', '男', 35, '广东省,广州市,天河区', 10, 'zhao@qq.com', '15698887795', '陕西省西安市莲湖区', 3, '2020-07-23 16:38:45', '2020-12-14 22:41:13', '2020-11-29 17:25:00', 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png', 0);
 INSERT INTO `student` VALUES (1724111403, 2, '鹿存亮', 'e10adc3949ba59abbe56e057f20f883e', '男', 30, '广东省,广州市,天河区', 9, 'zhao@qq.com', '15612347795', '陕西省西安市莲湖区', 4, '2020-07-23 16:38:45', '2020-12-14 22:41:13', '2020-11-21 21:55:06', 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png', 0);
@@ -463,6 +439,11 @@ CREATE TABLE `upload`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of upload
+-- ----------------------------
+INSERT INTO `upload` VALUES (1724111400, 3, 'image/jpeg', '1724111400_王涛_医保凭证.jpeg', 5430113, '2020-12-20 16:23:32', '2020-12-20 16:23:32');
+
+-- ----------------------------
 -- Table structure for work
 -- ----------------------------
 DROP TABLE IF EXISTS `work`;
@@ -471,13 +452,13 @@ CREATE TABLE `work`  (
                          `s_id` int(11) NOT NULL COMMENT '发布者',
                          `edit_s_id` int(11) NULL DEFAULT NULL COMMENT '最近编辑者',
                          `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-                         `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '作业启用状态',
-                         `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '作业名称',
+                         `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '逻辑删除',
+                         `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '作业名称',
                          `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
                          `update_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
-                         `last_time` datetime(0) NULL DEFAULT NULL COMMENT '最晚提交时间',
+                         `last_time` datetime(0) NOT NULL COMMENT '最晚提交时间',
                          `extension_id` int(11) NOT NULL DEFAULT 1 COMMENT '文件扩展名',
-                         `file_name_format_enum` int(11) NULL DEFAULT NULL COMMENT '文件名命名枚举',
+                         `file_name_format_enum` int(11) NOT NULL COMMENT '文件名命名枚举',
                          PRIMARY KEY (`id`) USING BTREE,
                          INDEX `id`(`id`) USING BTREE,
                          INDEX `sId`(`s_id`) USING BTREE,

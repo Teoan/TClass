@@ -117,7 +117,7 @@ export default {
     justify-content: space-between;
     height: 100%;
   }
-  .viewer /deep/ p{
-    font-size: 150%;
+  .viewer /deep/ .tui-editor-contents{
+    font-size: 120%;
   }
 </style>

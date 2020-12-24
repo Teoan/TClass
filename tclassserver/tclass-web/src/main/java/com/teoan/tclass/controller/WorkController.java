@@ -46,7 +46,7 @@ public class WorkController extends ApiController {
     @Resource
     private ExtensionService extensionService;
     /**
-     * 分页查询所有数据
+     * extensionService分页查询所有数据
      *
      * @param current 分页对象
      * @param size 查询数据量
@@ -58,16 +58,6 @@ public class WorkController extends ApiController {
         return success(worksByPage);
     }
 
-    /**
-     * 通过主键查询单条数据
-     *
-     * @param id 主键
-     * @return 单条数据
-     */
-    @GetMapping("{id}")
-    public R selectOne(@PathVariable Serializable id) {
-        return success(this.workService.getById(id));
-    }
 
     /**
      * 获取拓展名列表
@@ -88,7 +78,7 @@ public class WorkController extends ApiController {
     @PostMapping("/{wId}")
     public R uploadWorkFile(@PathVariable("wId")Integer wId, @RequestParam("file")MultipartFile file,@RequestParam("sId")Integer sId){
         uploadService.uploadFile(wId,sId,file);
-        return success("").setMsg("上传成功！");
+        return success(true).setMsg("上传成功！");
     }
 
 

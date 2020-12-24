@@ -14,7 +14,6 @@
     <packaging>pom</packaging>
     <name>tclassserver</name>
 
-
     <modules>
         <module>tclass-entity</module>
         <module>tclass-mapper</module>
@@ -64,11 +63,6 @@
                         <artifactId>junit-vintage-engine</artifactId>
                     </exclusion>
                 </exclusions>
-                <version>2.3.1.RELEASE</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-websocket</artifactId>
                 <version>2.3.1.RELEASE</version>
             </dependency>
             <dependency>

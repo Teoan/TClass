@@ -141,19 +141,21 @@ public class StudentController extends ApiController {
      * @return
      */
     @PostMapping("/avatar")
-    public void updateUserAvatar(@RequestParam("file")MultipartFile avatarFile,@RequestParam("sId") Integer sId){
-        if(fileService.updateUserAvatarFile(avatarFile, sId)){
-            studentService.updateById(Student.builder().id(sId).avatarUrl("/student/avatar/"+sId+".jpg").build());
+    public R updateUserAvatar(@RequestParam("file")MultipartFile avatarFile){
+
+        Student currentStudent = (Student) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(fileService.updateUserAvatarFile(avatarFile, currentStudent.getId())){
+            studentService.updateById(Student.builder().id(currentStudent.getId()).avatarUrl("/student/avatar/"+currentStudent.getId()+".jpg").build());
         }else {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"上传头像失败！");
         }
+        return R.ok(true);
 
     }
 
     /**
      * 获取用户头像
-     * @param photoPath 用户id
-     * @return
+     * @param photoPath 图片路径
      */
     @GetMapping("/avatar/{photoPath}")
     public void getUserAvatar(HttpServletResponse resp , @PathVariable("photoPath") String photoPath){

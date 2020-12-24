@@ -59,7 +59,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .box-text {
     font-size: 100%;
     height: auto;
@@ -99,8 +99,8 @@ export default {
     justify-content: space-between;
     height: 100%;
   }
-  .viewer p{
-    font-size: 150%;
+  .viewer /deep/ .tui-editor-contents{
+    font-size: 120%;
   }
   .noticeinfo-div {
     display: flex;

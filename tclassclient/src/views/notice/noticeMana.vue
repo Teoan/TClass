@@ -34,10 +34,12 @@
           border
           @selection-change="handleSelectionChange"
         >
-          <el-table-column
-            type="selection"
-            width="55"
-          />
+          <el-tooltip content="选中可进行批量删除" placement="top">
+            <el-table-column
+              type="selection"
+              width="55"
+            />
+          </el-tooltip>
           <el-table-column
             prop="title"
             label="标题"
