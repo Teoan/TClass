@@ -46,7 +46,7 @@
 
 后端：Spring Boot
 
-数据库：Mysql
+数据库：MySQL
 
 缓存：Redis
 
