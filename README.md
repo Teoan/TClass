@@ -326,8 +326,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 ```json
 {
 	"code":0,
-    "data":"王涛",
-    "msg":"注销成功！"
+	"data":"王涛",
+	"msg":"注销成功！"
 }
 ```
 
@@ -360,9 +360,9 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-    "code":0,
-    "data":true,
-    "msg":"执行成功"
+	"code":0,
+	"data":true,
+	"msg":"执行成功"
 }
 ```
 
