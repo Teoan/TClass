@@ -139,7 +139,7 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 注意：运行前需创建好tclass数据库，默认管理员账号1724111400，密码123456。
 
-部署完毕以后浏览器打开：http://localhost:8080/index.html，即可访问本项目。
+部署完毕以后浏览器打开：http://localhost:8080/index.html 即可访问本项目。
 
 ## 表字段属性
 
