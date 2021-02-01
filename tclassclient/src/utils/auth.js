@@ -20,7 +20,7 @@ export function localStorageGetItem(key, exp) {
   const dataObj = JSON.parse(data)
   if (new Date().getTime() - dataObj.time > exp) {
     console.log('用户信息已过期')
-    return {}
+    return null
   } else {
     return dataObj.data
   }

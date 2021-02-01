@@ -45,6 +45,5 @@ module.exports = {
   lintOnSave: true,
   publicPath: '/',
   assetsDir: './static',
-  outputDir: '../tclassserver/tclass-web/src/main/resources/static',
-
+  outputDir: '../tclassserver/tclass-web/src/main/resources/static'
 }

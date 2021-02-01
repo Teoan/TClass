@@ -33,26 +33,38 @@ import java.util.List;
 @RequestMapping("/student")
 public class StudentController extends ApiController {
     /**
-     * 服务对象
+     * 学生用户服务对象
      */
     @Resource
     private StudentService studentService;
-
+    /**
+     * 通知服务对象
+     */
     @Resource
     private NationService nationService;
-
+    /**
+     * 部门服务对象
+     */
     @Resource
     private DepartmentService departmentService;
-
+    /**
+     * 政治面貌服务对象
+     */
     @Resource
     private PoliticsstatusService politicsstatusService;
-
+    /**
+     * 权限服务对象
+     */
     @Resource
     private RoleService roleService;
-
+    /**
+     * 班级职务服务对象
+     */
     @Resource
     private PositionService positionService;
-
+    /**
+     * 文件服务对象
+     */
     @Resource
     private FileService fileService;
 
@@ -174,6 +186,4 @@ public class StudentController extends ApiController {
             }
         }
     }
-
-
 }

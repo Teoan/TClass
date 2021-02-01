@@ -256,7 +256,7 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 >
 > Content-Type: application/json
 >
-> 状态吗:
+> 状态码:
 >
 > 400 请求参数错误
 >
@@ -301,7 +301,7 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-    "code": 0
+	"code": 0
 	"data": {id: 1724111400, roleId: 1, name: "王涛", password: null, gender: "男", nationId: 53,…}
 	"msg": "登录成功！"
 }
