@@ -5,7 +5,7 @@
       shadow="hover"
       :body-style="{height:'100%'}"
     >
-      <el-input v-model="selectWorkName" placeholder="请输入作业名字搜索" style="width: 500px;margin-top:20px" @keydown.enter.native="selectWorkByName" />
+      <el-input v-model="selectWorkName" placeholder="请输入作业名字搜索" style="width: 30%;margin-top:20px" @keydown.enter.native="selectWorkByName" />
       <el-date-picker
         v-model="selectCreateTime"
         align="right"
@@ -173,7 +173,7 @@
               label="更新时间"
               min-width="100"
             />
-            <el-table-column label="操作" fixed="right" min-width="110">
+            <el-table-column label="操作" fixed="right" min-width="180">
               <template slot-scope="scope">
                 <div class="cell-contain">
                   <template class="handle-div">
@@ -497,7 +497,7 @@ export default {
 }
 .table-div {
     margin: 20px 0;
-    height: 80%;
+    height: 70%;
 }
 .handle-div {
   margin-top: 10px;

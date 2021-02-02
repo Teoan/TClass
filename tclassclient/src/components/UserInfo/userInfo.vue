@@ -476,9 +476,7 @@ export default {
 .box-card-data {
   width: 80%;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  overflow: auto;
 }
 .submit-btn {
   display: flex;

@@ -104,6 +104,7 @@ export default {
     width: 70%;
     height: 80%;
     display: flex;
+    overflow: auto;
   }
   .el-col-div {
     width: 70%;

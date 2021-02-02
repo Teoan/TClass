@@ -65,7 +65,7 @@
             label="更新时间"
             min-width="120"
           />
-          <el-table-column>
+          <el-table-column fixed="right" min-width="100">
             <template slot-scope="scope">
               <div class="cell-contain">
                 <el-button size="small" type="primary" @click="handleEdit(scope.row)">编辑</el-button>
@@ -202,7 +202,7 @@ export default {
 }
 .table-div {
     margin: 20px 0;
-    height: 80%;
+    height: 70%;
 }
 
 </style>
