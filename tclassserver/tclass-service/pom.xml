@@ -9,14 +9,13 @@
     </parent>
     <groupId>com.teoan</groupId>
     <artifactId>tclass-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${project.parent.version}</version>
     <name>tclass-service</name>
 
     <dependencies>
         <dependency>
             <groupId>com.teoan</groupId>
             <artifactId>tclass-mapper</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

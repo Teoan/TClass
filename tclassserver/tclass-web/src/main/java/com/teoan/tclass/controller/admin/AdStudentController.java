@@ -3,6 +3,7 @@ package com.teoan.tclass.controller.admin;
 
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
+import com.teoan.tclass.dto.SelectStudentDTO;
 import com.teoan.tclass.entity.*;
 import com.teoan.tclass.service.*;
 import com.teoan.tclass.utils.FileUtils;
@@ -77,8 +78,8 @@ public class AdStudentController extends ApiController {
      * @return 所有数据
      */
     @GetMapping("/")
-    public R getStudentByPage(@RequestParam(defaultValue = "1")Long current,@RequestParam(defaultValue = "10")Long size,Student student) {
-        return success(studentService.getStudentsByPage(current,size,student));
+    public R getStudentByPage(@RequestParam(defaultValue = "1")Long current, @RequestParam(defaultValue = "10")Long size, SelectStudentDTO selectStudentDTO) {
+        return success(studentService.getStudentsByPage(current,size,selectStudentDTO));
     }
 
 

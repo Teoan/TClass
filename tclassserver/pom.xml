@@ -26,22 +26,22 @@
             <dependency>
                 <groupId>com.teoan</groupId>
                 <artifactId>tclass-entity</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.teoan</groupId>
                 <artifactId>tclass-mapper</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.teoan</groupId>
                 <artifactId>tclass-service</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.teoan</groupId>
                 <artifactId>tclass-web</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>mysql</groupId>
@@ -118,6 +118,11 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-core</artifactId>
                 <version>6.5.7</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-actuator</artifactId>
+                <version>2.3.2.RELEASE</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

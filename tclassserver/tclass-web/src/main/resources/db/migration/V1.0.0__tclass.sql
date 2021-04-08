@@ -427,7 +427,7 @@ DROP TABLE IF EXISTS `upload`;
 CREATE TABLE `upload`  (
                            `s_id` int(11) NOT NULL COMMENT '学生编号',
                            `w_id` int(11) NOT NULL COMMENT '作业编号',
-                           `file_type` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件类型',
+                           `file_type` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件类型',
                            `file_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件名',
                            `size` bigint(11) NOT NULL COMMENT '文件大小',
                            `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '上传时间',

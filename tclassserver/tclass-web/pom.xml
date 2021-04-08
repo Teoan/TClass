@@ -20,17 +20,14 @@
         <dependency>
             <groupId>com.teoan</groupId>
             <artifactId>tclass-entity</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.teoan</groupId>
             <artifactId>tclass-mapper</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.teoan</groupId>
             <artifactId>tclass-service</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
 
@@ -78,6 +75,10 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-actuator</artifactId>
         </dependency>
     </dependencies>
     <build>

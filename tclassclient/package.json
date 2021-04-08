@@ -15,7 +15,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
     "@fortawesome/vue-fontawesome": "^0.1.10",
     "@toast-ui/vue-editor": "^2.4.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "element-china-area-data": "^5.0.1",
     "element-ui": "^2.13.2",

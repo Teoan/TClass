@@ -8,7 +8,7 @@
         <version>1.0.0-BETA</version>
     </parent>
     <artifactId>tclass-entity</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${project.parent.version}</version>
     <name>tclass-entity</name>
     <dependencies>
         <dependency>

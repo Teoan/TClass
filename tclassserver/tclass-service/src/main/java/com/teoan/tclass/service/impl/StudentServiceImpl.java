@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.teoan.tclass.dto.SelectStudentDTO;
 import com.teoan.tclass.entity.StuDepRef;
 import com.teoan.tclass.entity.Student;
 import com.teoan.tclass.mapper.StudentMapper;
 import com.teoan.tclass.service.StudentService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -36,11 +38,13 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Override
     @Cacheable(unless = "#result.records.size()==0")
-    public IPage getStudentsByPage(Long current, Long size, Student student) {
+    public IPage getStudentsByPage(Long current, Long size, SelectStudentDTO selectStudentDTO) {
         Page<Student> studentPage = new Page<>(current,size);
+        Student student = new Student();
+        BeanUtils.copyProperties(selectStudentDTO,student);
         QueryWrapper<Student> wrapper = new QueryWrapper<>(student);
         //根据名字模糊查询
-        if (student!=null && student.getName()!=null){
+        if (student.getName()!=null){
             if (!student.getName().isEmpty()) {
                 QueryWrapper nameWrapper = new QueryWrapper();
                 nameWrapper.like("name", student.getName());
