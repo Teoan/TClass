@@ -28,6 +28,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @TableName(value ="student",resultMap = "AllStudentInfo")
+@JsonIgnoreProperties({"accountNonExpired","accountNonLocked","username","authorities","credentialsNonExpired","enabled"})
 public class Student extends Model<Student> implements UserDetails {
 
     /**

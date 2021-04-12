@@ -3,12 +3,13 @@ package com.teoan.tclass.controller.admin;
 
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
-import com.teoan.tclass.dto.SelectStudentDTO;
+import com.teoan.tclass.dto.StudentDTO;
 import com.teoan.tclass.entity.*;
 import com.teoan.tclass.service.*;
 import com.teoan.tclass.utils.FileUtils;
 import com.teoan.tclass.utils.POIStudentUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -78,20 +78,22 @@ public class AdStudentController extends ApiController {
      * @return 所有数据
      */
     @GetMapping("/")
-    public R getStudentByPage(@RequestParam(defaultValue = "1")Long current, @RequestParam(defaultValue = "10")Long size, SelectStudentDTO selectStudentDTO) {
-        return success(studentService.getStudentsByPage(current,size,selectStudentDTO));
+    public R getStudentByPage(@RequestParam(defaultValue = "1")Long current, @RequestParam(defaultValue = "10")Long size, StudentDTO studentDTO) {
+        Student student = new Student();
+        BeanUtils.copyProperties(studentDTO,student);
+        return success(studentService.getStudentsByPage(current,size,student));
     }
 
 
     /**
      * 修改数据
      *
-     * @param student 实体对象
+     * @param id 实体id
      * @return 修改结果
      */
     @PutMapping("/")
-    public R update(@RequestBody Student student) {
-        return success(this.studentService.updateById(student));
+    public R update(@RequestBody Long id) {
+        return success(this.studentService.reSetPasswordBySId(id));
     }
 
     /**

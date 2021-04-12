@@ -38,7 +38,7 @@ server:
 #设置文件上传目录
 file:
   upload:
-    url: ${UPLOAD_PATH:/static/upload}
+    url: ${UPLOAD_PATH}
 #    Windows
 #    url: F:/Linux/git_clone/TClass/tclassserver/tclass-web/src/main/resources/static/upload
 #    Linux

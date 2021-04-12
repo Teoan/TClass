@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.teoan.tclass.dto.SelectStudentDTO;
 import com.teoan.tclass.entity.StuDepRef;
 import com.teoan.tclass.entity.Student;
 import com.teoan.tclass.mapper.StudentMapper;
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -38,10 +38,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Override
     @Cacheable(unless = "#result.records.size()==0")
-    public IPage getStudentsByPage(Long current, Long size, SelectStudentDTO selectStudentDTO) {
+    public IPage getStudentsByPage(Long current, Long size, Student student) {
         Page<Student> studentPage = new Page<>(current,size);
-        Student student = new Student();
-        BeanUtils.copyProperties(selectStudentDTO,student);
         QueryWrapper<Student> wrapper = new QueryWrapper<>(student);
         //根据名字模糊查询
         if (student.getName()!=null){
@@ -91,10 +89,6 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     public boolean updateById(Student entity) {
         String password = entity.getPassword();
         List<Integer> departmentIdList = entity.getDepartmentIdList();
-        //处理密码更新
-        if (password!=null&&!password.isEmpty()){
-            entity.setPassword(DigestUtils.md5DigestAsHex(password.getBytes()));
-        }
         //处理学生与部门映射
         if(departmentIdList!=null&&departmentIdList.size()>0){
             List<StuDepRef> stuDepRefList = new ArrayList<>();
@@ -121,9 +115,18 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
 
+    @Override
+    public boolean reSetPasswordBySId(Long id) {
+        Student student = getBaseMapper().selectById(id);
+        //处理密码更新
+        student.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
+        if(getBaseMapper().updateById(student)>0){
+            return true;
+        }
+        return false;
+    }
 
-
-//    springSecurity
+    //    springSecurity
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         QueryWrapper<Student> wrapper = new QueryWrapper<>();
