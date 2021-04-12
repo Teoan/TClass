@@ -3,15 +3,15 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
-    url: jdbc:mysql://${DB:localhost}:3306/tclass?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://${MYSQL_URL:localhost:3306}/tclass?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     druid:
       stat-view-servlet:
-        login-username:
-        login-password:
+        login-username: Teoan
+        login-password: 277077411
   redis:
-    host: ${REDIS_HOST:localhost}
-    database: 0
-    port: ${REDIS_PORT:6379}
+    host: ${REDIS_HOST}
+    database: ${REDIS_DARABASE}
+    port: ${REDIS_PORT}
     password: ${REDIS_PASSWORD}
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
@@ -29,7 +29,7 @@ spring:
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
-  port: 8080
+  port: ${SERVER_PORT}
   error:
     include-message: always
 #限制最大吞吐量
@@ -38,8 +38,8 @@ server:
 #设置文件上传目录
 file:
   upload:
-    url: ${UPLOAD_PATH}
-# Windows
+    url: ${UPLOAD_PATH:/static/upload}
+#    Windows
 #    url: F:/Linux/git_clone/TClass/tclassserver/tclass-web/src/main/resources/static/upload
 #    Linux
 #    url: /home/root/tclass/upload

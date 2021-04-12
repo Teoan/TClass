@@ -3,8 +3,10 @@ package com.teoan.tclass.config;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.enums.ApiErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.teoan.tclass.dto.StudentDTO;
 import com.teoan.tclass.entity.Student;
 import com.teoan.tclass.service.StudentService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -117,8 +119,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     PrintWriter out = response.getWriter();
                     Student student = (Student) authentication.getPrincipal();
                     studentService.updateById(Student.builder().id(student.getId()).loginTime(new Date()).build());
-                    student.setPassword(null);
-                    R respBean = R.ok(student);
+                    StudentDTO studentDTO = new StudentDTO();
+                    BeanUtils.copyProperties(student,studentDTO);
+                    R respBean = R.ok(studentDTO);
                     respBean.setMsg("登录成功！");
                     ObjectMapper mapper = new ObjectMapper();
                     mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
@@ -173,16 +176,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .exceptionHandling()
                 .authenticationEntryPoint((request, response, e) -> {
-                    response.setContentType("application/json;charset=utf-8");
-                    response.setStatus(401);
-                    PrintWriter out = response.getWriter();
-                    R respBean = new R();
-                    respBean.setData("访问失败！");
-                    respBean.setCode(ApiErrorCode.FAILED.getCode());
-                    respBean.setMsg("尚未登录，请先登录");
-                    out.write(new ObjectMapper().writeValueAsString(respBean));
-                    out.flush();
-                    out.close();
+                    //若用户未登录，直接重定向到登录页面
+                    response.sendRedirect("/index.html");
                 })
                 .accessDeniedHandler((request, response, e) -> {
                     response.setContentType("application/json;charset=utf-8");

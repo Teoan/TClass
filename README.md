@@ -171,12 +171,12 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 | id   | int     | 政治面貌唯一标识 | 非空，主键 |
 | name | varchar | 政治面貌名称     | 非空       |
 
-### 班级职务属性（Nation）
+### 班级职务属性（Position）
 
 | 属性 | 类型    | 说明         | 约束       |
 | ---- | ------- | ------------ | ---------- |
-| id   | int     | 民族唯一标识 | 非空，主键 |
-| name | varchar | 民族名称     | 非空       |
+| id   | int     | 职务唯一标识 | 非空，主键 |
+| name | varchar | 职务名称     | 非空       |
 
 ### 权限属性（Role）
 

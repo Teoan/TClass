@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.teoan.tclass.dto.StudentDTO;
 import com.teoan.tclass.entity.*;
 import com.teoan.tclass.service.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -77,22 +79,27 @@ public class StudentController extends ApiController {
      */
     @GetMapping("/{id}")
     public R selectOne(@PathVariable Serializable id) {
-        return success(this.studentService.getById(id));
+        StudentDTO studentDTO = new StudentDTO(this.studentService.getById(id));
+        return success(studentDTO);
     }
 
     /**
      * 修改数据
      *
-     * @param student 实体对象
+     * @param studentDTO 实体DTO对象
      * @return 修改结果
      */
     @PutMapping("/")
-    public R update(@RequestBody Student student) {
+    public R update(@RequestBody StudentDTO studentDTO) {
         //获取当前登录用户
         Student currentStudent = (Student) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         //普通用户只能修改自己的资料信息
-        if(currentStudent.getId().equals(student.getId())&&this.studentService.updateById(student)){
+        if(currentStudent.getId().equals(studentDTO.getId())){
+            Student student = new Student();
+            BeanUtils.copyProperties(studentDTO,student);
+            if(studentService.updateById(student)){
                 return success(studentService.getById(student.getId()));
+            }
         }
         return failed("资料修改失败！");
     }

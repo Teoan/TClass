@@ -102,6 +102,7 @@ export default {
               } else {
                 setLoginInfo(null)
               }
+              // 将当前用户信息保存到本地和store
               this.$store.commit('INIT_CURRENTUSER', resp.data)
               localStorage.setItem('INIT_CURRENTUSER', JSON.stringify(resp.data))
               this.$router.replace('/home')
