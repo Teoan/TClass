@@ -80,13 +80,6 @@ export default {
     }
   },
   computed: {
-    currentUser() {
-      if (this.$store.state.currentUser.role !== undefined) {
-        return this.$store.state.currentUser
-      } else {
-        return JSON.parse(localStorage.getItem('INIT_CURRENTUSER'))
-      }
-    },
     work() {
       return JSON.parse(localStorage.getItem('work'))
     }

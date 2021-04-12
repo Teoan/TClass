@@ -2,7 +2,7 @@
   <div class="userinfo-div">
     <el-card class="box-card-info" shadow="hover">
       <div slot="header" class="clearfix">
-        <span v-if="isEditOrderUserDate">关于ta</span>
+        <span v-if="isEditOtherUserDate">关于ta</span>
         <span v-else>关于我</span>
       </div>
       <div>
@@ -41,7 +41,7 @@
 
     </el-card>
     <el-card class="box-card-data" shadow="hover">
-      <el-tooltip v-if="!isEditOrderUserDate" effect="dark" content="点击更换头像" placement="top">
+      <el-tooltip v-if="!isEditOtherUserDate" effect="dark" content="点击更换头像" placement="top">
         <el-upload
           class="avatar-uploader"
           action="/student/avatar"
@@ -56,10 +56,10 @@
       </el-tooltip>
       <div>
         <el-form ref="userData" v-loading="userDataLoading" :model="userData" label-width="auto" :rules="rules" :inline="true" :status-icon="true">
-          <el-form-item v-if="isEditOrderUserDate" label="名字">
+          <el-form-item v-if="isEditOtherUserDate" label="名字">
             <el-input v-model="userData.name" class="input-width" />
           </el-form-item>
-          <el-form-item v-if="isEditOrderUserDate" label="权限">
+          <el-form-item v-if="isEditOtherUserDate" label="权限">
             <el-select v-model="userData.roleId" placeholder="请选择权限" filterable>
               <el-option
                 v-for="item in roles"
@@ -108,7 +108,7 @@
               <el-option label="女" value="女" />
             </el-select>
           </el-form-item>
-          <el-form-item v-if="isEditOrderUserDate" label="校内职务">
+          <el-form-item v-if="isEditOtherUserDate" label="校内职务">
             <el-select v-model="userData.posId" placeholder="校内职务">
               <el-option
                 v-for="item in positions"
@@ -137,8 +137,8 @@
             <el-button type="primary" @click="submitForm('userData')">修改资料</el-button>
           </div>
         </el-form>
-        <el-divider v-if="!isEditOrderUserDate" />
-        <el-form v-if="!isEditOrderUserDate" ref="passData" v-loading="passDataLoading" label-width="auto" :model="pass" :rules="rules">
+        <el-divider v-if="!isEditOtherUserDate" />
+        <el-form v-if="!isEditOtherUserDate" ref="passData" v-loading="passDataLoading" label-width="auto" :model="pass" :rules="rules">
           <el-form-item label="新密码" prop="password">
             <el-input v-model="pass.password" type="password" autocomplete="off" class="input-width" />
           </el-form-item>
@@ -204,7 +204,8 @@ export default {
         role: { zhName: null },
         avatarUrl: null
       },
-      isEditOrderUserDate: this.$route.query.id !== undefined,
+      // 判断是否修改其他用户数据
+      isEditOtherUserDate: this.$route.query.id !== undefined,
       rules: {
         email: [{ type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }],
         phone: [{ pattern: /^1[3|4|5|7|8][0-9]\d{8}$/, message: '请输入正确的电话号码', trigger: ['blur', 'change'] }],
@@ -300,7 +301,7 @@ export default {
       this.selectedNativePlaceOptions = code
     },
     initUserData() {
-      if (this.isEditOrderUserDate) {
+      if (this.isEditOtherUserDate) {
         this.getRequest('/student/' + this.$route.query.id).then(resp => {
           if (resp.code === 0) {
             // 初始化需要显示的数据
@@ -351,10 +352,11 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          // 管理员修改用户信息
           if (formName === 'userData') {
             this.userDataLoading = true
             this.nativePlaceCodeToText()
-            if (this.isEditOrderUserDate) {
+            if (this.isEditOtherUserDate) {
               this.putRequest('/admin/student/', this.userData).then(resp => {
                 if (resp.code === 0) {
                   this.$message.success('资料修改成功！')
@@ -364,12 +366,14 @@ export default {
                 this.userDataLoading = false
                 console.log(error)
               })
+              // 用户修改自己的信息
             } else {
               this.putRequest('/student/', this.userData).then(resp => {
                 if (resp.code === 0) {
                   this.$message.success('资料修改成功！')
                   this.userDataLoading = false
                   this.$store.commit('INIT_CURRENTUSER', resp.data)
+                  this.userInfo = resp.data
                 }
               }).catch(error => {
                 this.userDataLoading = false
