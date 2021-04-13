@@ -335,7 +335,7 @@ export default {
     },
     deleteWorksidList(idList) {
       this.tableLoading = true
-      this.deleteRequest('/admin/work/', { idList: idList }).then(resp => {
+      this.deleteRequest('/admin/work/', idList).then(resp => {
         if (resp.code === 0 && resp.data) {
           this.$message.success('删除成功!')
           this.refreshTableData(this.pageInfo.current, 10)
@@ -428,7 +428,7 @@ export default {
     },
     deleteExtension(extension) {
       this.extensionTableLoading = true
-      this.deleteRequest('/admin/work/extensions', { eId: extension.id }).then(resp => {
+      this.deleteRequest('/admin/work/extensions', { id: extension.id }).then(resp => {
         if (resp.code === 0 && resp.data === true) {
           this.$message.success('删除成功！')
           this.getExtension()

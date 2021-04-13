@@ -172,7 +172,7 @@ export default {
     },
     deleteFile(upload) {
       this.fileTableLoading = true
-      this.deleteRequest('/work/deleteFile/', { wId: this.$props.work.id, sId: this.currentUser.id, fileName: upload.fileName }).then(resp => {
+      this.deleteRequest('/work/deleteFile/', upload).then(resp => {
         if (resp.code === 0 && resp.data === true) {
           this.$message.success('删除文件成功！')
           this.isUploaded = false

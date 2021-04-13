@@ -146,7 +146,9 @@ export default {
       this.multipleSelection = val
     },
     handleDelete(row) {
-      this.deleteNoticesidList(row.id)
+      var idList = []
+      idList[0] = row.id
+      this.deleteNoticesidList(idList)
     },
     deleteNotices() {
       var idList = []
@@ -165,7 +167,7 @@ export default {
     },
     deleteNoticesidList(idList) {
       this.tableLoading = true
-      this.deleteRequest('/admin/notice/', { idList: idList + '' }).then(resp => {
+      this.deleteRequest('/admin/notice/', idList).then(resp => {
         if (resp.code === 0 && resp.data) {
           this.$message.success('删除成功')
           this.getNoticesData(this.pageInfo.current, 12)

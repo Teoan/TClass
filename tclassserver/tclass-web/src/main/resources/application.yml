@@ -29,7 +29,7 @@ spring:
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
-  port: ${SERVER_PORT}
+  port: ${SERVER_PORT:8080}
   error:
     include-message: always
 #限制最大吞吐量
@@ -38,8 +38,8 @@ server:
 #设置文件上传目录
 file:
   upload:
-    url: ${UPLOAD_PATH}
+#    url: ${UPLOAD_PATH}
 #    Windows
-#    url: F:/Linux/git_clone/TClass/tclassserver/tclass-web/src/main/resources/static/upload
+    url: F:/Linux/git_clone/TClass/tclassserver/tclass-web/src/main/resources/static/upload
 #    Linux
 #    url: /home/root/tclass/upload

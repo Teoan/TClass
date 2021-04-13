@@ -96,7 +96,7 @@ public class AdWorkController extends ApiController {
      * @return 删除结果
      */
     @DeleteMapping("/")
-    public R delete(@RequestParam("idList") List<Integer> idList) {
+    public R delete(@RequestBody List<Integer> idList) {
         return success(this.workService.removeByIds(idList));
     }
 
@@ -169,12 +169,12 @@ public class AdWorkController extends ApiController {
 
     /**
      * 根据id删除扩展名
-     * @param eId 扩展名id
+     * @param extension 扩展名id
      * @return 是否成功
      */
     @DeleteMapping("/extensions")
-    public R deleteExtensionById(@RequestParam("eId")Integer eId){
-        return R.ok(extensionService.removeById(eId));
+    public R deleteExtensionById(@RequestBody Extension extension){
+        return R.ok(extensionService.removeById(extension.getId()));
     }
 
     /**

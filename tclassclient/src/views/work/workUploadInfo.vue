@@ -109,7 +109,7 @@ export default {
     },
     deleteFile(upload) {
       this.fileTableLoading = true
-      this.deleteRequest('/work/deleteFile/', { wId: this.work.id, sId: upload.sid, fileName: upload.fileName }).then(resp => {
+      this.deleteRequest('/work/deleteFile/', upload).then(resp => {
         if (resp.code === 0 && resp.data === true) {
           this.$message.success('删除成功！')
           this.fileTableLoading = false
@@ -135,15 +135,15 @@ export default {
     },
     deleteFiles() {
       this.fileTableLoading = true
-      var deleteFileNameList = []
-      var deleteSIdList = []
-      if (this.multipleSelection.length > 0) {
-        for (var i = 0; i < this.multipleSelection.length; i++) {
-          deleteSIdList[i] = this.multipleSelection[i].sid
-          deleteFileNameList[i] = this.multipleSelection[i].fileName
-        }
-      }
-      this.deleteRequest('/admin/work/upload', { deleteFileNameList: deleteFileNameList, deleteSIdList: deleteSIdList, wId: this.work.id }).then(resp => {
+      // var deleteFileNameList = []
+      // var deleteSIdList = []
+      // if (this.multipleSelection.length > 0) {
+      //   for (var i = 0; i < this.multipleSelection.length; i++) {
+      //     deleteSIdList[i] = this.multipleSelection[i].sid
+      //     deleteFileNameList[i] = this.multipleSelection[i].fileName
+      //   }
+      // }
+      this.deleteRequest('/admin/work/upload', this.multipleSelection).then(resp => {
         if (resp.code === 0 && resp.data === true) {
           this.$message.success('删除成功！')
           this.getUploadInfoByWorkId(this.pageInfo.current, 12, this.work.id)

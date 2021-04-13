@@ -103,7 +103,7 @@ public class AdStudentController extends ApiController {
      * @return 删除结果
      */
     @DeleteMapping("/")
-    public R delete(@RequestParam("idList") List<Long> idList) {
+    public R delete(@RequestBody List<Long> idList) {
         return success(this.studentService.removeByIds(idList));
     }
 

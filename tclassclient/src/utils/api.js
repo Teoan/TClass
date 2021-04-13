@@ -81,17 +81,7 @@ export const deleteRequest = (url, params) => {
   return axios({
     method: 'delete',
     url: `${base}${url}`,
-    data: params,
-    transformRequest: [function(data) {
-      let ret = ''
-      for (const i in data) {
-        ret += encodeURIComponent(i) + '=' + encodeURIComponent(data[i]) + '&'
-      }
-      return ret
-    }],
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
+    data: params
   })
 }
 export const getDataRequest = (url, params) => {
