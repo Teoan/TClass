@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.teoan.tclass.entity.Extension;
+import com.teoan.tclass.entity.Upload;
 import com.teoan.tclass.entity.Work;
 import com.teoan.tclass.exception.FileException;
 import com.teoan.tclass.service.ExtensionService;
@@ -84,7 +85,7 @@ public class WorkController extends ApiController {
 
 
     /**
-     * 检查用户是否已上传过文件
+     * 检查用户是否已上传文件
      * @param wId 作业id
      * @param sId 学号
      * @return 文件信息
@@ -97,14 +98,12 @@ public class WorkController extends ApiController {
 
     /**
      * 删除已上传的文件
-     * @param wId 文件id
-     * @param sId 学号
-     * @param fileName 文件名
+     * @param upload 上传文件对象
      * @return 是否成功
      */
     @DeleteMapping("/deleteFile")
-    public R deleteUploadFile(@RequestParam("wId")Integer wId,@RequestParam("sId")Integer sId,@RequestParam("fileName")String fileName){
-        return R.ok(uploadService.deleteUploadFile(wId,sId,fileName));
+    public R deleteUploadFile(@RequestBody Upload upload){
+        return R.ok(uploadService.deleteUploadFile(upload));
     }
 
 }

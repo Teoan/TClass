@@ -36,11 +36,9 @@ public interface UploadService extends IService<Upload> {
 
     /**
      * 删除上传的文件
-     * @param wId 作业Id
-     * @param sId 学号
-     * @param fileName 文件名
+     * @param upload 上传文件对象
      */
-    boolean deleteUploadFile(Integer wId,Integer sId,String fileName);
+    boolean deleteUploadFile(Upload upload);
 
 
     /**

@@ -154,15 +154,12 @@ public class AdWorkController extends ApiController {
 
     /**
      * 根据上传文件信息列表批量删除文件
-     * @param deleteFileNameList 删除文件名列表
-     * @param wId 作业id
-     * @param deleteSIdList 学号列表
+     * @param uploadList 删除文件名列表
      */
     @DeleteMapping("/upload")
-    public R deleteUploadFileByIdList(@RequestParam("deleteSIdList") List<Integer> deleteSIdList,@RequestParam("wId") Integer wId,@RequestParam("deleteFileNameList") List<String> deleteFileNameList){
-        if(deleteSIdList.size()==deleteFileNameList.size()){
-            for(int i = 0;i<deleteFileNameList.size();i++){
-                if(!uploadService.deleteUploadFile(wId,deleteSIdList.get(i),deleteFileNameList.get(i)))
+    public R deleteUploadFileByIdList(@RequestBody List<Upload> uploadList){
+        for (Upload upload : uploadList) {
+            if(!uploadService.deleteUploadFile(upload)){
                 return R.failed("文件删除失败！");
             }
         }
