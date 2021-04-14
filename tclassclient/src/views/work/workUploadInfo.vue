@@ -145,7 +145,7 @@ export default {
       // }
       this.deleteRequest('/admin/work/upload', this.multipleSelection).then(resp => {
         if (resp.code === 0 && resp.data === true) {
-          this.$message.success('删除成功！')
+          this.$message.success('批量删除成功！')
           this.getUploadInfoByWorkId(this.pageInfo.current, 12, this.work.id)
         }
         this.fileTableLoading = false

@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -88,12 +89,26 @@ public class AdStudentController extends ApiController {
     /**
      * 修改数据
      *
-     * @param id 实体id
+     * @param studentDTO 实体DTO
      * @return 修改结果
      */
     @PutMapping("/")
-    public R update(@RequestBody Long id) {
-        return success(this.studentService.reSetPasswordBySId(id));
+    public R update(@RequestBody StudentDTO studentDTO) {
+
+        Student student = new Student();
+        BeanUtils.copyProperties(studentDTO,student);
+        return success(this.studentService.updateById(student));
+    }
+
+    /**
+     * 重置密码
+     *
+     * @param SId 实体id
+     * @return 重置结果
+     */
+    @PutMapping("/reSetPassword/{SId}")
+    public R reSetPassword(@PathVariable("SId") Long SId) {
+        return success(this.studentService.reSetPasswordBySId(SId));
     }
 
     /**
@@ -120,10 +135,10 @@ public class AdStudentController extends ApiController {
         try {
             headers.setContentDispositionFormData("attachment", URLEncoder.encode(fileName,"UTF-8"));
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            if(idList != null && !idList.isEmpty()){
-                workbook = POIStudentUtils.students2Excel(studentService.getStudentByIds(idList));
-            }else{
+            if(ObjectUtils.isEmpty(idList)){
                 workbook = POIStudentUtils.students2Excel(studentService.list());
+            }else{
+                workbook = POIStudentUtils.students2Excel(studentService.getStudentByIds(idList));
             }
             workbook.write(baos);
         } catch (IOException e) {
