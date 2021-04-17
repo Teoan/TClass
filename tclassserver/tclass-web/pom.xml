@@ -81,16 +81,50 @@
             <artifactId>spring-boot-actuator</artifactId>
         </dependency>
     </dependencies>
+    <profiles>
+        <!-- 开发测试环境 -->
+        <profile>
+            <id>dev</id>
+            <activation>
+                <!-- 设置默认激活dev环境的配置 -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <profile.env>dev</profile.env>
+            </properties>
+        </profile>
+        <!-- 产品发布环境 -->
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profile.env>prod</profile.env>
+            </properties>
+        </profile>
+    </profiles>
     <build>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <excludes>
+                    <!--使用通配符，当然可以定义多个exclude标签进行排除-->
+                    <exclude>application*.yml</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <!-- 开启变量替换功能 将<properties></properties>里面的变量值替换类路径文件中的含有${var} -->
+                <filtering>true</filtering>
+                <includes>
+                    <include>application.yml</include>
+                    <include>application-${profile.env}.yml</include>
+                </includes>
             </resource>
             <resource>
                 <directory>src/main/java</directory>
                 <includes>
                     <include>**/*.xml</include>
                 </includes>
+                <filtering>false</filtering>
             </resource>
         </resources>
         <plugins>

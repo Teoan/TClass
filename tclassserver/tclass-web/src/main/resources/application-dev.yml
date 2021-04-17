@@ -1,0 +1,45 @@
+spring:
+  datasource: #数据库连接配置
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+    url: jdbc:mysql://${MYSQL_URL:localhost:3306}/tclass?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    druid:
+      stat-view-servlet:
+        login-username: Teoan
+        login-password: 277077411
+  redis:
+    host: ${REDIS_HOST}
+    database: ${REDIS_DARABASE:0}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD}
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  #配置文件上传大小
+  servlet:
+    multipart:
+      max-request-size: 30MB
+      max-file-size: 50MB
+  #将前端传来的String解析为Data
+  mvc:
+    format:
+      date: yyyy-MM-dd HH:mm:ss
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+server:
+  port: ${SERVER_PORT:8080}
+  error:
+    include-message: always
+  #限制最大吞吐量
+  tomcat:
+    max-swallow-size: 100MB
+#设置文件上传目录
+file:
+  upload:
+    url: ${UPLOAD_PATH:~/tclass}
+#    Windows
+#    url: F:/Linux/git_clone/TClass/tclassserver/tclass-web/src/main/resources/static/upload
+#    Linux
+#    url: /home/root/tclass/upload
