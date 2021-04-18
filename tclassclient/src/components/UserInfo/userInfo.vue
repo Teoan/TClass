@@ -382,7 +382,7 @@ export default {
             }
           } else if (formName === 'passData') {
             this.passDataLoading = true
-            this.putRequest('/student/reSetPassword/'+this.userData.id).then(resp => {
+            this.putRequest('/student/reSetPassword/' + this.userData.id).then(resp => {
               if (resp.code === 0 && resp.data) {
                 this.$message.success('密码修改成功！')
                 this.passDataLoading = false

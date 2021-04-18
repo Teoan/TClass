@@ -6,7 +6,7 @@
       :body-style="{height:'100%'}"
     >
       <div class="select-div">
-        <el-input v-model="selectUserData.name" prefix-icon="el-icon-search" placeholder="根据学生姓名搜索" style="width: 400px;margin-right:20px" @keydown.enter.native="selectStudent" />
+        <el-input v-model="selectUserData.name" prefix-icon="el-icon-search" placeholder="根据学生姓名搜索" style="min-width: 200px;width: 20%;margin-right:20px" @keydown.enter.native="selectStudent" />
         <el-button type="primary" style="margin-right:20px" icon="el-icon-search" @click="selectStudent">搜索</el-button>
         <el-dialog title="数据管理" :visible.sync="dialogDataVisible">
           <div class="student-date-but-div">
@@ -187,14 +187,16 @@
           </el-table>
         </el-tooltip>
       </div>
-      <el-pagination
-        background
-        :total="pageInfo.total"
-        :page-count="pageInfo.pages"
-        :current-page="pageInfo.current"
-        hide-on-single-page
-        @current-change="currentChange"
-      />
+      <div class="page-div">
+        <el-pagination
+          background
+          :total="pageInfo.total"
+          :page-count="pageInfo.pages"
+          :current-page="pageInfo.current"
+          hide-on-single-page
+          @current-change="currentChange"
+        />
+      </div>
     </el-card>
   </span>
 </template>
@@ -450,5 +452,8 @@ export default {
   .progerss {
     width: 80%;
     margin-top: 10px;
+  }
+  .page-div {
+    min-height: 10%;
   }
 </style>

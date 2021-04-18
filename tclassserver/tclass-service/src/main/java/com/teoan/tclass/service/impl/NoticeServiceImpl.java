@@ -2,6 +2,8 @@ package com.teoan.tclass.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.teoan.tclass.entity.Notice;
@@ -31,13 +33,13 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
     @Cacheable
     @Override
     public IPage selectNoticesByPage(Long current, Long size, Notice notice) {
-        Page<Notice> noticePage = new Page(current,size);
+        Page<Notice> noticePage = new Page<>(current,size);
         QueryWrapper<Notice> wrapper = new QueryWrapper<>();
         //实现标题模糊查询
-        if(notice.getTitle()!=null){
+        if(StringUtils.isNotBlank(notice.getTitle())){
          wrapper.like("title",notice.getTitle());
         }
-        if(notice.getCreateTime()!=null){
+        if(ObjectUtils.isNotEmpty(notice.getCreateTime())){
          wrapper.like("create_time",new SimpleDateFormat("yyyy-MM-dd").format(notice.getCreateTime()));
         }
         wrapper.orderByDesc("create_time");

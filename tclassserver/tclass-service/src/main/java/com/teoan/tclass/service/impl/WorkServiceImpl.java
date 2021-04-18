@@ -3,6 +3,8 @@ package com.teoan.tclass.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.teoan.tclass.entity.Notice;
@@ -47,10 +49,10 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
         QueryWrapper<Work> wrapper = new QueryWrapper<>();
         wrapper.orderByDesc("create_time");
         //实现标题模糊查询
-        if(work.getName() != null){
+        if(StringUtils.isNotBlank(work.getName())){
             wrapper.like("name",work.getName());
         }
-        if(work.getCreateTime()!=null){
+        if(ObjectUtils.isNotEmpty(work.getCreateTime())){
             wrapper.like("create_time",new SimpleDateFormat("yyyy-MM-dd").format(work.getCreateTime()));
         }
         IPage<Work> workIPage = getBaseMapper().selectPage(page, wrapper);

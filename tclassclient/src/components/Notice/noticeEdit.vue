@@ -5,9 +5,11 @@
       shadow="hover"
       :body-style="{height:'100%'}"
     >
-      <el-form label-width="60px">
-        <el-form-item label="标题">
-          <el-input v-model="notice.title" placeholder="请输入标题" />
+      <el-form ref="notice" :model="notice" :rules="rules" label-width="60px">
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="notice.title" style="width: 30%;min-width: 180px;" placeholder="请输入标题" />
+          <el-button v-if="this.$route.query.noticeId !== undefined" type="primary" style="margin-left: 20px;" @click="commitEdit">完成编辑</el-button>
+          <el-button v-else type="primary" style="margin-left: 20px;" @click="commitNotice">发布通知</el-button>
         </el-form-item>
       </el-form>
       <editor
@@ -16,10 +18,6 @@
         language="zh_CN"
         height="80%"
       />
-      <div class="button-div">
-        <el-button v-if="this.$route.query.noticeId !== undefined" type="primary" @click="commitEdit">完成编辑</el-button>
-        <el-button v-else type="primary" @click="commitNotice">发布通知</el-button>
-      </div>
     </el-card>
   </div>
 </template>
@@ -39,6 +37,11 @@ export default {
         content: '',
         id: null,
         editSId: null
+      },
+      rules: {
+        title: [
+          { required: true, message: '请输入通知标题', trigger: 'blur' }
+        ]
       },
       editorOptions: {
         minHeight: '200px',
@@ -92,20 +95,32 @@ export default {
       }
     },
     commitEdit() {
-      this.notice.editSId = this.currentUser.id
-      this.putRequest('/admin/notice/', this.notice).then(resp => {
-        if (resp.code === 0) {
-          this.$message.success('编辑成功!')
-          this.$router.push('/noticemana')
+      this.$refs['notice'].validate((valid) => {
+        if (valid) {
+          this.notice.editSId = this.currentUser.id
+          this.putRequest('/admin/notice/', this.notice).then(resp => {
+            if (resp.code === 0) {
+              this.$message.success('编辑成功!')
+              this.$router.push('/noticemana')
+            }
+          })
+        } else {
+          return false
         }
       })
     },
     commitNotice() {
-      this.notice.sid = this.currentUser.id
-      this.postRequest('/admin/notice/', this.notice).then(resp => {
-        if (resp.code === 0) {
-          this.$message.success('发布成功!')
-          this.$router.push('/noticemana')
+      this.$refs['notice'].validate((valid) => {
+        if (valid) {
+          this.notice.sid = this.currentUser.id
+          this.postRequest('/admin/notice/', this.notice).then(resp => {
+            if (resp.code === 0) {
+              this.$message.success('发布成功!')
+              this.$router.push('/noticemana')
+            }
+          })
+        } else {
+          return false
         }
       })
     }

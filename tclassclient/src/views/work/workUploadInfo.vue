@@ -135,14 +135,6 @@ export default {
     },
     deleteFiles() {
       this.fileTableLoading = true
-      // var deleteFileNameList = []
-      // var deleteSIdList = []
-      // if (this.multipleSelection.length > 0) {
-      //   for (var i = 0; i < this.multipleSelection.length; i++) {
-      //     deleteSIdList[i] = this.multipleSelection[i].sid
-      //     deleteFileNameList[i] = this.multipleSelection[i].fileName
-      //   }
-      // }
       this.deleteRequest('/admin/work/upload', this.multipleSelection).then(resp => {
         if (resp.code === 0 && resp.data === true) {
           this.$message.success('批量删除成功！')

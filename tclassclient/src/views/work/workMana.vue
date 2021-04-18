@@ -5,7 +5,7 @@
       shadow="hover"
       :body-style="{height:'100%'}"
     >
-      <el-input v-model="selectWorkName" placeholder="请输入作业名字搜索" style="width: 30%;margin-top:20px" @keydown.enter.native="selectWorkByName" />
+      <el-input v-model="selectWorkName" placeholder="请输入作业名字搜索" style="width: 30%;min-width: 180px;margin-top:20px" @keydown.enter.native="selectWorkByName" />
       <el-date-picker
         v-model="selectCreateTime"
         align="right"
@@ -67,7 +67,7 @@
         </span>
       </el-dialog>
       <el-button type="primary" style="margin-left:20px;margin-top:20px" icon="el-icon-edit" @click="dialogExtensionVisible = true">编辑扩展名列表</el-button>
-      <el-dialog title="编辑扩展名列表" :visible.sync="dialogExtensionVisible" width="18%" @close="whenDialogExtensionClose('extensionValidateForm')">
+      <el-dialog title="编辑扩展名列表" :visible.sync="dialogExtensionVisible" width="400px" @close="whenDialogExtensionClose('extensionValidateForm')">
         <el-form ref="extensionValidateForm" label-width="auto" :model="extensionValidateForm" :inline="true" :status-icon="true">
           <el-form-item
             prop="extension"
@@ -77,7 +77,7 @@
               { pattern: /^\.[0-9a-zA-Z]+$/, message: '请输入正确的扩展名', trigger: ['blur', 'change'] }
             ]"
           >
-            <el-input v-model="extensionValidateForm.extension" size="small" />
+            <el-input v-model="extensionValidateForm.extension" size="small" style="" />
           </el-form-item>
           <el-form-item>
             <el-button size="small" type="primary" @click="addExtension">添加</el-button>
@@ -173,7 +173,7 @@
               label="更新时间"
               min-width="100"
             />
-            <el-table-column label="操作" fixed="right" min-width="180">
+            <el-table-column label="操作" fixed="right" min-width="200">
               <template slot-scope="scope">
                 <div class="cell-contain">
                   <template class="handle-div">

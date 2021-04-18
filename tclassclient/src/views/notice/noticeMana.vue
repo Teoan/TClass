@@ -5,7 +5,7 @@
       shadow="hover"
       :body-style="{height:'100%'}"
     >
-      <el-input v-model="selectNoticeTitle" placeholder="请输入通知标题搜索" style="width: 500px;margin-top:20px" @keydown.enter.native="selectNoticeByName" />
+      <el-input v-model="selectNoticeTitle" placeholder="请输入通知标题搜索" style="width: 30%;min-width: 180px;margin-top:20px" @keydown.enter.native="selectNoticeByName" />
       <el-date-picker
         v-model="selectCreateTime"
         align="right"
@@ -13,10 +13,10 @@
         value-format="yyyy-MM-dd HH:mm:ss"
         placeholder="选择日期"
         :picker-options="pickerOptions"
-        style="margin-left:20px;margin-top:20px"
+        style="margin-left:20px;margin-top:20px;width:20%;min-width: 120px;"
       />
-      <el-button type="primary" style="margin-left:20px;margin-top:20px" icon="el-icon-search" @click="selectNoticeByName">搜索</el-button>
-      <el-button type="primary" style="margin-left:20px;margin-top:20px" icon="el-icon-edit" @click="addNotice">发布通知</el-button>
+      <el-button type="primary" style="margin-left:20px;margin-top:20px;" icon="el-icon-search" @click="selectNoticeByName">搜索</el-button>
+      <el-button type="primary" style="margin-left:20px;margin-top:20px;" icon="el-icon-edit" @click="addNotice">发布通知</el-button>
       <template v-if="multipleSelection.length > 0">
         <el-popconfirm
           title="确定批量删除所选通知吗？"
@@ -58,14 +58,14 @@
           <el-table-column
             prop="createTime"
             label="创建时间"
-            min-width="120"
+            min-width="180"
           />
           <el-table-column
             prop="updateTime"
             label="更新时间"
-            min-width="120"
+            min-width="180"
           />
-          <el-table-column fixed="right" min-width="100">
+          <el-table-column fixed="right" min-width="160" label="操作">
             <template slot-scope="scope">
               <div class="cell-contain">
                 <el-button size="small" type="primary" @click="handleEdit(scope.row)">编辑</el-button>
@@ -75,14 +75,16 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-pagination
-        background
-        :total="pageInfo.total"
-        :page-count="pageInfo.pages"
-        :current-page="pageInfo.current"
-        hide-on-single-page
-        @current-change="currentChange"
-      />
+      <div class="page-div">
+        <el-pagination
+          background
+          :total="pageInfo.total"
+          :page-count="pageInfo.pages"
+          :current-page="pageInfo.current"
+          hide-on-single-page
+          @current-change="currentChange"
+        />
+      </div>
     </el-card>
   </span>
 </template>
@@ -118,11 +120,11 @@ export default {
     }
   },
   created() {
-    this.refreshTableData(1, 12)
+    this.refreshTableData(1, 10)
   },
   methods: {
     currentChange(current) {
-      this.refreshTableData(current, 12)
+      this.refreshTableData(current, 10)
     },
     getNoticesData(current, size) {
       if (this.selectNoticeTitle === '') {
@@ -140,7 +142,7 @@ export default {
       })
     },
     selectNoticeByName() {
-      this.refreshTableData(1, 12)
+      this.refreshTableData(1, 10)
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -170,7 +172,7 @@ export default {
       this.deleteRequest('/admin/notice/', idList).then(resp => {
         if (resp.code === 0 && resp.data) {
           this.$message.success('删除成功')
-          this.getNoticesData(this.pageInfo.current, 12)
+          this.getNoticesData(this.pageInfo.current, 10)
           this.tableLoading = false
         }
       }).catch(error => {
@@ -204,7 +206,9 @@ export default {
 }
 .table-div {
     margin: 20px 0;
-    height: 70%;
+    height: 75%;
 }
-
+.page-div {
+    min-height: 10%;
+}
 </style>
