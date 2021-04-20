@@ -1,5 +1,6 @@
 package com.teoan.tclass.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.teoan.tclass.exception.*;
 import com.teoan.tclass.service.FileService;
 import com.teoan.tclass.utils.FileUtils;
@@ -116,9 +117,11 @@ public class FileServiceImpl implements FileService {
         File deleteDir = new File(path+File.separator+wId);
         if(deleteDir.exists()){
             File[] deleteFiles = deleteDir.listFiles();
-            for (File file : deleteFiles) {
-                if(!file.delete()){
-                    return false;
+            if(ObjectUtils.isNotEmpty(deleteFiles)){
+                for (File file : deleteFiles) {
+                    if(!file.delete()){
+                        return false;
+                    }
                 }
             }
             return deleteDir.delete();
