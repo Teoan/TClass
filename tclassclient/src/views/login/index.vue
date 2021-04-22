@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="login-div">
     <el-form
       ref="loginForm"
       v-loading="loading"
@@ -123,29 +123,33 @@ export default {
 </script>
 
 <style>
-    .loginContainer {
-        border-radius: 15px;
-        background-clip: padding-box;
-        margin: 180px auto;
-        width: 350px;
-        padding: 15px 35px 15px 35px;
-        background: #fff;
-        border: 1px solid #eaeaea;
-        box-shadow: 0 0 25px #cac6c6;
-    }
-
-    .loginTitle {
-        margin: 15px auto 20px auto;
-        text-align: center;
-        color: #505458;
-    }
-
-    .loginRemember {
-        text-align: right;
-        margin: 0px 0px 15px 0px;
-    }
-    .el-form-item__content{
-        display: flex;
-        align-items: center;
-    }
+  .loginContainer {
+      border-radius: 15px;
+      background-clip: padding-box;
+      width: 350px;
+      padding: 15px 35px 15px 35px;
+      background: #fff;
+      border: 1px solid #eaeaea;
+      box-shadow: 0 0 25px #cac6c6;
+  }
+  .login-div{
+    height: 100%;
+    width: 100%;
+    display:flex;
+    align-items:center;
+    justify-content: center;
+  }
+  .loginTitle {
+      margin: 15px auto 20px auto;
+      text-align: center;
+      color: #505458;
+  }
+  .loginRemember {
+      text-align: right;
+      margin: 0px 0px 15px 0px;
+  }
+  .el-form-item__content{
+      display: flex;
+      align-items: center;
+  }
 </style>

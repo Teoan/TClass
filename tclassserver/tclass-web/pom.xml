@@ -91,6 +91,7 @@
             </activation>
             <properties>
                 <profile.env>dev</profile.env>
+                <skipTests>true</skipTests>
             </properties>
         </profile>
         <!-- 产品发布环境 -->
@@ -98,6 +99,7 @@
             <id>prod</id>
             <properties>
                 <profile.env>prod</profile.env>
+                <skipTests>true</skipTests>
             </properties>
         </profile>
     </profiles>

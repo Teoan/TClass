@@ -443,6 +443,7 @@ export default {
 .box-card-info {
   text-align: center;
   width: 15%;
+  min-width: 230px;
   height: 100%;
 }
 .user-name {
@@ -479,6 +480,7 @@ export default {
 }
 .box-card-data {
   width: 80%;
+  min-width: 500px;
   height: 100%;
   overflow: auto;
 }

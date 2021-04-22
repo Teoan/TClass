@@ -4,7 +4,7 @@
       :visible.sync="drawer"
       :with-header="false"
       direction="ltr"
-      size="15%"
+      size="250px"
       class="drawer"
     >
       <el-menu
