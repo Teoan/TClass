@@ -14,13 +14,6 @@
     <packaging>pom</packaging>
     <name>tclassserver</name>
 
-    <modules>
-        <module>tclass-entity</module>
-        <module>tclass-mapper</module>
-        <module>tclass-service</module>
-        <module>tclass-web</module>
-    </modules>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
