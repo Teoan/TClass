@@ -2,7 +2,7 @@ server:
   port: 8761 #暴露服务端口
 spring:
   application:
-    name: springcloud-eureka #服务id
+    name: tclass-registry #服务id
 eureka:
   client:
     # 是否要注册到其他Eureka Server实例

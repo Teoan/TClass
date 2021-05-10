@@ -1,0 +1,15 @@
+server:
+  port: 8001 #服务端口
+spring:
+  profiles:
+    active: dev #当前生效环境
+  application:
+    name: tclass-login-server #指定应用的唯一标识/服务名
+
+# 注册中心配置
+eureka:
+  instance:
+    prefer-ip-address: true #优先使用IP地址注册
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ #eureka的注册地址
