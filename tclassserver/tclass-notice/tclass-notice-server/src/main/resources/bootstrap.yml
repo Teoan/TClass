@@ -1,10 +1,10 @@
 server:
-  port: 8001 #服务端口
+  port: 8002 #服务端口
 spring:
   profiles:
     active: dev #当前生效环境
   application:
-    name: tclass-login-server #指定应用的唯一标识/服务名
+    name: tclass-notice-server #指定应用的唯一标识/服务名
 
 # 注册中心配置
 eureka:
