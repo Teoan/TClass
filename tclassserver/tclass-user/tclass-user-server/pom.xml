@@ -18,6 +18,16 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.teoan.tclass</groupId>
+            <artifactId>tclass-user-api</artifactId>
+            <version>1.0.0-BETA</version>
+        </dependency>
+        <dependency>
+            <groupId>com.teoan.tclass</groupId>
+            <artifactId>tclass-user-server-core</artifactId>
+            <version>1.0.0-BETA</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>

@@ -22,6 +22,16 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.teoan.tclass</groupId>
+            <artifactId>tclass-work-api</artifactId>
+            <version>1.0.0-BETA</version>
+        </dependency>
+        <dependency>
+            <groupId>com.teoan.tclass</groupId>
+            <artifactId>tclass-work-server-core</artifactId>
+            <version>1.0.0-BETA</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
