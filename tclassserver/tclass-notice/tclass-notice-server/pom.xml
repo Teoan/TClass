@@ -18,7 +18,12 @@
     <dependencies>
         <dependency>
             <groupId>com.teoan.tclass</groupId>
-            <artifactId>tclass-login-server-core</artifactId>
+            <artifactId>tclass-notice-server-core</artifactId>
+            <version>1.0.0-BETA</version>
+        </dependency>
+        <dependency>
+            <groupId>com.teoan.tclass</groupId>
+            <artifactId>tclass-notice-api</artifactId>
             <version>1.0.0-BETA</version>
         </dependency>
         <dependency>
