@@ -10,4 +10,4 @@ spring:
     config:
       server:
         native:
-          search-locations: classpath:/configs/{label}  #此处表明使用本地目录/configs下的配置文件作为配置仓库
+          search-locations: classpath:/configs/dev  #此处表明使用本地目录/configs下的配置文件作为配置仓库
