@@ -13,5 +13,6 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @SpringBootApplication
 public class TclassLoginApplication {
     public static void main(String[] args) {
-        SpringApplication.run(TclassLoginApplication.class, args); }
+        SpringApplication.run(TclassLoginApplication.class, args);
+    }
 }
