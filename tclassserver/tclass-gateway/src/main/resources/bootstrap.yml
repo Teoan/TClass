@@ -1,6 +1,6 @@
 spring:
   application:
-    name: tclass-registry #服务id
+    name: tclass-gateway
     # 配置中心
   cloud:
     config:
