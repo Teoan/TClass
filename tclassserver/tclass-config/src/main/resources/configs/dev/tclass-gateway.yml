@@ -19,6 +19,10 @@ spring:
   #            - After=2018-01-20T06:06:06+08:00[Asia/Shanghai] #根据时间进行匹配，在指定时间之后才会匹配路由
   #            - Before=2018-01-20T06:06:06+08:00[Asia/Shanghai] #根据时间进行匹配，在指定时间之前才会匹配路由
   #            - Between=2018-01-20T06:06:06+08:00[Asia/Shanghai], 2019-01-20T06:06:06+08:00[Asia/Shanghai] #根据时间段进行匹配，处于指定时间段才会匹配路由
+        - id: tclass-notice-server
+          uri: lb://tclass-notice-server
+          predicates:
+            - Path=/notice/**
   main:
     allow-bean-definition-overriding: true #是否允许同Bean覆盖
 

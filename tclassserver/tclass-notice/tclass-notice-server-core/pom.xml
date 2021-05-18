@@ -16,4 +16,15 @@
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.teoan.tclass</groupId>
+            <artifactId>tclass-notice-api</artifactId>
+            <version>1.0.0-BETA</version>
+        </dependency>
+    </dependencies>
 </project>
