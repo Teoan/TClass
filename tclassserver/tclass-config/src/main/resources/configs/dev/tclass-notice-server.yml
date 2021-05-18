@@ -1,5 +1,7 @@
 server:
   port: 8002 #服务端口
+  servlet:
+    context-path: "/notice"
 spring:
   profiles:
     active: dev #环境

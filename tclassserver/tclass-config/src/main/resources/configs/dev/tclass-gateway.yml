@@ -1,9 +1,10 @@
 server:
-  port: 9999
+  port: 6666
 spring:
   profiles:
     active: dev
     #网关配置中心
+  cloud:
     gateway:
       discovery:
         locator:  #路由访问方式：http://Gateway_HOST:Gateway_PORT/大写的serviceId/**，其中微服务应用名默认大写访问。

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2021/5/18 11:41
  */
 @RestController
-@RequestMapping("/notice")
 public class NoticeController {
     @GetMapping("/test")
     public String test(){
