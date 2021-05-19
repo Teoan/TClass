@@ -5,6 +5,32 @@ server:
 spring:
   profiles:
     active: dev #环境
+  datasource: #数据库连接配置
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: 277077411
+    url: jdbc:mysql://localhost:3306/tclass?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    druid:
+      stat-view-servlet:
+        login-username: Teoan
+        login-password: 277077411
+  redis:
+    host: www.xumumi.com
+    database: 0
+    port: 6379
+    password: 13319711
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  #配置文件上传大小
+  servlet:
+    multipart:
+      max-request-size: 30MB
+      max-file-size: 50MB
+  #将前端传来的String解析为Data
+  mvc:
+    format:
+      date: yyyy-MM-dd HH:mm:ss
 # 注册中心配置
 eureka:
   instance:

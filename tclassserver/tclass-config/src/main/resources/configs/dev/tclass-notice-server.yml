@@ -7,18 +7,18 @@ spring:
     active: dev #环境
   datasource: #数据库连接配置
     type: com.alibaba.druid.pool.DruidDataSource
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
-    url: jdbc:mysql://${MYSQL_URL:localhost:3306}/tclass?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 277077411
+    url: jdbc:mysql://localhost:3306/tclass?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     druid:
       stat-view-servlet:
         login-username: Teoan
         login-password: 277077411
   redis:
-    host: ${REDIS_HOST}
-    database: ${REDIS_DARABASE}
-    port: ${REDIS_PORT}
-    password: ${REDIS_PASSWORD}
+    host: www.xumumi.com
+    database: 0
+    port: 6379
+    password: 13319711
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
