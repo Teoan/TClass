@@ -1,5 +1,7 @@
 server:
   port: 8004 #服务端口
+  servlet:
+    context-path: "/work"
 spring:
   profiles:
     active: dev #环境

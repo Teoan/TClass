@@ -1,5 +1,7 @@
 server:
   port: 8003 #服务端口
+  servlet:
+    context-path: "/user"
 spring:
   profiles:
     active: dev #环境
