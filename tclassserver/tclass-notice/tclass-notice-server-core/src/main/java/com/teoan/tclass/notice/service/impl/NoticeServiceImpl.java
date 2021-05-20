@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.teoan.tclass.notice.dto.NoticeDTO;
 import com.teoan.tclass.notice.entity.Notice;
 import com.teoan.tclass.notice.mapper.NoticeMapper;
 import com.teoan.tclass.notice.service.NoticeService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -28,7 +30,8 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
 
     @Cacheable
     @Override
-    public IPage selectNoticesByPage(Long current, Long size, Notice notice) {
+    public IPage selectNoticesByPage(Long current, Long size, NoticeDTO notice) {
+
         Page<Notice> noticePage = new Page(current,size);
         QueryWrapper<Notice> wrapper = new QueryWrapper<>();
         //实现标题模糊查询
@@ -53,14 +56,18 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
 
     @CacheEvict(allEntries = true)
     @Override
-    public boolean save(Notice entity) {
-        return super.save(entity);
+    public boolean save(NoticeDTO noticeDTO) {
+        Notice notice = new Notice();
+        BeanUtils.copyProperties(noticeDTO,notice);
+        return super.save(notice);
     }
 
     @CacheEvict(allEntries = true)
     @Override
-    public boolean updateById(Notice entity) {
-        return super.updateById(entity);
+    public boolean updateById(NoticeDTO noticeDTO) {
+        Notice notice = new Notice();
+        BeanUtils.copyProperties(noticeDTO,notice);
+        return super.updateById(notice);
     }
 
     @CacheEvict(allEntries = true)

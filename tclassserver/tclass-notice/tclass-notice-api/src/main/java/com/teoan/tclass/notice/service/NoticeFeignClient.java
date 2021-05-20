@@ -1,7 +1,8 @@
 package com.teoan.tclass.notice.service;
 
-import com.baomidou.mybatisplus.extension.api.R;
+import com.teoan.tclass.notice.constant.R;
 import com.teoan.tclass.notice.dto.NoticeDTO;
+import com.teoan.tclass.notice.service.fallback.NoticeFeignFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * @author Teoan
  * @date 2021/5/20 15:44
  */
-@FeignClient(name = "tclass-notice-server ",value = "tclass-notice-server ")
+@FeignClient(name = "tclass-notice-server ",value = "tclass-notice-server ",fallback = NoticeFeignFallback.class)
 public interface NoticeFeignClient {
     /**
      * 分页查询所有数据

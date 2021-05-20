@@ -2,6 +2,7 @@ package com.teoan.tclass.notice.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.teoan.tclass.notice.dto.NoticeDTO;
 import com.teoan.tclass.notice.entity.Notice;
 
 import java.util.List;
@@ -22,11 +23,16 @@ public interface NoticeService extends IService<Notice> {
      * @param size 查询数据量
      * @return 所有数据
      */
-    IPage selectNoticesByPage(Long current, Long size, Notice notice);
+    IPage selectNoticesByPage(Long current, Long size, NoticeDTO notice);
 
     /**
      * 获取最新的通知
      * @return 所有数据
      */
     Notice getCurrentNotice();
+
+
+    boolean save(NoticeDTO noticeDTO);
+
+    boolean updateById(NoticeDTO noticeDTO);
 }

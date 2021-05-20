@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- * @author zhuangjy
+ * @author Teoan
  * @description 作业服务启动类
  * @date 2021/5/12 15:58
  */
