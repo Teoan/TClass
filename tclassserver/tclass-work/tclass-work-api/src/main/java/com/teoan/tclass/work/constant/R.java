@@ -1,4 +1,4 @@
-package com.teoan.tclass.notice.constant;
+package com.teoan.tclass.work.constant;
 
 
 import lombok.Data;
@@ -7,7 +7,6 @@ import java.util.Optional;
 
 /**
  * @author Teoan
- * @description
  * @date 2021/5/20 21:29
  */
 @Data

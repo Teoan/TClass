@@ -21,7 +21,7 @@ import java.util.List;
  * @date 2021/5/18 11:41
  */
 @RestController
-public class NoticeController implements NoticeFeignClient {
+public class NoticeFeignClientApi implements NoticeFeignClient {
     @Resource
     NoticeService noticeService;
 
