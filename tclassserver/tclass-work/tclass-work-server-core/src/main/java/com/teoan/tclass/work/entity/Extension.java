@@ -1,6 +1,12 @@
 package com.teoan.tclass.work.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -10,30 +16,16 @@ import java.io.Serializable;
  * @author Teoan
  * @since 2021-05-19 17:27:15
  */
-@SuppressWarnings("serial")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Extension extends Model<Extension> {
 
+    @TableId(type=IdType.AUTO)
     private Integer id;
 
     private String name;
-
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     /**
      * 获取主键值
      *

@@ -10,11 +10,11 @@ public enum ApiErrorCode {
     /**
      * 失败
      */
-    FAILED(-1, "操作失败"),
+    FAILED(500, "操作失败"),
     /**
      * 成功
      */
-    SUCCESS(0, "执行成功");
+    SUCCESS(200, "执行成功");
 
     private final long code;
     private final String msg;
