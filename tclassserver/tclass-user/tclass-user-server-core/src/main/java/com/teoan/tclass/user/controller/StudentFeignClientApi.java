@@ -1,7 +1,6 @@
 package com.teoan.tclass.user.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
-import com.teoan.tclass.user.constant.R;
 import com.teoan.tclass.user.dto.StudentDTO;
 import com.teoan.tclass.user.entity.Student;
 import com.teoan.tclass.user.service.*;
@@ -14,10 +13,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
+import com.teoan.tclass.common.result.R;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;

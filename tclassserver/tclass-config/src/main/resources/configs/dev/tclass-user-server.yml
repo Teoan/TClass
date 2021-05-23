@@ -41,6 +41,9 @@ eureka:
 mybatis-plus:
   global-config:
     banner: false
+feign:
+  hystrix:
+    enabled: true
 #设置文件上传目录
 file:
   upload:

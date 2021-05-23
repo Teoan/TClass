@@ -1,10 +1,9 @@
 package com.teoan.tclass.notice.service.fallback;
 
-import com.teoan.tclass.notice.constant.R;
 import com.teoan.tclass.notice.dto.NoticeDTO;
 import com.teoan.tclass.notice.service.NoticeFeignClient;
 import org.springframework.stereotype.Component;
-
+import com.teoan.tclass.common.result.R;
 import java.io.Serializable;
 import java.util.List;
 

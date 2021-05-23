@@ -1,6 +1,6 @@
 package com.teoan.tclass.work.service;
 
-import com.teoan.tclass.work.constant.R;
+import com.teoan.tclass.common.result.R;
 import com.teoan.tclass.work.dto.ExtensionDTO;
 import com.teoan.tclass.work.dto.UploadDTO;
 import com.teoan.tclass.work.dto.WorkDTO;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author Teoan
  * @date 2021/5/21 17:38
  */
-@FeignClient(name="tclass-work-server",value = "tclass-work-server",fallback = WorkFeignFallback.class)
+@FeignClient(name="tclass-work-server",value = "tclass-work-server",path = "/work",fallback = WorkFeignFallback.class)
 public interface WorkFeignClient {
     /**
      * extensionService分页查询所有数据
@@ -28,6 +28,7 @@ public interface WorkFeignClient {
      */
     @GetMapping("/")
     R selectAll(@RequestParam(value = "current",defaultValue = "1")Long current, @RequestParam(value = "size",defaultValue = "10")Long size, WorkDTO work);
+
 
 
     /**

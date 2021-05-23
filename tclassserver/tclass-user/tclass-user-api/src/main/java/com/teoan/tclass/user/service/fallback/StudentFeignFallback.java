@@ -1,12 +1,11 @@
 package com.teoan.tclass.user.service.fallback;
 
-import com.teoan.tclass.user.constant.R;
 import com.teoan.tclass.user.dto.StudentDTO;
 import com.teoan.tclass.user.service.StudentFeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
+import com.teoan.tclass.common.result.R;
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.List;

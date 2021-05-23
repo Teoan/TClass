@@ -14,7 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan("com.teoan.tclass")
 @MapperScan("com.teoan.tclass.notice.mapper")
-@EnableFeignClients
+@EnableFeignClients("com.teoan.tclass")
 @EnableEurekaClient
 public class TclassNoticeApplication {
     public static void main(String[] args) {

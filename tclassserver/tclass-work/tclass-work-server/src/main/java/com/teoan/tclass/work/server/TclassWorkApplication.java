@@ -17,7 +17,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan("com.teoan.tclass")
 @MapperScan("com.teoan.tclass.work.mapper")
 @EnableCaching
-@EnableFeignClients
+@EnableFeignClients("com.teoan.tclass")
 @EnableEurekaClient
 public class TclassWorkApplication {
     public static void main(String[] args) {

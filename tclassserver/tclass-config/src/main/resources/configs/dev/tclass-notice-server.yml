@@ -38,6 +38,9 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/ #eureka的注册地址
+feign:
+  hystrix:
+    enabled: true
 mybatis-plus:
   global-config:
     banner: false

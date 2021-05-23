@@ -27,7 +27,6 @@ public class Student extends Model<Student> {
     /**
      * 学号
      */
-    @TableId(type = IdType.AUTO)
     private Integer id;
     /**
      * 权限Id
@@ -80,12 +79,10 @@ public class Student extends Model<Student> {
     /**
      * 创建时间
      */
-    @TableField(fill = FieldFill.DEFAULT)
     private Date createTime;
     /**
      * 更新时间
      */
-    @TableField(fill = FieldFill.DEFAULT)
     private Date updateTime;
     /**
      * 最近登录时间

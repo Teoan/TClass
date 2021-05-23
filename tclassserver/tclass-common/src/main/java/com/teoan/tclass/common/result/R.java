@@ -1,4 +1,4 @@
-package com.teoan.tclass.user.constant;
+package com.teoan.tclass.common.result;
 
 
 import lombok.Data;

@@ -41,6 +41,9 @@ eureka:
 mybatis-plus:
   global-config:
     banner: false
+feign:
+  hystrix:
+    enabled: true
 file:
   upload:
     url:

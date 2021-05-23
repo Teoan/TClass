@@ -1,4 +1,4 @@
-package com.teoan.tclass.work.constant;
+package com.teoan.tclass.common.result;
 
 
 /**

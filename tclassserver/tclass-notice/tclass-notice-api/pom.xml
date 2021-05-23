@@ -29,5 +29,9 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.teoan.tclass</groupId>
+            <artifactId>tclass-common</artifactId>
+        </dependency>
     </dependencies>
 </project>

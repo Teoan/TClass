@@ -1,17 +1,10 @@
 package com.teoan.tclass.notice.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
-import com.baomidou.mybatisplus.extension.api.ApiController;
-import com.teoan.tclass.notice.constant.R;
 import com.teoan.tclass.notice.dto.NoticeDTO;
-import com.teoan.tclass.notice.entity.Notice;
 import com.teoan.tclass.notice.service.NoticeFeignClient;
 import com.teoan.tclass.notice.service.NoticeService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.teoan.tclass.common.result.R;
 import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.teoan.tclass.user.service;
 
 
-import com.teoan.tclass.user.constant.R;
+import com.teoan.tclass.common.result.R;
 import com.teoan.tclass.user.dto.StudentDTO;
 import com.teoan.tclass.user.service.fallback.StudentFeignFallback;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -18,7 +18,7 @@ import java.util.List;
  * @description 学生Feign客户端
  * @date 2021/5/21 11:18
  */
-@FeignClient(name="tclass-user-server",value = "tclass-user-server",fallback = StudentFeignFallback.class)
+@FeignClient(name="tclass-user-server",value = "tclass-user-server",path = "/user",fallback = StudentFeignFallback.class)
 public interface StudentFeignClient {
     /**
      * 通过主键查询单条数据
@@ -36,7 +36,7 @@ public interface StudentFeignClient {
      * @return 修改结果
      */
     @PutMapping("/")
-    public R update(@RequestBody StudentDTO studentDTO);
+    R update(@RequestBody StudentDTO studentDTO);
 
     /**
      * 获取民族列表

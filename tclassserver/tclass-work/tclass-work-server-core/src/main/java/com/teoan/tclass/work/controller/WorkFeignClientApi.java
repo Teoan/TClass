@@ -1,6 +1,7 @@
 package com.teoan.tclass.work.controller;
 
-import com.teoan.tclass.work.constant.R;
+import com.teoan.tclass.user.service.StudentFeignClient;
+import com.teoan.tclass.common.result.R;
 import com.teoan.tclass.work.dto.ExtensionDTO;
 import com.teoan.tclass.work.dto.UploadDTO;
 import com.teoan.tclass.work.dto.WorkDTO;
@@ -49,6 +50,8 @@ public class WorkFeignClientApi implements WorkFeignClient {
     @Resource
     private ExtensionService extensionService;
 
+    @Resource
+    private StudentFeignClient studentFeignClient;
 
     @Resource
     private FileService fileService;
