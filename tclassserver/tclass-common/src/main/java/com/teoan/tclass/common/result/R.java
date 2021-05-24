@@ -3,6 +3,7 @@ package com.teoan.tclass.common.result;
 
 import lombok.Data;
 
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -25,6 +26,11 @@ public class R<T> {
      * 描述
      */
     private String msg;
+
+    /**
+     * 时间戳
+     */
+    private Long timeStamp = new Date().getTime();
 
     public R() {
         // to do nothing
