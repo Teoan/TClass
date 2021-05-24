@@ -24,7 +24,7 @@
         </dependency>
         <dependency>
             <groupId>com.teoan.tclass</groupId>
-            <artifactId>tclass-common</artifactId>
+            <artifactId>tclass-common-code</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
