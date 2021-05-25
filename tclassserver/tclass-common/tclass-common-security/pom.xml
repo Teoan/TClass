@@ -16,4 +16,25 @@
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <!--Security依赖-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-security</artifactId>
+        </dependency>
+        <!--OAuth2依赖-->
+        <dependency>
+            <groupId>org.springframework.security.oauth.boot</groupId>
+            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
