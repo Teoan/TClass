@@ -8,11 +8,18 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
 
 /**
  * @author Teoan
@@ -26,9 +33,34 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     DataSource dataSource;
 
+    private String SIGNING_KEY = "teoan";
+
     @Bean
-    public TokenStore tokenStore() {
-        return new InMemoryTokenStore();
+    TokenStore tokenStore() {
+        return new JwtTokenStore(jwtAccessTokenConverter());
+    }
+
+    @Bean
+    JwtAccessTokenConverter jwtAccessTokenConverter() {
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        converter.setSigningKey(SIGNING_KEY);
+        return converter;
+    }
+
+    @Bean
+    ClientDetailsService clientDetailsService(){
+        return new JdbcClientDetailsService(dataSource);
+    }
+
+
+    @Bean
+    AuthorizationServerTokenServices tokenServices() {
+        DefaultTokenServices services = new DefaultTokenServices();
+        services.setClientDetailsService(clientDetailsService());
+        services.setSupportRefreshToken(true);
+        services.setTokenStore(tokenStore());
+        services.setTokenEnhancer(jwtAccessTokenConverter());
+        return services;
     }
 
     @Override
@@ -39,11 +71,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 //        配置ClientDetails的实现为JDBC
-        clients.withClientDetails(new JdbcClientDetailsService(dataSource));
+        clients.withClientDetails(clientDetailsService());
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        super.configure(endpoints);
+        endpoints.tokenServices(tokenServices())
+                .tokenEnhancer(jwtAccessTokenConverter())
+                .tokenStore(tokenStore());
     }
 }
