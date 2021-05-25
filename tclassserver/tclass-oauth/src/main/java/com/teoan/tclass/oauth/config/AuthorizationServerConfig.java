@@ -31,35 +31,21 @@ import java.util.Arrays;
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
-    DataSource dataSource;
+    TokenStore tokenStore;
 
-    private String SIGNING_KEY = "teoan";
+    @Autowired
+    JwtAccessTokenConverter jwtAccessTokenConverter;
 
-    @Bean
-    TokenStore tokenStore() {
-        return new JwtTokenStore(jwtAccessTokenConverter());
-    }
-
-    @Bean
-    JwtAccessTokenConverter jwtAccessTokenConverter() {
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey(SIGNING_KEY);
-        return converter;
-    }
-
-    @Bean
-    ClientDetailsService clientDetailsService(){
-        return new JdbcClientDetailsService(dataSource);
-    }
-
+    @Autowired
+    ClientDetailsService clientDetailsService;
 
     @Bean
     AuthorizationServerTokenServices tokenServices() {
         DefaultTokenServices services = new DefaultTokenServices();
-        services.setClientDetailsService(clientDetailsService());
+        services.setClientDetailsService(clientDetailsService);
         services.setSupportRefreshToken(true);
-        services.setTokenStore(tokenStore());
-        services.setTokenEnhancer(jwtAccessTokenConverter());
+        services.setTokenStore(tokenStore);
+        services.setTokenEnhancer(jwtAccessTokenConverter);
         return services;
     }
 
@@ -71,13 +57,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 //        配置ClientDetails的实现为JDBC
-        clients.withClientDetails(clientDetailsService());
+        clients.withClientDetails(clientDetailsService);
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.tokenServices(tokenServices())
-                .tokenEnhancer(jwtAccessTokenConverter())
-                .tokenStore(tokenStore());
+                .tokenEnhancer(jwtAccessTokenConverter)
+                .tokenStore(tokenStore);
     }
 }
