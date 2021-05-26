@@ -28,9 +28,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     UserDetailsService userDetailsService;
 
-
-
-
     @Bean
     PasswordEncoder passwordEncoder(){
         return new PasswordEncoder() { //设置密码加密对象
@@ -58,12 +55,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    }
 //
 //
-//    @Override
-//    @Bean
-//    protected AuthenticationManager authenticationManager() throws Exception {
+    @Override
+    @Bean
+    protected AuthenticationManager authenticationManager() throws Exception {
 //        ProviderManager manager = new ProviderManager(Arrays.asList(myAuthenticationProvider()));
 //        return manager;
-//    }
+        return super.authenticationManagerBean();
+    }
 
 
 
@@ -82,106 +80,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//                .anyRequest()
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .permitAll()
-//                .and()
-//                .csrf()
-//                .disable();
         http.authorizeRequests()
-                .antMatchers("/admin/**","/druid/**")
-                .hasRole("admin")///admin/**URL都需要有超级管理员角色，如果使用.hasAuthority()方法来配置，需要在参数中加上ROLE_,如下.hasAuthority("ROLE_超级管理员")
-                .antMatchers("/oauth/token","/login","/logout").permitAll()  //不需要令牌,直接访问资源
+                .anyRequest().authenticated()
                 .and()
-                .authorizeRequests()//端点排除
-                .anyRequest()
-                .authenticated()//其他的路径都是登录后即可访问
-                .and()
-                .formLogin()//指定支持基于表单的身份验证。如果未指定FormLoginConfigurer#loginPage(String)，则将生成默认登录页面
-                .loginPage("/login")
-                .loginProcessingUrl("/login")//设置登录表单提交的页面
-                .usernameParameter("username")//设置表单提交用户名时使用的参数名
-                .passwordParameter("password")//设置表单提交密码时使用的参数名
-                .permitAll()//允许任何人访问
-//                .successHandler((request, response, authentication) -> {
-////                    response.setContentType("application/json;charset=utf-8");
-////                    PrintWriter out = response.getWriter();
-////                    Student student = (Student) authentication.getPrincipal();
-////                    studentService.updateById(Student.builder().id(student.getId()).loginTime(new Date()).build());
-////                    StudentDTO studentDTO = new StudentDTO();
-////                    BeanUtils.copyProperties(student,studentDTO);
-////                    R respBean = R.ok(studentDTO);
-////                    respBean.setMsg("登录成功！");
-////                    ObjectMapper mapper = new ObjectMapper();
-////                    mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-////                    String s = mapper.writeValueAsString(respBean);
-////                    out.write(s);
-////                    out.flush();
-////                    out.close();
-//                })
-//                .failureHandler((request, response, e) -> {
-////                    response.setContentType("application/json;charset=utf-8");
-////                    PrintWriter out = response.getWriter();
-////                    R respBean = new R();
-////                    respBean.setMsg(e.getMessage());
-////                    if (e instanceof LockedException) {
-////                        respBean.setMsg("账户被锁定，请联系管理员!");
-////                    } else if (e instanceof CredentialsExpiredException) {
-////                        respBean.setMsg("密码过期，请联系管理员!");
-////                    } else if (e instanceof AccountExpiredException) {
-////                        respBean.setMsg("账户过期，请联系管理员!");
-////                    } else if (e instanceof DisabledException) {
-////                        respBean.setMsg("账户被禁用，请联系管理员!");
-////                    } else if (e instanceof BadCredentialsException) {
-////                        respBean.setMsg("用户名或者密码输入错误，请重新输入!");
-////                    }
-////                    respBean.setCode(ApiErrorCode.FAILED.getCode());
-////                    out.write(new ObjectMapper().writeValueAsString(respBean));
-////                    out.flush();
-////                    out.close();
-//                })
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-//                .logoutSuccessHandler((request, response, authentication) -> {
-////                    response.setContentType("application/json;charset=utf-8");
-////                    PrintWriter out = response.getWriter();
-////                    Student student = (Student) authentication.getPrincipal();
-////                    R respBean = new R();
-////                    respBean.setMsg("注销成功！");
-////                    respBean.setData(student.getName());
-////                    respBean.setCode(ApiErrorCode.SUCCESS.getCode());
-////                    out.write(new ObjectMapper().writeValueAsString(respBean));
-////                    out.flush();
-////                    out.close();
-//
-//                })
-                .permitAll()
-                .and()
-                .rememberMe()
-                .rememberMeParameter("remember")
-                .and()
-                .csrf()
-                .disable()
-                .exceptionHandling();
-//                .authenticationEntryPoint((request, response, e) -> {
-//                    //若用户未登录，直接重定向到登录页面
-//                    response.sendRedirect("/index.html");
-//                });
-//                .accessDeniedHandler((request, response, e) -> {
-////                    response.setContentType("application/json;charset=utf-8");
-////                    response.setStatus(403);
-////                    PrintWriter out = response.getWriter();
-////                    R respBean = new R();
-////                    respBean.setData("访问失败！");
-////                    respBean.setCode(ApiErrorCode.FAILED.getCode());
-////                    respBean.setMsg("权限不足，请联系管理员");
-////                    out.write(new ObjectMapper().writeValueAsString(respBean));
-////                    out.flush();
-////                    out.close();
-//                });
+                .formLogin().and()
+                .csrf().disable()
+                .httpBasic();
     }
 }
