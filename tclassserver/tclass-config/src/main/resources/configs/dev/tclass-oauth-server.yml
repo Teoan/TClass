@@ -17,6 +17,8 @@ spring:
     database: 0
     port: 6379
     password: 13319711
+  main:
+    allow-bean-definition-overriding: true
 # 注册中心配置
 eureka:
   instance:

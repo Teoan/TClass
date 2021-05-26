@@ -1,4 +1,4 @@
-package com.teoan.tclass.oauth.config;
+package com.teoan.tclass.common.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
