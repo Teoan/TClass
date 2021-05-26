@@ -9,12 +9,11 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
 /**
- * @author zhuangjy
+ * @author Teoan
  * @description
  * @date 2021/5/26 14:27
  */
 @Configuration
-@EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Autowired

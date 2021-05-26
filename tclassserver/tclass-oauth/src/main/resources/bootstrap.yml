@@ -1,6 +1,8 @@
 spring:
   application:
     name: tclass-oauth-server #指定应用的唯一标识/服务名
+  main:
+    allow-bean-definition-overriding: true
     # 配置中心
   cloud:
     config:
