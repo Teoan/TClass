@@ -3,6 +3,7 @@ package com.teoan.tclass.oauth.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -39,6 +40,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     UserDetailsService userDetailsService;
 
+    @Autowired
+    AuthenticationManager authenticationManager;
+
     @Bean
     AuthorizationServerTokenServices tokenServices() {
         DefaultTokenServices services = new DefaultTokenServices();
@@ -50,16 +54,19 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return services;
     }
 
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        security.tokenKeyAccess("permitAll()")
+                .checkTokenAccess("isAuthenticated()")
+                .allowFormAuthenticationForClients();//允许表单提交验证
+    }
+
     /**
      * 用来配置令牌端点的安全约束，也就是这个端点谁能访问，谁不能访问。
      * @param security
      * @throws Exception
      */
-    @Override
-    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-//        security.tokenKeyAccess("permitAll()");
-//        security.allowFormAuthenticationForClients();
-    }
+
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -77,6 +84,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints.tokenServices(tokenServices())
                 .tokenEnhancer(jwtAccessTokenConverter)
                 .tokenStore(tokenStore)
-                .userDetailsService(userDetailsService);
+                .userDetailsService(userDetailsService)
+                .authenticationManager(authenticationManager);  //配置认证管理器，支持password模式
     }
 }
