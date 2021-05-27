@@ -42,4 +42,17 @@ public class AccessTokenConfig {
         return new JdbcClientDetailsService(dataSource);
     }
 
+    @Bean("JwtTokenServices")
+    AuthorizationServerTokenServices tokenServices() {
+        DefaultTokenServices services = new DefaultTokenServices();
+        services.setClientDetailsService(clientDetailsService());
+        services.setSupportRefreshToken(true);
+        //配置令牌存储
+        services.setTokenStore(tokenStore());
+        services.setTokenEnhancer(jwtAccessTokenConverter());
+        return services;
+    }
+
+
+
 }

@@ -1,6 +1,7 @@
 package com.teoan.tclass.oauth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,16 +44,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     AuthenticationManager authenticationManager;
 
-    @Bean
-    AuthorizationServerTokenServices tokenServices() {
-        DefaultTokenServices services = new DefaultTokenServices();
-        services.setClientDetailsService(clientDetailsService);
-        services.setSupportRefreshToken(true);
-        //配置令牌存储
-        services.setTokenStore(tokenStore);
-        services.setTokenEnhancer(jwtAccessTokenConverter);
-        return services;
-    }
+    @Qualifier("JwtTokenServices")
+    @Autowired
+    AuthorizationServerTokenServices authorizationServerTokenServices;
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
@@ -66,8 +60,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      * @param security
      * @throws Exception
      */
-
-
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         //配置客户端的详细信息
@@ -81,7 +73,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.tokenServices(tokenServices())
+        endpoints.tokenServices(authorizationServerTokenServices)
                 .tokenEnhancer(jwtAccessTokenConverter)
                 .tokenStore(tokenStore)
                 .userDetailsService(userDetailsService)

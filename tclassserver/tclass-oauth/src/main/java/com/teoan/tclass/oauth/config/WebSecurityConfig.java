@@ -77,11 +77,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http
+                .requestMatchers()
+                //接受的请求
+                .antMatchers("/login", "/logout", "/oauth/authorize", "/oauth/confirm_access")
+                .and()
+                .authorizeRequests()// 端点排除
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().and()
-                .csrf().disable()
-                .httpBasic();
+                .formLogin()
+                .loginPage("/login")
+                .failureUrl("/login?error")
+                .permitAll()
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .invalidateHttpSession(true).clearAuthentication(true);
     }
 }
