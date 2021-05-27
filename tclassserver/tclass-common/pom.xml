@@ -11,6 +11,7 @@
     <modules>
         <module>tclass-common-code</module>
         <module>tclass-common-security</module>
+        <module>tclass-common-sys</module>
     </modules>
 
     <properties>

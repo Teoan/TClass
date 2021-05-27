@@ -1,4 +1,4 @@
-package com.teoan.tclass.common.sys.entity;
+package com.teoan.tclass.common.entity;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

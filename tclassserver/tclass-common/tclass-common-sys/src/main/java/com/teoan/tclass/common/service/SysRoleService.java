@@ -1,7 +1,7 @@
-package com.teoan.tclass.common.sys.service;
+package com.teoan.tclass.common.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.teoan.tclass.common.sys.entity.Role;
+import com.teoan.tclass.common.entity.Role;
 
 /**
  * (Role)表服务接口
@@ -9,6 +9,6 @@ import com.teoan.tclass.common.sys.entity.Role;
  * @author Teoan
  * @since 2021-05-19 16:48:56
  */
-public interface RoleService extends IService<Role> {
+public interface SysRoleService extends IService<Role> {
 
 }

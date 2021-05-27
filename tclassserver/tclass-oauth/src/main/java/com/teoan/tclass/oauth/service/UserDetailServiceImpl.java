@@ -1,10 +1,9 @@
 package com.teoan.tclass.oauth.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.teoan.tclass.common.sys.entity.Role;
-import com.teoan.tclass.common.sys.entity.Student;
-import com.teoan.tclass.common.sys.service.RoleService;
-import com.teoan.tclass.common.sys.service.StudentService;
+import com.teoan.tclass.common.entity.Role;
+import com.teoan.tclass.common.entity.Student;
+import com.teoan.tclass.common.service.SysRoleService;
+import com.teoan.tclass.common.service.SysStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -25,23 +24,23 @@ import java.util.List;
 @Component
 public class UserDetailServiceImpl implements UserDetailsService {
     @Autowired
-    StudentService studentService;
+    SysStudentService sysStudentService;
 
     @Autowired
-    RoleService roleService;
+    SysRoleService sysRoleService;
 
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         
 //        由于使用学号进行登录，所以这里的用户名实际上为学号
-        Student student = studentService.getById(s);
+        Student student = sysStudentService.getById(s);
         if(ObjectUtils.isEmpty(student)){
             throw new UsernameNotFoundException("用户名不存在!");
         }
 
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
-        Role role = roleService.getById(student.getRoleId());
+        Role role = sysRoleService.getById(student.getRoleId());
         authorityList.add(new SimpleGrantedAuthority(role.getName()));
         // 可用性
         boolean enabled = true;

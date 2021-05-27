@@ -15,7 +15,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
  */
 @SpringBootApplication
 @ComponentScan("com.teoan.tclass")
-@MapperScan("com.teoan.tclass.common.sys.mapper")
+@MapperScan("com.teoan.tclass.common.mapper")
 @EnableEurekaClient
 public class TclassOauthApplication {
     public static void main(String[] args) {

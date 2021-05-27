@@ -1,7 +1,7 @@
-package com.teoan.tclass.common.sys.mapper;
+package com.teoan.tclass.common.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.teoan.tclass.common.sys.entity.Role;
+import com.teoan.tclass.common.entity.Role;
 
 /**
  * (Role)表数据库访问层
