@@ -25,6 +25,11 @@ public class WorkFeignFallback implements WorkFeignClient {
     }
 
     @Override
+    public R testFeign() {
+        return null;
+    }
+
+    @Override
     public R getExtensionList() {
         return R.failed("获取失败");
     }

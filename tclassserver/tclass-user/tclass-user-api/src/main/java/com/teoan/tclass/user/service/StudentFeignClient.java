@@ -1,6 +1,7 @@
 package com.teoan.tclass.user.service;
 
 
+import com.teoan.tclass.common.config.TokenFeignClientConfig;
 import com.teoan.tclass.common.result.R;
 import com.teoan.tclass.user.dto.StudentDTO;
 import com.teoan.tclass.user.service.fallback.StudentFeignFallback;
@@ -18,7 +19,7 @@ import java.util.List;
  * @description 学生Feign客户端
  * @date 2021/5/21 11:18
  */
-@FeignClient(name="tclass-user-server",value = "tclass-user-server",path = "/user",fallback = StudentFeignFallback.class)
+@FeignClient(name="tclass-user-server",value = "tclass-user-server",path = "/user",fallback = StudentFeignFallback.class,configuration = TokenFeignClientConfig.class)
 public interface StudentFeignClient {
     /**
      * 通过主键查询单条数据

@@ -145,6 +145,11 @@ public class WorkFeignClientApi implements WorkFeignClient {
     }
 
     @Override
+    public R testFeign() {
+        return R.ok(studentFeignClient.getRoles().getData());
+    }
+
+    @Override
     public R deleteUploadFileByIdList(List<UploadDTO> uploadDTOList) {
         List<Upload> uploadList = uploadDTOList.stream().map(uploadDTO -> {
             Upload upload = new Upload();
