@@ -3,6 +3,7 @@ package com.teoan.tclass.common.config;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  * @description 配置Feign客户端转发Token
  * @date 2021/5/27 23:17
  */
-@Component
+@Configuration
 public class TokenFeignClientConfig implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate requestTemplate) {
