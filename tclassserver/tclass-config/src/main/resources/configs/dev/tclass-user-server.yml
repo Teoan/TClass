@@ -7,7 +7,7 @@ spring:
     active: dev #环境
   datasource: #数据库连接配置
     type: com.alibaba.druid.pool.DruidDataSource
-    username: Teoan
+    username: root
     password: 277077411
     url: jdbc:mysql://localhost:3306/tclass?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     druid:
@@ -61,10 +61,18 @@ feign:
       default:
         #指定日志级别，none：不记录任何日志，basic：仅记录请求方法、URL、响应状态代码以及执行时间（适合生产环境）
         #headers：在basic基础上，记录请求和响应的header，full：记录请求和响应的header、body和元数据，默认none
-        loggerLevel: basic
+        loggerLevel: headers
       #feign指定客户端配置，即仅对指定调用的服务生效
       eureka-client:
         loggerLevel: full
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          strategy: SEMAPHORE
 #设置文件上传目录
 file:
   upload:

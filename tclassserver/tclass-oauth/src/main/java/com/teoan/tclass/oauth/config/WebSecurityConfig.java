@@ -23,7 +23,6 @@ import java.util.Arrays;
  * @date 2021/5/26 14:52
  */
 @Configuration
-@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     UserDetailsService userDetailsService;
@@ -77,18 +76,32 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+//        http
+//                .requestMatchers()
+//                //接受的请求
+//                .antMatchers("/login", "/logout", "/oauth/authorize", "/oauth/confirm_access")
+//                .and()
+//                .authorizeRequests()// 端点排除
+//                .anyRequest().authenticated()
+//                .and()
+//                .formLogin()
+//                .loginProcessingUrl("/login")
+//                .failureUrl("/login?error")
+//                .permitAll()
+//                .and()
+//                .logout()
+//                .logoutUrl("/logout")
+//                .invalidateHttpSession(true).clearAuthentication(true);
+        http.formLogin()
+                .loginProcessingUrl("/login")
+                .permitAll()
+                .and()
                 .requestMatchers()
                 //接受的请求
                 .antMatchers("/login", "/logout", "/oauth/authorize", "/oauth/confirm_access")
                 .and()
                 .authorizeRequests()// 端点排除
                 .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .failureUrl("/login?error")
-                .permitAll()
                 .and()
                 .logout()
                 .logoutUrl("/logout")
