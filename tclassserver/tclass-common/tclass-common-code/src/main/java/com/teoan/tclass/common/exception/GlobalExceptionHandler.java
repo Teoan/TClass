@@ -20,7 +20,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @Value("${spring.servlet.multipart.max-file-size}")
+//    @Value("${spring.servlet.multipart.max-file-size}")
     private String maxFileSize;
     //捕获文件大小异常 TODO:统一异常返回格式
     @ExceptionHandler(MultipartException.class)

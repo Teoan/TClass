@@ -6,7 +6,7 @@ package com.teoan.tclass.common.result;
  * @description
  * @date 2021/5/20 21:31
  */
-public enum ApiErrorCode {
+public enum ApiStatusCode {
     /**
      * 失败
      */
@@ -14,19 +14,24 @@ public enum ApiErrorCode {
     /**
      * 成功
      */
-    SUCCESS(200, "执行成功");
+    SUCCESS(200, "执行成功"),
+
+    /**
+     * 权限不足
+     */
+    ACCESS(401,"权限不足，无法访问！");
 
     private final long code;
     private final String msg;
 
-    ApiErrorCode(final long code, final String msg) {
+    ApiStatusCode(final long code, final String msg) {
         this.code = code;
         this.msg = msg;
     }
 
-    public static ApiErrorCode fromCode(long code) {
-        ApiErrorCode[] ecs = ApiErrorCode.values();
-        for (ApiErrorCode ec : ecs) {
+    public static ApiStatusCode fromCode(long code) {
+        ApiStatusCode[] ecs = ApiStatusCode.values();
+        for (ApiStatusCode ec : ecs) {
             if (ec.getCode() == code) {
                 return ec;
             }

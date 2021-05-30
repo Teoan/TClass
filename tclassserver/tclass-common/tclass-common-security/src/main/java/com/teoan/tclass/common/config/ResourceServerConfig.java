@@ -21,9 +21,15 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Autowired
     TokenStore tokenStore;
 
+    @Autowired
+    MyAuthenticationEntryPoint myAuthenticationEntryPoint;
+
+    @Autowired
+    MyAccessDeniedHandler myAccessDeniedHandler;
+
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-        resources.tokenStore(tokenStore);
+        resources.tokenStore(tokenStore).authenticationEntryPoint(myAuthenticationEntryPoint).accessDeniedHandler(myAccessDeniedHandler);
     }
 
     @Override

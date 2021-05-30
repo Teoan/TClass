@@ -1,6 +1,7 @@
 package com.teoan.tclass.common.result;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;
@@ -36,33 +37,39 @@ public class R<T> {
         // to do nothing
     }
 
-    public R(ApiErrorCode errorCode) {
-        errorCode = Optional.ofNullable(errorCode).orElse(ApiErrorCode.FAILED);
+    public R(long code, T data, String msg) {
+        this.code = code;
+        this.data = data;
+        this.msg = msg;
+    }
+
+    public R(ApiStatusCode errorCode) {
+        errorCode = Optional.ofNullable(errorCode).orElse(ApiStatusCode.FAILED);
         this.code = errorCode.getCode();
         this.msg = errorCode.getMsg();
     }
 
     public static <T> R<T> ok(T data) {
-        ApiErrorCode aec = ApiErrorCode.SUCCESS;
+        ApiStatusCode aec = ApiStatusCode.SUCCESS;
         if (data instanceof Boolean && Boolean.FALSE.equals(data)) {
-            aec = ApiErrorCode.FAILED;
+            aec = ApiStatusCode.FAILED;
         }
         return restResult(data, aec);
     }
 
     public static <T> R<T> failed(String msg) {
-        return restResult(null, ApiErrorCode.FAILED.getCode(), msg);
+        return restResult(null, ApiStatusCode.FAILED.getCode(), msg);
     }
 
     public static <T> R<T> success(String msg) {
-        return restResult(null, ApiErrorCode.SUCCESS.getCode(), msg);
+        return restResult(null, ApiStatusCode.SUCCESS.getCode(), msg);
     }
 
-    public static <T> R<T> failed(ApiErrorCode errorCode) {
+    public static <T> R<T> failed(ApiStatusCode errorCode) {
         return restResult(null, errorCode);
     }
 
-    public static <T> R<T> restResult(T data, ApiErrorCode errorCode) {
+    public static <T> R<T> restResult(T data, ApiStatusCode errorCode) {
         return restResult(data, errorCode.getCode(), errorCode.getMsg());
     }
 
@@ -75,6 +82,6 @@ public class R<T> {
     }
 
     public boolean ok() {
-        return ApiErrorCode.SUCCESS.getCode() == code;
+        return ApiStatusCode.SUCCESS.getCode() == code;
     }
 }

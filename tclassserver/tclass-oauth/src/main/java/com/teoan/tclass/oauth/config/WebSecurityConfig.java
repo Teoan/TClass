@@ -1,5 +1,6 @@
 package com.teoan.tclass.oauth.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -25,35 +26,7 @@ import java.util.Arrays;
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
-    UserDetailsService userDetailsService;
-
-    @Bean
-    PasswordEncoder passwordEncoder(){
-        return new PasswordEncoder() { //设置密码加密对象
-            //encode():把参数按照特定的解析规则进行解析
-            @Override
-            public String encode(CharSequence charSequence) {
-//                使用Spring自带的加密工具加密字段
-                return DigestUtils.md5DigestAsHex(charSequence.toString().getBytes());
-            }
-            //            matches()验证从存储中获取的编码密码与编码后提交的原始密码是否匹配
-//            第一个参数表示需要被解析的密码。第二个参数表示存储的密码。
-            @Override
-            public boolean matches(CharSequence charSequence, String s) {
-                return s.equals(DigestUtils.md5DigestAsHex(charSequence.toString().getBytes()));
-            }
-        };
-    }
-
-//    @Bean
-//    MyAuthenticationProvider myAuthenticationProvider() {
-//        MyAuthenticationProvider myAuthenticationProvider = new MyAuthenticationProvider();
-//        myAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-//        myAuthenticationProvider.setUserDetailsService(userDetailsService);
-//        return myAuthenticationProvider;
-//    }
-//
-//
+    MyAuthenticationProvider myAuthenticationProvider;
     @Bean
     protected AuthenticationManager getAuthenticationManager() throws Exception {
         return super.authenticationManagerBean();
@@ -64,47 +37,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //自定义的用户和角色数据提供者
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        auth.authenticationProvider(myAuthenticationProvider);
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/static/**","/index.html", "/favicon.ico","/verifyCode.jpg");
+        web.ignoring().antMatchers("/static/**","/index.html", "/favicon.ico","/oauth/verifyCode.jpg");
     }
 
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .requestMatchers()
-//                //接受的请求
-//                .antMatchers("/login", "/logout", "/oauth/authorize", "/oauth/confirm_access")
-//                .and()
-//                .authorizeRequests()// 端点排除
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin()
-//                .loginProcessingUrl("/login")
-//                .failureUrl("/login?error")
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .logoutUrl("/logout")
-//                .invalidateHttpSession(true).clearAuthentication(true);
-        http.formLogin()
-                .loginProcessingUrl("/login")
-                .permitAll()
-                .and()
-                .requestMatchers()
-                //接受的请求
-                .antMatchers("/login", "/logout", "/oauth/authorize", "/oauth/confirm_access")
-                .and()
-                .authorizeRequests()// 端点排除
+        http.authorizeRequests()
+                .antMatchers("/oauth/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .logout()
-                .logoutUrl("/logout")
-                .invalidateHttpSession(true).clearAuthentication(true);
+                .httpBasic()
+                .and()
+                .csrf().disable();
     }
 }

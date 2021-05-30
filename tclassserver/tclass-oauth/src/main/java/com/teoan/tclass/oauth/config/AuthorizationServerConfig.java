@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -48,6 +49,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     AuthorizationServerTokenServices authorizationServerTokenServices;
 
+    @Autowired
+    WebResponseExceptionTranslator webResponseExceptionTranslator;
+
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.tokenKeyAccess("permitAll()")
@@ -77,6 +81,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .tokenEnhancer(jwtAccessTokenConverter)
                 .tokenStore(tokenStore)
                 .userDetailsService(userDetailsService)
-                .authenticationManager(authenticationManager);  //配置认证管理器，支持password模式
+                .authenticationManager(authenticationManager)//配置认证管理器，支持password模式
+                .exceptionTranslator(webResponseExceptionTranslator);
     }
 }
