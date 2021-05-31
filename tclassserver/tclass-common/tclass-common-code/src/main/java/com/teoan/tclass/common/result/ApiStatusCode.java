@@ -19,7 +19,11 @@ public enum ApiStatusCode {
     /**
      * 权限不足
      */
-    ACCESS(401,"权限不足，无法访问！");
+    ACCESS_DENIED(403,"权限不足，无法访问！"),
+    /**
+     * 未授权
+     */
+    UNAUTHORIZED(401,"授权无效或已过期，请重新登录！");
 
     private final long code;
     private final String msg;

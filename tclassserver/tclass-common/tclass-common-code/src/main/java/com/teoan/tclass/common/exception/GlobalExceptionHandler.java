@@ -20,20 +20,4 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-//    @Value("${spring.servlet.multipart.max-file-size}")
-    private String maxFileSize;
-    //捕获文件大小异常 TODO:统一异常返回格式
-    @ExceptionHandler(MultipartException.class)
-    public ResponseEntity exceptionHandler() throws ResponseStatusException {
-        Map<String,Object> map = new HashMap<>();
-        map.put("message","上传失败,文件超过"+maxFileSize+"!");
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
-    }
-
-    @ExceptionHandler(Exception.class)
-    public R exceptionHandler(Exception e){
-        return R.failed(e.getMessage());
-    }
-
-
 }

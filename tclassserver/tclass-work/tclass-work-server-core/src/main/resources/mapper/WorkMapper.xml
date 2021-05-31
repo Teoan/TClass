@@ -21,7 +21,7 @@
     </resultMap>
 
     <select id="getStudentName" resultType="String" >
-        select name from tclass.student where id = #{value}
+        select name from tclass.sysUser where id = #{value}
     </select>
 
     <select id="getExtensionName" resultType="String" >

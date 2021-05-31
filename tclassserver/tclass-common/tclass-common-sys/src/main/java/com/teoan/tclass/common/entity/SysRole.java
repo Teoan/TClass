@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * (Role)表实体类
+ * (SysRole)表实体类
  *
  * @author Teoan
  * @date 2021/5/19 16:05
@@ -19,7 +19,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Builder
 @SuppressWarnings("serial")
-public class Role extends Model<Role> {
+public class SysRole extends Model<SysRole> {
 
     private Integer id;
 
@@ -31,8 +31,8 @@ public class Role extends Model<Role> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Role role = (Role) o;
-        return Objects.equals(zhName, role.zhName);
+        SysRole sysRole = (SysRole) o;
+        return Objects.equals(zhName, sysRole.zhName);
     }
     /**
      * 获取主键值

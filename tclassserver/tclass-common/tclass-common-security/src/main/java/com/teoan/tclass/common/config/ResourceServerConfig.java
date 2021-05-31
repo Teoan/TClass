@@ -9,6 +9,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 /**
  * @author Teoan
@@ -22,14 +24,16 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     TokenStore tokenStore;
 
     @Autowired
-    MyAuthenticationEntryPoint myAuthenticationEntryPoint;
+    AuthenticationEntryPoint authenticationEntryPoint;
 
     @Autowired
-    MyAccessDeniedHandler myAccessDeniedHandler;
+    AccessDeniedHandler accessDeniedHandler;
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-        resources.tokenStore(tokenStore).authenticationEntryPoint(myAuthenticationEntryPoint).accessDeniedHandler(myAccessDeniedHandler);
+        resources.tokenStore(tokenStore)
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler);
     }
 
     @Override

@@ -20,7 +20,7 @@ import java.util.Arrays;
 
 /**
  * @author Teoan
- * @description
+ * @description SecurityWeb安全设置
  * @date 2021/5/26 14:52
  */
 @Configuration

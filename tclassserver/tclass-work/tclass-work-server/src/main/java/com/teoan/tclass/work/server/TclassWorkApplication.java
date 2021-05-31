@@ -16,7 +16,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
  */
 @SpringBootApplication
 @ComponentScan("com.teoan.tclass")
-@MapperScan("com.teoan.tclass.work.mapper")
+@MapperScan("com.teoan.tclass")
 @EnableCaching
 @EnableResourceServer
 @EnableFeignClients("com.teoan.tclass")

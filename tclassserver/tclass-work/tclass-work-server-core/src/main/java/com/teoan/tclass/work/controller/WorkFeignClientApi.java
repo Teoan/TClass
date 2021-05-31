@@ -1,5 +1,6 @@
 package com.teoan.tclass.work.controller;
 
+import com.teoan.tclass.common.until.SystemUntil;
 import com.teoan.tclass.user.service.StudentFeignClient;
 import com.teoan.tclass.common.result.R;
 import com.teoan.tclass.work.dto.ExtensionDTO;
@@ -146,7 +147,7 @@ public class WorkFeignClientApi implements WorkFeignClient {
 
     @Override
     public R testFeign() {
-        return R.ok(studentFeignClient.getRoles().getData());
+        return R.ok(SystemUntil.getCurrentUser());
     }
 
     @Override

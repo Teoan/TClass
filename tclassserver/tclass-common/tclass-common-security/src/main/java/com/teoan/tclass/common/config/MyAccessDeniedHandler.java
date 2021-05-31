@@ -24,10 +24,7 @@ public class MyAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
         httpServletResponse.setContentType("application/json;charset=utf-8");
         PrintWriter out = httpServletResponse.getWriter();
-        R respBean = new R();
-        respBean.setMsg(e.getMessage());
-        respBean.setData(ApiStatusCode.ACCESS.getMsg());
-        respBean.setCode(ApiStatusCode.ACCESS.getCode());
+        R respBean = new R(ApiStatusCode.ACCESS_DENIED.getCode(),e.getMessage(),ApiStatusCode.ACCESS_DENIED.getMsg());
         out.write(new ObjectMapper().writeValueAsString(respBean));
         out.flush();
         out.close();

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * (Student)实体类
+ * (SysUser)实体类
  *
  * @author Teoan
  * @date 2021/5/19 16:05
@@ -23,7 +23,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 @TableName(value ="student")
-public class Student extends Model<Student> {
+public class SysUser extends Model<SysUser> {
 
     /**
      * 学号

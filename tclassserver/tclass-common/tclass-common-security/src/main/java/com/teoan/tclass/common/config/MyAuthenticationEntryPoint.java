@@ -21,13 +21,10 @@ import java.io.PrintWriter;
 @Component
 public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
-    public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+    public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException {
         httpServletResponse.setContentType("application/json;charset=utf-8");
         PrintWriter out = httpServletResponse.getWriter();
-        R respBean = new R();
-        respBean.setMsg(e.getMessage());
-        respBean.setData("授权无效或已过期，请重新登录！");
-        respBean.setCode(ApiStatusCode.ACCESS.getCode());
+        R respBean = new R(ApiStatusCode.UNAUTHORIZED.getCode(),e.getMessage(),ApiStatusCode.UNAUTHORIZED.getMsg());
         out.write(new ObjectMapper().writeValueAsString(respBean));
         out.flush();
         out.close();
