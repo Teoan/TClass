@@ -1,4 +1,5 @@
 package com.teoan.tclass.common.entity;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Builder
 @SuppressWarnings("serial")
+@TableName("role")
 public class SysRole extends Model<SysRole> {
 
     private Integer id;

@@ -19,7 +19,7 @@ public interface UploadService extends IService<Upload> {
      * @param sId 学号
      * @param file 上传的文件
      */
-    void uploadFile(Integer wId, Integer sId, MultipartFile file);
+    boolean uploadFile(Integer wId, Integer sId, MultipartFile file);
 
     /**
      * 检查用户是否已上传过文件

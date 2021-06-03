@@ -1,6 +1,8 @@
 package com.teoan.tclass.user.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
+import com.teoan.tclass.common.entity.SysUser;
+import com.teoan.tclass.common.service.AuthUserService;
 import com.teoan.tclass.user.dto.StudentDTO;
 import com.teoan.tclass.user.entity.Student;
 import com.teoan.tclass.user.service.*;
@@ -54,6 +56,9 @@ public class StudentFeignClientApi implements StudentFeignClient {
     @Autowired
     FileService fileService;
 
+    @Autowired
+    AuthUserService authUserService;
+
     @Override
     public R selectOne(Serializable id) {
         StudentDTO studentDTO = new StudentDTO();
@@ -62,21 +67,19 @@ public class StudentFeignClientApi implements StudentFeignClient {
         return R.ok(studentDTO);
     }
 
-    //TODO:用户修改自己的资料信息
     @Override
     public R update(StudentDTO studentDTO) {
-//        //获取当前登录用户
-//        Student currentStudent = (Student) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        //普通用户只能修改自己的资料信息
-//        if(currentStudent.getId().equals(studentDTO.getId())){
-//            Student student = new Student();
-//            BeanUtils.copyProperties(studentDTO,student);
-//            if(studentService.updateById(student)){
-//                return success(studentService.getById(student.getId()));
-//            }
-//        }
-//        return failed("资料修改失败！");
-        return R.ok(true);
+        //获取当前登录用户
+        SysUser currentUser = authUserService.getCurrentUser();
+        //普通用户只能修改自己的资料信息
+        if(currentUser.getId().equals(studentDTO.getId())){
+            Student student = new Student();
+            BeanUtils.copyProperties(studentDTO,student);
+            if(studentService.updateById(student)){
+                return R.ok(studentService.getById(student.getId()));
+            }
+        }
+        return R.failed("资料修改失败！");
     }
 
     @Override
@@ -103,15 +106,15 @@ public class StudentFeignClientApi implements StudentFeignClient {
     public R getRoles() {
         return R.ok(roleService.list());
     }
-//TODO:用户更新自己的头像
+
     @Override
     public R updateUserAvatar(MultipartFile avatarFile) {
-//        Student currentStudent = (Student) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        if(fileService.updateUserAvatarFile(avatarFile, currentStudent.getId())){
-//            studentService.updateById(Student.builder().id(currentStudent.getId()).avatarUrl("/student/avatar/"+currentStudent.getId()+".jpg").build());
-//        }else {
-//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"上传头像失败！");
-//        }
+        SysUser currentUser = authUserService.getCurrentUser();
+        if(fileService.updateUserAvatarFile(avatarFile, currentUser.getId())){
+            studentService.updateById(Student.builder().id(currentUser.getId()).avatarUrl("/student/avatar/"+currentUser.getId()+".jpg").build());
+        }else {
+            R.failed("上传头像失败！");
+        }
         return R.ok(true);
     }
 

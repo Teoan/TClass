@@ -2,8 +2,12 @@ package com.teoan.tclass.work.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.teoan.tclass.common.entity.SysUser;
+import com.teoan.tclass.common.service.SysUserService;
+import com.teoan.tclass.work.entity.Work;
 import com.teoan.tclass.work.mapper.UploadMapper;
 import com.teoan.tclass.work.entity.Upload;
 import com.teoan.tclass.work.mapper.WorkMapper;
@@ -27,8 +31,8 @@ import javax.annotation.Resource;
 @Service("uploadService")
 public class UploadServiceImpl extends ServiceImpl<UploadMapper, Upload> implements UploadService {
 
-//    @Resource
-//    private StudentMapper studentMapper;
+    @Resource
+    private SysUserService sysUserService;
 
     @Resource
     private WorkMapper workMapper;
@@ -41,24 +45,26 @@ public class UploadServiceImpl extends ServiceImpl<UploadMapper, Upload> impleme
             @CacheEvict(cacheNames = "work_cache",allEntries = true),
             @CacheEvict(cacheNames = "upload_cache",allEntries = true)
     })
-    public void uploadFile(Integer wId, Integer sId, MultipartFile file) {
-    //TODO:根据user服务获取Student对象
+    public boolean uploadFile(Integer wId, Integer sId, MultipartFile file) {
+        //检查文件扩展名
+        SysUser sysUser = sysUserService.getById(sId);
+        Work work = workMapper.selectById(wId);
 
-//        //检查文件扩展名
-//        Student student = studentMapper.selectById(sId);
-//        Work work = workMapper.selectById(wId);
-//
-//        if(!work.getExtensionName().equals("无")){
-//            String extensionName = FileUtils.getExtensionName(file).toLowerCase();
-//            if(!extensionName.equals(work.getExtensionName())){
-//                throw new ExtensionNameNotEqualException(HttpStatus.INTERNAL_SERVER_ERROR,"文件扩展名不符合要求！");
-//            }
-//        }
-//        //保存文件
-//        String fileName = FileUtils.getFileSpecificationName(work,student,file);
-//        fileService.saveFile(file,fileName,wId);
-//        Upload upload = Upload.builder().sId(sId).wId(wId).fileType(file.getContentType()).fileName(fileName).size(file.getSize()).build();
-//        getBaseMapper().insert(upload);
+        if(!work.getExtensionName().equals("无")){
+            String extensionName = FileUtils.getExtensionName(file).toLowerCase();
+            if(!extensionName.equals(work.getExtensionName())){
+                return false;
+            }
+        }
+        //保存文件
+        String fileName = FileUtils.getFileSpecificationName(work,sysUser,file);
+        if(StringUtils.isBlank(fileName)){
+            return false;
+        }
+        fileService.saveFile(file,fileName,wId);
+        Upload upload = Upload.builder().sId(sId).wId(wId).fileType(file.getContentType()).fileName(fileName).size(file.getSize()).build();
+        getBaseMapper().insert(upload);
+        return true;
     }
 
 

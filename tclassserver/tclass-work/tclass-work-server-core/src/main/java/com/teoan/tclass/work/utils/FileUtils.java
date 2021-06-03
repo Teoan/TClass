@@ -1,6 +1,6 @@
 package com.teoan.tclass.work.utils;
 
-import com.teoan.tclass.work.entity.Student;
+import com.teoan.tclass.common.entity.SysUser;
 import com.teoan.tclass.work.entity.Work;
 import com.teoan.tclass.work.exception.WorkOrStudentNullException;
 import org.springframework.http.HttpStatus;
@@ -14,22 +14,20 @@ public class FileUtils {
     /**
      * 获取文件名字（带扩展名）
      * @param work 作业对象
-     * @param student 学生用户对象
+     * @param sysUser 学生用户对象
      * @param file 上传文件
      * @return 文件名
      */
-    public static String getFileSpecificationName(Work work, Student student, MultipartFile file){
-        if(student!=null&&work!=null){
+    public static String getFileSpecificationName(Work work, SysUser sysUser, MultipartFile file){
+        if(sysUser!=null&&work!=null){
             switch (work.getFileNameFormatEnum()){
                 case 1:{return file.getOriginalFilename();
                 }
-                case 2:{return student.getId()+"_"+student.getName()+"_"+work.getName()+work.getExtensionName();}
-                case 3:{return student.getName()+"_"+student.getId()+"_"+work.getName()+work.getExtensionName();}
-                case 4:{return student.getName()+"_"+work.getName()+work.getExtensionName();}
-                case 5:{return student.getId()+"_"+work.getName()+work.getExtensionName();}
+                case 2:{return sysUser.getId()+"_"+sysUser.getName()+"_"+work.getName()+work.getExtensionName();}
+                case 3:{return sysUser.getName()+"_"+sysUser.getId()+"_"+work.getName()+work.getExtensionName();}
+                case 4:{return sysUser.getName()+"_"+work.getName()+work.getExtensionName();}
+                case 5:{return sysUser.getId()+"_"+work.getName()+work.getExtensionName();}
             }
-        }else{
-            throw new WorkOrStudentNullException(HttpStatus.INTERNAL_SERVER_ERROR,"发生内部错误，请联系管理员。");
         }
         return null;
     }

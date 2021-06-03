@@ -1,7 +1,6 @@
 package com.teoan.tclass.work.controller;
 
-import com.teoan.tclass.common.until.SystemUntil;
-import com.teoan.tclass.user.service.StudentFeignClient;
+import com.teoan.tclass.common.service.AuthUserService;
 import com.teoan.tclass.common.result.R;
 import com.teoan.tclass.work.dto.ExtensionDTO;
 import com.teoan.tclass.work.dto.UploadDTO;
@@ -52,7 +51,7 @@ public class WorkFeignClientApi implements WorkFeignClient {
     private ExtensionService extensionService;
 
     @Resource
-    private StudentFeignClient studentFeignClient;
+    private AuthUserService authUserService;
 
     @Resource
     private FileService fileService;
@@ -71,8 +70,11 @@ public class WorkFeignClientApi implements WorkFeignClient {
 
     @Override
     public R uploadWorkFile(Integer wId, MultipartFile file, Integer sId) {
-        uploadService.uploadFile(wId,sId,file);
-        return R.success("上传成功");
+
+        if(uploadService.uploadFile(wId,sId,file)){
+            return R.success("上传成功");
+        }
+        return R.failed("上传失败!");
     }
 
     @Override
@@ -147,7 +149,7 @@ public class WorkFeignClientApi implements WorkFeignClient {
 
     @Override
     public R testFeign() {
-        return R.ok(SystemUntil.getCurrentUser());
+        return R.ok(authUserService.getCurrentUser());
     }
 
     @Override
