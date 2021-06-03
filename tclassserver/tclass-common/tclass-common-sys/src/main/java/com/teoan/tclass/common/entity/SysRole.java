@@ -20,7 +20,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Builder
 @SuppressWarnings("serial")
-@TableName("role")
+@TableName(value = "role")
 public class SysRole extends Model<SysRole> {
 
     private Integer id;

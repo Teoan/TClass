@@ -22,7 +22,7 @@
         <result property="avatarUrl" column="avatar_url" jdbcType="VARCHAR"/>
     </resultMap>
     <resultMap id="AllStudentInfo" type="com.teoan.tclass.user.entity.Student" extends="StudentMap">
-        <association property="sysRole" column="role_id" javaType="com.teoan.tclass.user.entity.Role" select="getRole"/>
+        <association property="role" column="role_id" javaType="com.teoan.tclass.user.entity.Role" select="getRole"/>
         <association property="nation" column="nation_id" javaType="com.teoan.tclass.user.entity.Nation" select="getNation"/>
         <association property="politicsstatus" column="politic_id" javaType="com.teoan.tclass.user.entity.Politicsstatus" select="getPoliticsstatus"/>
         <association property="position" column="pos_id" javaType="com.teoan.tclass.user.entity.Position" select="getPosition"/>
@@ -31,7 +31,7 @@
 
 
     <select id="getRole" resultType="com.teoan.tclass.user.entity.Role">
-        select id, name,zh_name from tclass.sysRole where id=#{role_id};
+        select id, name,zh_name from tclass.role where id=#{role_id};
     </select>
     <select id="getNation" resultType="com.teoan.tclass.user.entity.Nation">
         select id, name from tclass.nation where id=#{nation_id}

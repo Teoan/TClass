@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.teoan.tclass.user.dto.StudentDTO;
 import com.teoan.tclass.user.entity.StuDepRef;
 import com.teoan.tclass.user.mapper.StudentMapper;
 import com.teoan.tclass.user.entity.Student;
 import com.teoan.tclass.user.service.StudentService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -19,6 +21,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * (Student)表服务实现类
@@ -40,10 +43,19 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
             if (!student.getName().isEmpty()) {
                 QueryWrapper nameWrapper = new QueryWrapper();
                 nameWrapper.like("name", student.getName());
-                return getBaseMapper().selectPage(studentPage,nameWrapper);
+                studentPage = getBaseMapper().selectPage(studentPage,nameWrapper);
             }
         }
-        return getBaseMapper().selectPage(studentPage, wrapper);
+        studentPage = getBaseMapper().selectPage(studentPage, wrapper);
+        List<Student> studentList = studentPage.getRecords();
+        List<StudentDTO> studentDTOList = studentList.stream().map(student1 -> {
+            StudentDTO studentDTO = new StudentDTO();
+            BeanUtils.copyProperties(student1,studentDTO);
+            return studentDTO;
+        }).collect(Collectors.toList());
+        Page<StudentDTO> studentDTOPage = new Page<>(current,size);
+        studentDTOPage.setRecords(studentDTOList);
+        return studentDTOPage;
     }
 
 
