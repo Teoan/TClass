@@ -131,16 +131,4 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         }
         return false;
     }
-
-//    //    springSecurity
-//    @Override
-//    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-//        QueryWrapper<Student> wrapper = new QueryWrapper<>();
-//        wrapper.eq("id",s);
-//        Student student = getBaseMapper().selectOne(wrapper);
-//        if(student==null){
-//            throw new UsernameNotFoundException("用户名不存在!");
-//        }
-//        return student;
-//    }
 }

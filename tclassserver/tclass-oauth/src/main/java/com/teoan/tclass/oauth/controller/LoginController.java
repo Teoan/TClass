@@ -2,8 +2,13 @@ package com.teoan.tclass.oauth.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.google.code.kaptcha.Producer;
+import com.teoan.tclass.common.entity.SysUser;
 import com.teoan.tclass.common.result.ApiStatusCode;
 import com.teoan.tclass.common.result.R;
+import com.teoan.tclass.common.service.AuthUserService;
+import com.teoan.tclass.oauth.dto.CurrentUserDTO;
+import com.teoan.tclass.user.dto.StudentDTO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.client.support.BasicAuthenticationInterceptor;
@@ -44,9 +49,13 @@ public class LoginController {
     @Resource
     StringRedisTemplate stringRedisTemplate;
 
+    @Resource
+    AuthUserService authUserService;
+
     @PostMapping("/login")
     public R login(@RequestParam Map<String,Object> map, HttpServletRequest httpServletRequest){
         MultiValueMap<String,Object> paramsMap=new LinkedMultiValueMap<>();
+        String id = httpServletRequest.getSession().getId();
         String verify_code = stringRedisTemplate.opsForValue().get(httpServletRequest.getSession().getId()+"verify_code");
         if(StringUtils.isBlank(verify_code)){
             return R.failed("验证码过期");
@@ -85,5 +94,15 @@ public class LoginController {
         try(ServletOutputStream out = resp.getOutputStream()) {
             ImageIO.write(image, "jpg", out);
         }
+    }
+
+    //获取当前登录用户信息
+    @GetMapping("/getCurrentUser")
+    public R getCurrentUser(){
+        SysUser sysUser = authUserService.getCurrentUser();
+        CurrentUserDTO currentUserDTO = new CurrentUserDTO();
+        BeanUtils.copyProperties(sysUser,currentUserDTO);
+        currentUserDTO.setRole(authUserService.getCurrentUserRole());
+        return R.ok(currentUserDTO);
     }
 }

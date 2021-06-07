@@ -1,7 +1,7 @@
 spring:
   application:
     name: tclass-gateway
-    # 配置中心
+  # 配置中心
   cloud:
     config:
       fail-fast: true

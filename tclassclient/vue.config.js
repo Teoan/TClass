@@ -3,11 +3,11 @@ const CompressionPlugin = require('compression-webpack-plugin')
 
 proxyObj['/ws'] = {
   ws: true,
-  target: 'ws://localhost:8081'
+  target: 'ws://localhost:7777'
 }
 proxyObj['/'] = {
   ws: false,
-  target: 'http://localhost:8081',
+  target: 'http://localhost:7777',
   changeOrigin: true,
   pathRewrite: {
     '^/': ''
@@ -44,6 +44,6 @@ module.exports = {
   },
   lintOnSave: true,
   publicPath: '/',
-  assetsDir: './static',
-  outputDir: '../tclassserver/tclass-web/src/main/resources/static'
+  assetsDir: './static'
+  // outputDir: '../tclassserver/tclass-gateway/src/main/resources/static'
 }

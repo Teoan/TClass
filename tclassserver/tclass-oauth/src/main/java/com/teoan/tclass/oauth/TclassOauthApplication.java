@@ -8,6 +8,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
 /**
  * @author Teoan
@@ -17,7 +18,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @SpringBootApplication
 @ComponentScan("com.teoan.tclass")
 @MapperScan("com.teoan.tclass.common.mapper")
-@EnableWebSecurity
+@EnableResourceServer
 @EnableEurekaClient
 public class TclassOauthApplication {
     public static void main(String[] args) {

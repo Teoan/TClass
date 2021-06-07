@@ -45,7 +45,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 "/swagger-resources/configuration/security",
                 "/swagger-ui.html",
                 "/webjars/**",
-                "/api/**/v2/api-docs")
+                "/api/**/v2/api-docs",
+                "/oauth/login",     //放行登录接口和验证码接口
+                "/oauth/verifyCode.jpg")
                 .permitAll()
         .antMatchers("/admin/**").hasRole("admin").anyRequest().authenticated();
     }
