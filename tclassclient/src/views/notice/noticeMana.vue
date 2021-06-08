@@ -131,7 +131,7 @@ export default {
         this.selectNoticeTitle = null
       }
       this.getRequest('/notice/', { current: current, size: size, title: this.selectNoticeTitle, createTime: this.selectCreateTime }).then(resp => {
-        if (resp.code === 0) {
+        if (resp.code === 200) {
           this.pageInfo = resp.data
           this.noticeDataList = this.pageInfo.records
           this.tableLoading = false
@@ -169,8 +169,8 @@ export default {
     },
     deleteNoticesidList(idList) {
       this.tableLoading = true
-      this.deleteRequest('/admin/notice/', idList).then(resp => {
-        if (resp.code === 0 && resp.data) {
+      this.deleteRequest('/notice/admin/', idList).then(resp => {
+        if (resp.code === 200 && resp.data) {
           this.$message.success('删除成功')
           this.getNoticesData(this.pageInfo.current, 10)
           this.tableLoading = false

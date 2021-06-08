@@ -31,6 +31,16 @@ public interface StudentFeignClient {
     R selectOne(@PathVariable Serializable id);
 
     /**
+     * 通过主键查询单条详情数据
+     *
+     * @param id 主键
+     * @return 单条数据
+     */
+    @GetMapping("/userInfo/{id}")
+    R getUserInfoById(@PathVariable Serializable id);
+
+
+    /**
      * 修改数据
      *
      * @param studentDTO 实体DTO对象

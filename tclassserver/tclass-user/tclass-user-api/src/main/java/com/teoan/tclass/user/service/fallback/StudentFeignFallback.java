@@ -101,4 +101,9 @@ public class StudentFeignFallback implements StudentFeignClient {
     public ResponseEntity<byte[]> getTemplate() {
         return null;
     }
+
+    @Override
+    public R getUserInfoById(Serializable id) {
+        return R.failed("获取失败");
+    }
 }

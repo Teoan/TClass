@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.teoan.tclass.common.entity.SysUser;
 import com.teoan.tclass.common.service.AuthUserService;
 import com.teoan.tclass.user.dto.StudentDTO;
+import com.teoan.tclass.user.dto.StudentInfoDTO;
 import com.teoan.tclass.user.entity.Student;
 import com.teoan.tclass.user.service.*;
 import com.teoan.tclass.user.utils.FileUtils;
@@ -65,6 +66,14 @@ public class StudentFeignClientApi implements StudentFeignClient {
         Student student = studentService.getById(id);
         BeanUtils.copyProperties(student,studentDTO);
         return R.ok(studentDTO);
+    }
+
+    @Override
+    public R getUserInfoById(Serializable id) {
+        StudentInfoDTO studentInfoDTO = new StudentInfoDTO();
+        Student student = studentService.getById(id);
+        BeanUtils.copyProperties(student,studentInfoDTO);
+        return R.ok(studentInfoDTO);
     }
 
     @Override

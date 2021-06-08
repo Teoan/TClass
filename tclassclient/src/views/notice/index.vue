@@ -73,7 +73,7 @@ export default {
     getNationsData(current, size) {
       this.noticeDataLoading = true
       this.getRequest('/notice/', { current: current, size: size, title: this.selectNoticeTitle, createTime: this.selectCreateTime }).then(resp => {
-        if (resp.code === 0) {
+        if (resp.code === 200) {
           this.pageInfo = resp.data
           this.noticeList = this.pageInfo.records
         }

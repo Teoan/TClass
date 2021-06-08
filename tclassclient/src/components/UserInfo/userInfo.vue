@@ -45,6 +45,7 @@
         <el-upload
           class="avatar-uploader"
           action="/user/avatar"
+          :headers="avatarUploaderHeaders"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
@@ -156,6 +157,7 @@
 
 <script>
 import { regionData, CodeToText, TextToCode } from 'element-china-area-data'
+import { getOauth2Info } from '@/utils/auth'
 
 export default {
   data() {
@@ -229,7 +231,11 @@ export default {
         checkPassword: ''
       },
       options: regionData,
-      selectedNativePlaceOptions: []
+      selectedNativePlaceOptions: [],
+      // 配置上传请求头
+      avatarUploaderHeaders: {
+        Authorization: 'Bearer ' + getOauth2Info().access_token
+      }
     }
   },
   computed: {
@@ -301,53 +307,36 @@ export default {
       this.selectedNativePlaceOptions = code
     },
     initUserData() {
+      var userId = this.currentUser.id
       if (this.isEditOtherUserDate) {
-        this.getRequest('/user/' + this.$route.query.id).then(resp => {
-          if (resp.code === 200) {
-            // 初始化需要显示的数据
-            this.userInfo.name = resp.data.name
-            this.userInfo.email = resp.data.email
-            this.userInfo.phone = resp.data.phone
-            this.userInfo.nativePlace = resp.data.nativePlace
-            this.userInfo.loginTime = resp.data.loginTime
-            this.userInfo.role = resp.data.role
-            this.userInfo.avatarUrl = resp.data.avatarUrl
-            // 初始化需要修改的数据
-            this.userData.id = resp.data.id
-            this.userData.name = resp.data.name
-            this.userData.roleId = resp.data.roleId
-            this.userData.gender = resp.data.gender
-            this.userData.nationId = resp.data.nationId
-            this.userData.politicId = resp.data.politicId
-            this.userData.posId = resp.data.posId
-            this.userData.email = resp.data.email
-            this.userData.phone = resp.data.phone
-            this.userData.address = resp.data.address
-            this.userData.nativePlace = resp.data.nativePlace
-            this.userData.departmentIdList = resp.data.departmentIdList
-            this.nativePlaceTextToCode()
-          }
-        })
-      } else {
-        this.userInfo.name = this.currentUser.name
-        this.userInfo.email = this.currentUser.email
-        this.userInfo.phone = this.currentUser.phone
-        this.userInfo.nativePlace = this.currentUser.nativePlace
-        this.userInfo.loginTime = this.currentUser.loginTime
-        this.userInfo.role = this.currentUser.role
-        this.userInfo.avatarUrl = this.currentUser.avatarUrl
-
-        this.userData.id = this.currentUser.id
-        this.userData.gender = this.currentUser.gender
-        this.userData.nationId = this.currentUser.nationId
-        this.userData.politicId = this.currentUser.politicId
-        this.userData.email = this.currentUser.email
-        this.userData.phone = this.currentUser.phone
-        this.userData.address = this.currentUser.address
-        this.userData.nativePlace = this.currentUser.nativePlace
-        this.userData.departmentIdList = this.currentUser.departmentIdList
-        this.nativePlaceTextToCode()
+        userId = this.$route.query.id
       }
+      this.getRequest('/user/userInfo/' + userId).then(resp => {
+        if (resp.code === 200) {
+          // 初始化需要显示的数据
+          this.userInfo.name = resp.data.name
+          this.userInfo.email = resp.data.email
+          this.userInfo.phone = resp.data.phone
+          this.userInfo.nativePlace = resp.data.nativePlace
+          this.userInfo.loginTime = resp.data.loginTime
+          this.userInfo.role = resp.data.role
+          this.userInfo.avatarUrl = resp.data.avatarUrl
+          // 初始化需要修改的数据
+          this.userData.id = resp.data.id
+          this.userData.name = resp.data.name
+          this.userData.roleId = resp.data.roleId
+          this.userData.gender = resp.data.gender
+          this.userData.nationId = resp.data.nationId
+          this.userData.politicId = resp.data.politicId
+          this.userData.posId = resp.data.posId
+          this.userData.email = resp.data.email
+          this.userData.phone = resp.data.phone
+          this.userData.address = resp.data.address
+          this.userData.nativePlace = resp.data.nativePlace
+          this.userData.departmentIdList = resp.data.departmentIdList
+          this.nativePlaceTextToCode()
+        }
+      })
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {

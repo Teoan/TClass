@@ -47,7 +47,7 @@ export default {
   methods: {
     getNationsData() {
       this.getRequest('/notice/' + this.$route.query.id).then(resp => {
-        if (resp.code === 0) {
+        if (resp.code === 200) {
           this.notice = resp.data
         }
       }).catch(error => {

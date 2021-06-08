@@ -76,4 +76,4 @@ hystrix:
 #设置文件上传目录
 file:
   upload:
-    url: ${UPLOAD_PATH:~/tclass}
+    url: ${UPLOAD_PATH:classPath:/static}

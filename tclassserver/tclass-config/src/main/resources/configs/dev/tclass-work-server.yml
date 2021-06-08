@@ -75,4 +75,4 @@ hystrix:
           strategy: SEMAPHORE
 file:
   upload:
-    url:
+    url: ${UPLOAD_PATH:classPath:/static}

@@ -93,8 +93,8 @@ export default {
     },
     getUploadInfoByWorkId(current, size, wId) {
       this.fileTableLoading = true
-      this.getRequest('/admin/work/upload/' + wId, { current: current, size: size }).then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/work/admin/upload/' + wId, { current: current, size: size }).then(resp => {
+        if (resp.code === 200) {
           this.pageInfo = resp.data
           this.uploadInfo = this.pageInfo.records
           this.fileTableLoading = false
@@ -110,7 +110,7 @@ export default {
     deleteFile(upload) {
       this.fileTableLoading = true
       this.deleteRequest('/work/deleteFile/', upload).then(resp => {
-        if (resp.code === 0 && resp.data === true) {
+        if (resp.code === 200 && resp.data === true) {
           this.$message.success('删除成功！')
           this.fileTableLoading = false
           this.getUploadInfoByWorkId(this.pageInfo.current, 12, this.work.id)
@@ -125,18 +125,18 @@ export default {
       })
     },
     downloadFiles() {
-      window.open('/admin/work/download/' + this.work.id, '_parent')
+      window.open('/work/admin/download/' + this.work.id, '_parent')
     },
     downloadFile(upload) {
-      window.open('/admin/work/download/?wId=' + this.work.id + '&fileName=' + upload.fileName, '_parent')
+      window.open('/work/admin/download/?wId=' + this.work.id + '&fileName=' + upload.fileName, '_parent')
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
     deleteFiles() {
       this.fileTableLoading = true
-      this.deleteRequest('/admin/work/upload', this.multipleSelection).then(resp => {
-        if (resp.code === 0 && resp.data === true) {
+      this.deleteRequest('/work/admin/upload', this.multipleSelection).then(resp => {
+        if (resp.code === 200 && resp.data === true) {
           this.$message.success('批量删除成功！')
           this.getUploadInfoByWorkId(this.pageInfo.current, 12, this.work.id)
         }

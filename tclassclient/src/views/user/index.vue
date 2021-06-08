@@ -13,7 +13,7 @@
             <div>
               <el-upload
                 class="upload"
-                action="/admin/student/import"
+                action="/user/admin/import"
                 :on-success="onSeccessUpload"
                 :on-error="onErrorUpload"
                 :before-upload="beforeUpload"
@@ -244,8 +244,8 @@ export default {
   methods: {
     getData(current, size) {
       this.tableLoading = true
-      this.getRequest('/admin/student/', { current: current, size: size }).then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/user/admin/', { current: current, size: size }).then(resp => {
+        if (resp.code === 200) {
           this.pageInfo = resp.data
           this.userDataList = this.pageInfo.records
           this.tableLoading = false
@@ -267,8 +267,8 @@ export default {
     // 重置密码
     handleResetPass(row) {
       this.tableLoading = true
-      this.putRequest('/admin/student/', { id: row.id, password: '123456' }).then(resp => {
-        if (resp.code === 0 && resp.data) {
+      this.putRequest('/admin/reSetPassword/' + row.id).then(resp => {
+        if (resp.code === 200 && resp.data) {
           this.$message.success('密码重置成功！')
           this.tableLoading = false
         }
@@ -290,8 +290,8 @@ export default {
       this.tableLoading = true
       this.dialogSelectVisible = false
       this.nativePlaceCodeToText()
-      this.getRequest('/admin/student/', this.selectUserData).then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/user/admin/', this.selectUserData).then(resp => {
+        if (resp.code === 200) {
           this.pageInfo = resp.data
           this.userDataList = this.pageInfo.records
           this.tableLoading = false
@@ -316,8 +316,8 @@ export default {
     },
     deleteStudentByidList(idList) {
       this.tableLoading = true
-      this.deleteRequest('/admin/student/', idList).then(resp => {
-        if (resp.code === 0 && resp.data) {
+      this.deleteRequest('/user/admin/', idList).then(resp => {
+        if (resp.code === 200 && resp.data) {
           this.$message.success('删除成功')
           this.getData(this.pageInfo.current, 10)
           this.tableLoading = false
@@ -342,36 +342,36 @@ export default {
       for (var i = 0; i < this.multipleSelection.length; i++) {
         idList[i] = this.multipleSelection[i].id
       }
-      window.open('/admin/student/export?idList=' + idList, '_parent')
+      window.open('/user/admin/export?idList=' + idList, '_parent')
     },
     exportAllStudentData() {
-      window.open('/admin/student/export?idList=', '_parent')
+      window.open('/user/admin/export?idList=', '_parent')
     },
     // 获取列表数据
     getNations() {
-      this.getRequest('/student/nations').then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/user/nations').then(resp => {
+        if (resp.code === 200) {
           this.nations = resp.data
         }
       })
     },
     getDepartments() {
-      this.getRequest('/student/departments').then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/user/departments').then(resp => {
+        if (resp.code === 200) {
           this.departments = resp.data
         }
       })
     },
     getPoliticsstatuses() {
-      this.getRequest('/student/political').then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/user/political').then(resp => {
+        if (resp.code === 200) {
           this.politicsstatuses = resp.data
         }
       })
     },
     getPositions() {
-      this.getRequest('/student/positions').then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/user/positions').then(resp => {
+        if (resp.code === 200) {
           this.positions = resp.data
         }
       })
@@ -406,7 +406,7 @@ export default {
       this.uploadLoading = true
     },
     getTemplate() {
-      window.open('/admin/student/template', '_parent')
+      window.open('/user/admin/template', '_parent')
     }
   }
 }
