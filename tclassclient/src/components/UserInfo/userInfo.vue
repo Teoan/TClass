@@ -44,7 +44,7 @@
       <el-tooltip v-if="!isEditOtherUserDate" effect="dark" content="点击更换头像" placement="top">
         <el-upload
           class="avatar-uploader"
-          action="/student/avatar"
+          action="/user/avatar"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
@@ -251,36 +251,36 @@ export default {
   },
   methods: {
     getNations() {
-      this.getRequest('/student/nations').then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/user/nations').then(resp => {
+        if (resp.code === 200) {
           this.nations = resp.data
         }
       })
     },
     getDepartments() {
-      this.getRequest('/student/departments').then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/user/departments').then(resp => {
+        if (resp.code === 200) {
           this.departments = resp.data
         }
       })
     },
     getpoliticsStatusList() {
-      this.getRequest('/student/political').then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/user/political').then(resp => {
+        if (resp.code === 200) {
           this.politicsStatusList = resp.data
         }
       })
     },
     getPositions() {
-      this.getRequest('/student/positions').then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/user/positions').then(resp => {
+        if (resp.code === 200) {
           this.positions = resp.data
         }
       })
     },
     getRoles() {
-      this.getRequest('/student/roles').then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/user/roles').then(resp => {
+        if (resp.code === 200) {
           this.roles = resp.data
         }
       })
@@ -302,8 +302,8 @@ export default {
     },
     initUserData() {
       if (this.isEditOtherUserDate) {
-        this.getRequest('/student/' + this.$route.query.id).then(resp => {
-          if (resp.code === 0) {
+        this.getRequest('/user/' + this.$route.query.id).then(resp => {
+          if (resp.code === 200) {
             // 初始化需要显示的数据
             this.userInfo.name = resp.data.name
             this.userInfo.email = resp.data.email
@@ -357,8 +357,8 @@ export default {
             this.userDataLoading = true
             this.nativePlaceCodeToText()
             if (this.isEditOtherUserDate) {
-              this.putRequest('/admin/student/', this.userData).then(resp => {
-                if (resp.code === 0) {
+              this.putRequest('/user/admin/', this.userData).then(resp => {
+                if (resp.code === 200) {
                   this.$message.success('资料修改成功！')
                   this.userDataLoading = false
                 }
@@ -368,8 +368,8 @@ export default {
               })
               // 用户修改自己的信息
             } else {
-              this.putRequest('/student/', this.userData).then(resp => {
-                if (resp.code === 0) {
+              this.putRequest('/user/', this.userData).then(resp => {
+                if (resp.code === 200) {
                   this.$message.success('资料修改成功！')
                   this.userDataLoading = false
                   this.$store.commit('INIT_CURRENTUSER', resp.data)
@@ -382,8 +382,8 @@ export default {
             }
           } else if (formName === 'passData') {
             this.passDataLoading = true
-            this.putRequest('/student/reSetPassword/' + this.userData.id).then(resp => {
-              if (resp.code === 0 && resp.data) {
+            this.putRequest('/user/admin/reSetPassword/' + this.userData.id).then(resp => {
+              if (resp.code === 200 && resp.data) {
                 this.$message.success('密码修改成功！')
                 this.passDataLoading = false
                 this.pass.password = ''
@@ -401,8 +401,8 @@ export default {
       })
     },
     handleAvatarSuccess(res, file) {
-      this.getRequest('/student/' + this.currentUser.id).then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/user/' + this.currentUser.id).then(resp => {
+        if (resp.code === 200) {
           // 刷新当前用户数据
           this.$store.commit('INIT_CURRENTUSER', resp.data)
           localStorage.setItem('INIT_CURRENTUSER', JSON.stringify(resp.data))

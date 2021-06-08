@@ -1,0 +1,29 @@
+server:
+  port: 7777 #服务端口
+spring:
+  profiles:
+    active: dev #环境
+  datasource: #数据库连接配置
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: teoan
+    password: 1233211234567
+    url: jdbc:mysql://www.xumumi.com:3306/tclass?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    druid:
+      stat-view-servlet:
+        login-username: Teoan
+        login-password: 277077411
+  redis:
+    host: www.xumumi.com
+    database: 0
+    port: 6379
+    password: 13319711
+# 注册中心配置
+eureka:
+  instance:
+    prefer-ip-address: true #优先使用IP地址注册
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ #eureka的注册地址
+mybatis-plus:
+  global-config:
+    banner: false

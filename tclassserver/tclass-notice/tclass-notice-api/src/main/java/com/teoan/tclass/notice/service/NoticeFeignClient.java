@@ -50,7 +50,7 @@ public interface NoticeFeignClient {
      * @param notice 实体对象
      * @return 新增结果
      */
-    @PostMapping("/")
+    @PostMapping("/admin/")
     R insert(@RequestBody NoticeDTO notice);
 
     /**
@@ -59,7 +59,7 @@ public interface NoticeFeignClient {
      * @param notice 实体对象
      * @return 修改结果
      */
-    @PutMapping("/")
+    @PutMapping("/admin/")
     R update(@RequestBody NoticeDTO notice);
 
     /**
@@ -68,6 +68,6 @@ public interface NoticeFeignClient {
      * @param idList 主键结合
      * @return 删除结果
      */
-    @DeleteMapping("/")
+    @DeleteMapping("/admin/")
     R delete(@RequestBody List<Long> idList);
 }

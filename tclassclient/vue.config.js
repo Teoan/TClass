@@ -3,11 +3,11 @@ const CompressionPlugin = require('compression-webpack-plugin')
 
 proxyObj['/ws'] = {
   ws: true,
-  target: 'ws://localhost:7777'
+  target: 'ws://localhost:6666'
 }
 proxyObj['/'] = {
   ws: false,
-  target: 'http://localhost:7777',
+  target: 'http://localhost:6666',
   changeOrigin: true,
   pathRewrite: {
     '^/': ''

@@ -77,6 +77,7 @@
 
 <script>
 import breadcrumb from '@/components/Breadcrumb/index'
+import { setOauth2Info } from '@/utils/auth'
 
 export default {
   components: { breadcrumb },
@@ -118,8 +119,10 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.getRequest('/logout')
+            // 删除认证信息
             this.$store.commit('INIT_CURRENTUSER', [])
+            this.$store.commit('OAUTH2', [])
+            setOauth2Info('')
             this.$router.replace('/')
           }).catch(() => {
           })
