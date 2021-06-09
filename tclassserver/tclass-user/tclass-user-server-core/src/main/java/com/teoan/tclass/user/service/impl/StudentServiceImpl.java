@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.teoan.tclass.user.dto.StudentDTO;
+import com.teoan.tclass.user.dto.StudentPageDTO;
 import com.teoan.tclass.user.entity.StuDepRef;
 import com.teoan.tclass.user.mapper.StudentMapper;
 import com.teoan.tclass.user.entity.Student;
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService {
 
     @Override
-    @Cacheable(unless = "#result.records.size()==0")
+    @Cacheable(unless = "#result.records.size()==0||#result==null")
     public IPage getStudentsByPage(Long current, Long size, Student student) {
         Page<Student> studentPage = new Page<>(current,size);
         QueryWrapper<Student> wrapper = new QueryWrapper<>(student);
@@ -48,13 +49,13 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         }
         studentPage = getBaseMapper().selectPage(studentPage, wrapper);
         List<Student> studentList = studentPage.getRecords();
-        List<StudentDTO> studentDTOList = studentList.stream().map(student1 -> {
-            StudentDTO studentDTO = new StudentDTO();
-            BeanUtils.copyProperties(student1,studentDTO);
-            return studentDTO;
+        List<StudentPageDTO> studentPageDTOS = studentList.stream().map(student1 -> {
+            StudentPageDTO studentPageDTO = new StudentPageDTO();
+            BeanUtils.copyProperties(student1,studentPageDTO);
+            return studentPageDTO;
         }).collect(Collectors.toList());
-        Page<StudentDTO> studentDTOPage = new Page<>(current,size);
-        studentDTOPage.setRecords(studentDTOList);
+        Page<StudentPageDTO> studentDTOPage = new Page<>(current,size);
+        studentDTOPage.setRecords(studentPageDTOS);
         return studentDTOPage;
     }
 

@@ -6,6 +6,7 @@ import com.teoan.tclass.common.entity.SysUser;
 import com.teoan.tclass.common.result.ApiStatusCode;
 import com.teoan.tclass.common.result.R;
 import com.teoan.tclass.common.service.AuthUserService;
+import com.teoan.tclass.common.service.SysUserService;
 import com.teoan.tclass.oauth.dto.CurrentUserDTO;
 import com.teoan.tclass.user.dto.StudentDTO;
 import org.springframework.beans.BeanUtils;
@@ -28,6 +29,7 @@ import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -52,34 +54,49 @@ public class LoginController {
     @Resource
     AuthUserService authUserService;
 
+    @Resource
+    SysUserService sysUserService;
+
     @PostMapping("/login")
     public R login(@RequestParam Map<String,Object> map, HttpServletRequest httpServletRequest){
         MultiValueMap<String,Object> paramsMap=new LinkedMultiValueMap<>();
-        String id = httpServletRequest.getSession().getId();
-        String verify_code = stringRedisTemplate.opsForValue().get(httpServletRequest.getSession().getId()+"verify_code");
-        if(StringUtils.isBlank(verify_code)){
-            return R.failed("验证码过期");
-        }
-        if(verify_code.equals(map.get("code"))){
-            if(map.get("grant_type").equals("password")){
+        paramsMap.set("grant_type",map.get("grant_type"));
+        RestTemplate restTemplate=new RestTemplate();
+        //为了安全登录时客户端id和密码不暴露在请求中 ，这里直接配置数据库中配置的值
+        restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor("webapp","123456"));
+        //将请求转发到本地的请求地址
+        String oauthUrl = String.format("http://localhost:%s/oauth/token",port);
+        //返回的token值
+        OAuth2AccessToken token;
+        if(map.get("grant_type").equals("password")){
+            String verify_code = stringRedisTemplate.opsForValue().get(httpServletRequest.getSession().getId()+"verify_code");
+            if(StringUtils.isBlank(verify_code)){
+                return R.failed("验证码过期");
+            }
+            if(verify_code.equals(map.get("code"))){
                 paramsMap.set("username",map.get("username"));
                 paramsMap.set("password",map.get("password"));
-            }else if(map.get("grant_type").equals("refresh_token")){
-                paramsMap.set("refresh_token",map.get("refresh_token"));
+                token=restTemplate.postForObject(oauthUrl,paramsMap,OAuth2AccessToken.class);
+                if(ObjectUtils.isEmpty(token.getValue())){
+                    return new R(ApiStatusCode.FAILED.getCode(),"用户名或密码不正确！","登录失败");
+                }
+                //更新登录时间
+                String userId = (String) map.get("username");
+                SysUser user = sysUserService.getById(userId);
+                user.setLoginTime(new Date());
+                sysUserService.updateById(user);
+                return new R(ApiStatusCode.SUCCESS.getCode(),token,"登录成功");
+            }else {
+                return R.failed("验证码过期");
             }
-            paramsMap.set("grant_type",map.get("grant_type"));
-            RestTemplate restTemplate=new RestTemplate();
-            //为了安全登录时客户端id和密码不暴露在请求中 ，这里直接配置数据库中配置的值
-            restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor("webapp","123456"));
-            //将请求转发到本地的请求地址
-            String oauthUrl = String.format("http://localhost:%s/oauth/token",port);
-            OAuth2AccessToken token=restTemplate.postForObject(oauthUrl,paramsMap,OAuth2AccessToken.class);
-            if(ObjectUtils.isEmpty(token.getValue())){
-                return new R(ApiStatusCode.FAILED.getCode(),"用户名或密码不正确！","登录失败");
+        }else if(map.get("grant_type").equals("refresh_token")){
+            paramsMap.set("refresh_token",map.get("refresh_token"));
+            token=restTemplate.postForObject(oauthUrl,paramsMap,OAuth2AccessToken.class);
+            if(!ObjectUtils.isEmpty(token.getValue())){
+                return new R(ApiStatusCode.SUCCESS.getCode(),token,"刷新token成功");
             }
-            return new R(ApiStatusCode.SUCCESS.getCode(),token,"登录成功");
         }
-        return R.failed("验证码错误");
+        return R.failed("认证失败");
     }
 
 

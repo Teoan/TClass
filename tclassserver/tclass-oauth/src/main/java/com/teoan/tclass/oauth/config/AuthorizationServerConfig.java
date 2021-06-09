@@ -61,7 +61,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     /**
      * 用来配置令牌端点的安全约束，也就是这个端点谁能访问，谁不能访问。
-     * @param security
      * @throws Exception
      */
     @Override

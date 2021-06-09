@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * (SysUser)实体类
@@ -78,6 +79,10 @@ public class SysUser extends Model<SysUser> {
      * 班级职位Id
      */
     private Integer posId;
+    /**
+     * 最近登录时间
+     */
+    private Date loginTime;
     /**
      * 用户是否可用
      */

@@ -1,3 +1,5 @@
+import { loginPostRequest } from '@/utils/api'
+
 const loginInfoKey = 'loginInfo'
 const oauth2InfoKey = 'oauth2Info'
 const loginInfoEXP = 7 // day
@@ -9,7 +11,7 @@ export function setLoginInfo(data) {
 // EXP * 24 * 60 * 60 * 1 * 1000
 export function getLoginInfo() {
   const loginInfo = localStorageGetItem(loginInfoKey, loginInfoEXP * 24 * 60 * 60 * 1 * 1000)
-  if (JSON.stringify(loginInfo) === '{}') {
+  if (!loginInfo) {
     console.log('用户信息已过期')
     return null
   }
@@ -21,10 +23,20 @@ export function setOauth2Info(data) {
 }
 
 export function getOauth2Info() {
-  const oauth2Info = localStorageGetItem(oauth2InfoKey, oauth2InfoEXP * 60 * 1000)
-  if (JSON.stringify(oauth2Info) === '{}') {
+  var oauth2Info = localStorageGetItem(oauth2InfoKey, oauth2InfoEXP * 60 * 1000)
+  if (!oauth2Info) {
     console.log('认证信息已过期')
-    return null
+
+    var oauth2Data = localStorage.getItem(oauth2InfoKey)
+    oauth2Info = JSON.parse(oauth2Data).data
+    // console.log('过期的认证信息' + oauth2Info)
+    loginPostRequest('/oauth/login', { grant_type: 'refresh_token', refresh_token: oauth2Info.refresh_token }).then(resp => {
+      if (resp.code === 200) {
+        setOauth2Info(resp.data)
+        oauth2Info = resp.data
+        // console.log('刷新后的认证信息' + oauth2Info)
+      }
+    })
   }
   return oauth2Info
 }
