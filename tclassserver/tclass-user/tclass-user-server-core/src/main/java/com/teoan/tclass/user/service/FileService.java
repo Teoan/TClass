@@ -1,5 +1,6 @@
 package com.teoan.tclass.user.service;
 
+import com.teoan.tclass.common.result.R;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -14,10 +15,9 @@ public interface FileService {
     /**
      * 更新用户头像
      * @param file 头像文件
-     * @param sId 用户id
      * @return 是否成功
      */
-    boolean updateUserAvatarFile(MultipartFile file,Integer sId);
+    R updateUserAvatarFile(MultipartFile file);
 
     /**
      * 获取用户头像文件

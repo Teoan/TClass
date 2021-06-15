@@ -118,13 +118,14 @@ public class StudentFeignClientApi implements StudentFeignClient {
 
     @Override
     public R updateUserAvatar(MultipartFile avatarFile) {
-        SysUser currentUser = authUserService.getCurrentUser();
-        if(fileService.updateUserAvatarFile(avatarFile, currentUser.getId())){
-            studentService.updateById(Student.builder().id(currentUser.getId()).avatarUrl("/user/avatar/"+currentUser.getId()+".jpg").build());
-        }else {
-            R.failed("上传头像失败！");
-        }
-        return R.ok(true);
+//        SysUser currentUser = authUserService.getCurrentUser();
+//        if(fileService.updateUserAvatarFile(avatarFile, currentUser.getId())){
+//            studentService.updateById(Student.builder().id(currentUser.getId()).avatarUrl("/user/avatar/"+currentUser.getId()+".jpg").build());
+//        }else {
+//            R.failed("上传头像失败！");
+//        }
+//        return R.ok(true);
+        return fileService.updateUserAvatarFile(avatarFile);
     }
 
     @Override

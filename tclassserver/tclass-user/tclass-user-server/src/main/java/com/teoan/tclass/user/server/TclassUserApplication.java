@@ -1,5 +1,6 @@
 package com.teoan.tclass.user.server;
 
+import io.github.bluemiaomiao.annotation.EnableFastdfsClient;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
 /**
- * @author zhuangjy
+ * @author Teoan
  * @description 用户微服务启动类
  * @date 2021/5/12 15:51
  */
@@ -20,6 +21,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @EnableFeignClients("com.teoan.tclass")
 @EnableResourceServer
 @EnableCaching
+@EnableFastdfsClient
 @EnableEurekaClient
 public class TclassUserApplication {
     public static void main(String[] args) {
