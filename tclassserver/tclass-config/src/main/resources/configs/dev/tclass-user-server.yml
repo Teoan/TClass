@@ -81,10 +81,10 @@ file:
 fastdfs:
   charset: UTF-8
   connect-timeout: 5
-#  http-secret-key: your key
+  http-secret-key: your key
   network-timeout: 30
-  http-anti-steal-token: true
-  http-tracker-http-port: 8080
+  http-anti-steal-token: false
+  http-tracker-http-port: 8888
   connection-pool-max-idle: 20
   connection-pool-max-total: 20
   connection-pool-min-idle: 2

@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -44,11 +45,12 @@ public class FileServiceImpl implements FileService {
             int imageWidth = Math.min(bufferedImage.getWidth(), bufferedImage.getHeight());
             bufferedImage = bufferedImage.getSubimage(0,0,imageWidth,imageWidth);
             // 上传文件
-//            String[] remoteInfo;
-//            remoteInfo = fastdfsClientService.autoUpload(bufferedImage.get, ".jpg");
-
-
-
+            String[] remoteInfo;
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage,"jpg",outputStream);
+            remoteInfo = fastdfsClientService.autoUpload(outputStream.toByteArray(), "jpg");
+            System.out.println("上传的服务器分组: " + remoteInfo[0]);
+            System.out.println("上传的服务器ID: " + remoteInfo[1]);
 
         } catch (Exception e) {
             R.failed(e.getMessage());
