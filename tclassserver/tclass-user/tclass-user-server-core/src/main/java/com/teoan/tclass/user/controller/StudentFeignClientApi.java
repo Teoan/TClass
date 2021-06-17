@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.teoan.tclass.common.result.R;
@@ -130,16 +131,18 @@ public class StudentFeignClientApi implements StudentFeignClient {
 
     @Override
     public void getUserAvatar(HttpServletResponse resp, String photoPath) {
-        File avayarFile = fileService.getUserAvatarFile(photoPath);
-        if(avayarFile!=null){
+        byte[] avayarFileByte = fileService.getUserAvatarFile(photoPath);
+        if(ObjectUtils.isNotEmpty(avayarFileByte)){
             resp.setContentType("image/jpeg");
             try {
-                BufferedImage bufferedImage = ImageIO.read(avayarFile);
-                // 剪切图片
-                int imageWidth = Math.min(bufferedImage.getWidth(), bufferedImage.getHeight());
-                bufferedImage = bufferedImage.getSubimage(0,0,imageWidth,imageWidth);
+//                BufferedImage bufferedImage = ImageIO.read(avayarFile);
+//                // 剪切图片
+//                int imageWidth = Math.min(bufferedImage.getWidth(), bufferedImage.getHeight());
+//                bufferedImage = bufferedImage.getSubimage(0,0,imageWidth,imageWidth);
                 ServletOutputStream outputStream = resp.getOutputStream();
-                ImageIO.write(bufferedImage,"jpg",outputStream);
+                outputStream.write(avayarFileByte);
+                outputStream.flush();
+//                ImageIO.write(bufferedImage,"jpg",outputStream);
             } catch (IOException e) {
                 e.printStackTrace();
             }

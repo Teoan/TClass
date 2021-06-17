@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.server.PathParam;
 import java.io.Serializable;
 import java.util.List;
 
@@ -93,8 +94,8 @@ public interface StudentFeignClient {
      * 获取用户头像
      * @param photoPath 图片路径
      */
-    @GetMapping("/avatar/{photoPath}")
-    void getUserAvatar(HttpServletResponse resp , @PathVariable("photoPath") String photoPath);
+    @GetMapping("/avatar")
+    void getUserAvatar(HttpServletResponse resp , @RequestParam String photoPath);
 
 
     /**

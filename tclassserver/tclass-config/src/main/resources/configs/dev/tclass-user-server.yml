@@ -77,16 +77,29 @@ hystrix:
 file:
   upload:
     url: ${UPLOAD_PATH:classPath:/static}
-#fastdfs设置
-fastdfs:
-  charset: UTF-8
-  connect-timeout: 5
-  http-secret-key: your key
-  network-timeout: 30
-  http-anti-steal-token: false
-  http-tracker-http-port: 8888
-  connection-pool-max-idle: 20
-  connection-pool-max-total: 20
-  connection-pool-min-idle: 2
-  nginx-servers: www.xumumi.com:8888
-  tracker-servers: www.xumumi.com:22122
+##fastdfs设置
+#fastdfs:
+#  charset: UTF-8
+#  connect-timeout: 5
+#  http-secret-key: your key
+#  network-timeout: 30
+#  http-anti-steal-token: false
+#  http-tracker-http-port: 8888
+#  connection-pool-max-idle: 20
+#  connection-pool-max-total: 20
+#  connection-pool-min-idle: 2
+#  nginx-servers: www.xumumi.com:8888
+#  tracker-servers: www.xumumi.com:22122
+#fastdfs 配置
+fdfs:
+  # 读取时间
+  so-timeout: 1500
+  # 连接超时时间
+  connect-timeout: 600
+  # 缩略图
+  thumb-image:
+    width: 150
+    height: 150
+  # Tracker服务
+  tracker-list:
+    - www.xumumi.com:22122

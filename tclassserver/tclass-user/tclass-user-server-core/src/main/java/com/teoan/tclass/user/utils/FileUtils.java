@@ -18,7 +18,7 @@ public class FileUtils {
         if(originalFilename!=null){
             int i = originalFilename.lastIndexOf(".");
             if (i != -1) {
-                extensionName = file.getOriginalFilename().substring(i);
+                extensionName = file.getOriginalFilename().substring(i+1);
             }
         }
         return extensionName;

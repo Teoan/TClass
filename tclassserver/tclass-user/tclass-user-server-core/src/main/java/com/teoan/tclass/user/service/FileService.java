@@ -22,7 +22,7 @@ public interface FileService {
     /**
      * 获取用户头像文件
      * @param photoPath 用户id
-     * @return 是否成功
+     * @return 文件字节
      */
-    File getUserAvatarFile(String photoPath);
+    byte[] getUserAvatarFile(String photoPath);
 }
