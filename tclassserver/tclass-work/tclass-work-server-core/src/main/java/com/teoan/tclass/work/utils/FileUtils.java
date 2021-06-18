@@ -23,10 +23,10 @@ public class FileUtils {
             switch (work.getFileNameFormatEnum()){
                 case 1:{return file.getOriginalFilename();
                 }
-                case 2:{return sysUser.getId()+"_"+sysUser.getName()+"_"+work.getName()+work.getExtensionName();}
-                case 3:{return sysUser.getName()+"_"+sysUser.getId()+"_"+work.getName()+work.getExtensionName();}
-                case 4:{return sysUser.getName()+"_"+work.getName()+work.getExtensionName();}
-                case 5:{return sysUser.getId()+"_"+work.getName()+work.getExtensionName();}
+                case 2:{return sysUser.getId()+"_"+sysUser.getName()+"_"+work.getName()+'.'+work.getExtensionName();}
+                case 3:{return sysUser.getName()+"_"+sysUser.getId()+"_"+work.getName()+'.'+work.getExtensionName();}
+                case 4:{return sysUser.getName()+"_"+work.getName()+'.'+work.getExtensionName();}
+                case 5:{return sysUser.getId()+"_"+work.getName()+'.'+work.getExtensionName();}
             }
         }
         return null;
@@ -44,7 +44,7 @@ public class FileUtils {
         if(originalFilename!=null){
             int i = originalFilename.lastIndexOf(".");
             if (i != -1) {
-                extensionName = file.getOriginalFilename().substring(i);
+                extensionName = file.getOriginalFilename().substring(i+1);
             }
         }
         return extensionName;

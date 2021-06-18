@@ -1,5 +1,6 @@
 package com.teoan.tclass.work.utils;
 
+import com.teoan.tclass.work.entity.Upload;
 import com.teoan.tclass.work.exception.ZipFileException;
 import org.springframework.http.HttpStatus;
 
@@ -7,6 +8,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -20,28 +22,20 @@ public class ZipUtils {
     /**
      * 将文件打包为zip
      * @param zipFile zip文件
-     * @param files 要打包的文件
+     * @param uploadFiles 要打包的文件
      */
-    public static void zipFiles(File zipFile,File[] files){
+    public static void zipFiles(File zipFile, List<Upload> uploadFiles){
 
+        //TODO 未测试
         try{
             byte[] buffer = new byte[1024];
             FileOutputStream fos = new FileOutputStream(zipFile);
             ZipOutputStream zos = new ZipOutputStream(new BufferedOutputStream(fos));
-            for(File file:files){
-                //不打包文件本身
-                if(zipFile.getPath().equals(file.getPath())){
-                    break;
-                }
-                String fileName = file.getName();
+            for(Upload upload:uploadFiles){
+                String fileName = upload.getFileName();
                 ZipEntry zipEntry = new ZipEntry(fileName);
                 zos.putNextEntry(zipEntry);
-                FileInputStream fis = new FileInputStream(file);
-                int i;
-                while((i=fis.read(buffer))>0){
-                    zos.write(buffer,0,i);
-                }
-                fis.close();
+                zos.write(upload.getFileByte());
             }
             zos.closeEntry();
             zos.close();

@@ -1,12 +1,18 @@
 package com.teoan.tclass.work.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
+import com.teoan.tclass.common.service.FdfsService;
+import com.teoan.tclass.work.entity.Upload;
 import com.teoan.tclass.work.exception.DirPathIsFileException;
 import com.teoan.tclass.work.exception.ExtensionNameNotEqualException;
 import com.teoan.tclass.work.exception.FileNotExistsException;
 import com.teoan.tclass.work.exception.MarkDirException;
 import com.teoan.tclass.work.service.FileService;
+import com.teoan.tclass.work.service.UploadService;
 import com.teoan.tclass.work.utils.FileUtils;
 import com.teoan.tclass.work.utils.ZipUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Teoan
@@ -26,36 +34,18 @@ import java.io.File;
 public class FileServiceImpl implements FileService {
     @Value("${file.upload.url}")
     private String path;
+
+    @Autowired
+    FdfsService fdfsService;
+
+    @Autowired
+    UploadService uploadService;
+
     @Override
-    @CacheEvict(cacheNames = "zipFile_cache",key = "#wId")
-    public void saveFile(MultipartFile file, String fileName, Integer wId) {
-        File f = new File(path);
-        if(!f.exists()){
-            f.mkdirs();
-        }
-        try{
-            if(f.isFile()){
-                throw new DirPathIsFileException(HttpStatus.INTERNAL_SERVER_ERROR,"所创建的目录存在但是个文件，联系管理员解决此问题");
-            }
-            File workDir = new File(f+File.separator+wId);
-            if(!workDir.exists()){
-                if(!workDir.mkdir()){
-                    throw new MarkDirException(HttpStatus.INTERNAL_SERVER_ERROR,"文件目录创建失败！");
-                }
-            }
-            File saveFile = new File(workDir+File.separator+fileName);
-            if(saveFile.exists()){
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"文件名已存在，请重命名!");
-            }else {
-                file.transferTo(saveFile);
-                if(!saveFile.exists()){
-                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"文件上传失败！");
-                }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
-        }
+    public String saveFile(MultipartFile file) throws IOException {
+        String extensionName = FileUtils.getExtensionName(file);
+        String uploadFilePath = fdfsService.uploadFile(file.getBytes(), file.getSize(), extensionName);
+        return uploadFilePath;
     }
 
     @Override
@@ -64,31 +54,29 @@ public class FileServiceImpl implements FileService {
             @CacheEvict(cacheNames = "getFile_cache",key = "#wId+#fileName"),
             @CacheEvict(cacheNames = "zipFile_cache",key = "#wId")
     })
-    public boolean deleteFile(String fileName, Integer wId) {
-        File deleteFile =  new File(path+File.separator+wId+File.separator+fileName);
-        return deleteFile.delete();
+    public boolean deleteFile(String fileName, Integer wId,String filePath) {
+        fdfsService.deleteFile(filePath);
+        return true;
     }
 
     @Override
     @Cacheable( cacheNames = "zipFile_cache",key = "#wId")
     public File getZipByWId(Integer wId) {
-
-        File workDir = new File(path+File.separator+wId);
-        File zipDir = new File(path+File.separator+"Zip");
+        //TODO 未测试
         File zipFile = new File(path+File.separator+"Zip"+File.separator+wId+".zip");
-        if(!workDir.exists()){
-            if(!workDir.mkdir()){
-                throw new MarkDirException(HttpStatus.INTERNAL_SERVER_ERROR,"文件目录创建失败！");
+        QueryWrapper<Upload> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("w_id",wId);
+        List<Upload> uploadList = uploadService.list(queryWrapper);
+        uploadList.stream().map(upload -> {
+            try {
+                upload.setFileByte(fdfsService.downloadFile(upload.getFilePath()));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }
-        if(!zipDir.exists()){
-            if(!zipDir.mkdir()){
-                throw new MarkDirException(HttpStatus.INTERNAL_SERVER_ERROR,"文件目录创建失败！");
-            }
-        }
-        File[] listFiles = workDir.listFiles();
-        if (listFiles!=null){
-            ZipUtils.zipFiles(zipFile,listFiles);
+            return upload;
+        });
+        if (ObjectUtils.isNotEmpty(uploadList)){
+            ZipUtils.zipFiles(zipFile,uploadList);
         }else {
             throw new FileNotExistsException(HttpStatus.INTERNAL_SERVER_ERROR,"打包目录中不存在文件！");
         }
@@ -97,12 +85,16 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Cacheable(cacheNames = "getFile_cache",key = "#wId+#fileName")
-    public File getFile(Integer wId, String fileName) {
-        File file = new File(path+File.separator+wId+File.separator+fileName);
-        if (file.exists()){
-            return file;
-        }else{
-            throw new FileNotExistsException(HttpStatus.INTERNAL_SERVER_ERROR,"文件获取失败");
+    public byte[] getFile(Integer wId, String fileName) {
+        QueryWrapper<Upload> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("w_id",wId);
+        queryWrapper.eq("file_name",fileName);
+        Upload upload = uploadService.getOne(queryWrapper);
+        try {
+            return fdfsService.downloadFile(upload.getFilePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -122,34 +114,4 @@ public class FileServiceImpl implements FileService {
         return true;
     }
 
-    @Override
-    public boolean updateUserAvatarFile(MultipartFile file, Integer sId) {
-        File avatarDir = new File(path+File.separator+"avatar");
-        if(!avatarDir.exists()){
-            if(!avatarDir.mkdirs()){
-                throw new MarkDirException(HttpStatus.INTERNAL_SERVER_ERROR,"文件目录创建失败！");
-            }
-        }
-        String extensionName = FileUtils.getExtensionName(file).toLowerCase();
-        if(!extensionName.equals(".jpg")){
-            throw new ExtensionNameNotEqualException(HttpStatus.INTERNAL_SERVER_ERROR,"头像扩展名不符合要求！");
-        }
-        File avatarFile = new File(path+File.separator+"avatar"+File.separator+sId+".jpg");
-        try {
-            file.transferTo(avatarFile);
-        }catch (Exception e){
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
-        }
-        return avatarFile.exists();
-    }
-
-    @Override
-    public File getUserAvatarFile(String photoPath) {
-        File avatarFile = new File(path+File.separator+"avatar"+File.separator+photoPath);
-        if (avatarFile.exists()){
-            return avatarFile;
-        }
-        return null;
-    }
 }

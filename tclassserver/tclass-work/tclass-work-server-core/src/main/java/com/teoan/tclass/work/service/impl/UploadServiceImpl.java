@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 
 /**
  * (Upload)表服务实现类
@@ -43,7 +44,8 @@ public class UploadServiceImpl extends ServiceImpl<UploadMapper, Upload> impleme
     @Override
     @Caching(evict = {
             @CacheEvict(cacheNames = "work_cache",allEntries = true),
-            @CacheEvict(cacheNames = "upload_cache",allEntries = true)
+            @CacheEvict(cacheNames = "upload_cache",allEntries = true),
+            @CacheEvict(cacheNames = "zipFile_cache",key = "#wId")
     })
     public boolean uploadFile(Integer wId, Integer sId, MultipartFile file) {
         //检查文件扩展名
@@ -61,10 +63,17 @@ public class UploadServiceImpl extends ServiceImpl<UploadMapper, Upload> impleme
         if(StringUtils.isBlank(fileName)){
             return false;
         }
-        fileService.saveFile(file,fileName,wId);
-        Upload upload = Upload.builder().sId(sId).wId(wId).fileType(file.getContentType()).fileName(fileName).size(file.getSize()).build();
-        getBaseMapper().insert(upload);
-        return true;
+        try {
+            String filePath = fileService.saveFile(file);
+            Upload upload = Upload.builder().sId(sId).wId(wId).fileType(file.getContentType())
+                    .fileName(fileName).size(file.getSize()).filePath(filePath).build();
+            getBaseMapper().insert(upload);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
 
@@ -76,8 +85,10 @@ public class UploadServiceImpl extends ServiceImpl<UploadMapper, Upload> impleme
             @CacheEvict(cacheNames = "isUploadedWorkFile",key = "T(String).valueOf(#upload.getWId()).concat('-').concat(#upload.getSId())")
     })
     public boolean deleteUploadFile(Upload upload) {
-        if(fileService.deleteFile(upload.getFileName(),upload.getWId())){
-            QueryWrapper<Upload> wrapper = new QueryWrapper<>(upload);
+        if(fileService.deleteFile(upload.getFileName(),upload.getWId(),upload.getFilePath())){
+            QueryWrapper<Upload> wrapper = new QueryWrapper<>();
+            wrapper.eq("s_id",upload.getSId());
+            wrapper.eq("w_id",upload.getWId());
             getBaseMapper().delete(wrapper);
             return true;
         }

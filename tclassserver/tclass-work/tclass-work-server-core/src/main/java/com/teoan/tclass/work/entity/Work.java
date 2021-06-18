@@ -105,4 +105,10 @@ public class Work extends Model<Work> {
     protected Serializable pkVal() {
         return this.id;
     }
+
+
+    public String getExtensionName() {
+        extensionName = extensionName.substring(extensionName.indexOf('.')+1);
+        return extensionName;
+    }
 }

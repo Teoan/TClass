@@ -1,5 +1,7 @@
 package com.teoan.tclass.work.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.teoan.tclass.common.service.AuthUserService;
 import com.teoan.tclass.common.result.R;
 import com.teoan.tclass.work.dto.ExtensionDTO;
@@ -115,16 +117,18 @@ public class WorkFeignClientApi implements WorkFeignClient {
 
     @Override
     public ResponseEntity<byte[]> downloadWorkFile(String fileName, Integer wId) {
-        File file = fileService.getFile(wId,fileName);
+        byte[] fileByte = fileService.getFile(wId,fileName);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        try {
-            headers.setContentDispositionFormData("attachment", URLEncoder.encode(fileName,"UTF-8"));
-            FileInputStream fileInputStream = new FileInputStream(file);
-            return new ResponseEntity<byte[]>(IOUtils.toByteArray(fileInputStream),headers, HttpStatus.OK);
-        } catch (Exception e) {
-            throw new FileException(HttpStatus.INTERNAL_SERVER_ERROR,"文件未找到,下载失败!");
+        if(ObjectUtils.isNotEmpty(fileByte)){
+            try {
+                headers.setContentDispositionFormData("attachment", URLEncoder.encode(fileName,"UTF-8"));
+                return new ResponseEntity<byte[]>(fileByte,headers, HttpStatus.OK);
+            } catch (Exception e) {
+                throw new FileException(HttpStatus.INTERNAL_SERVER_ERROR,"文件未找到,下载失败!");
+            }
         }
+        return null;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.teoan.tclass.user.service;
+package com.teoan.tclass.common.service;
 
 import com.github.tobato.fastdfs.domain.fdfs.MetaData;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -45,19 +46,21 @@ public class FdfsService {
     }
 
     /**
-     * 上传用户头像文件
-     * @param file 头像文件
+     * 上传图像文件
+     * @param inputStream 图像输入流
+     * @param fileSize 文件大小
      * @param width 缩略图宽
-     * @param height 缩略图长
-     * @param extName 文件扩展名
-     * @return 文件全路径
+     * @param height 缩略图高
+     * @param extName 扩展名
+     * @return  完整路径
+     * @throws IOException
      */
-    public String uploadUserAvatarImageFile(MultipartFile file,int width, int height,String extName) throws IOException {
+    public String uploadUserAvatarImageFile(InputStream inputStream, long fileSize, int width, int height, String extName) throws IOException {
         ThumbImage thumbImage = new ThumbImage(width,height);
         // 元数据
         Set<MetaData> metaDataSet = new HashSet<MetaData>();
         metaDataSet.add(new MetaData("dateTime", LocalDateTime.now().toString()));
-        FastImageFile imageFile = new FastImageFile(file.getInputStream(),file.getSize(),extName,metaDataSet,thumbImage);
+        FastImageFile imageFile = new FastImageFile(inputStream,fileSize,extName,metaDataSet,thumbImage);
         StorePath storePath = fastFileStorageClient.uploadImage(imageFile);
         return storePath.getFullPath();
     }

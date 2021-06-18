@@ -33,6 +33,10 @@ public class UploadDTO {
      */
     private String fileName;
     /**
+     * 文件路径
+     */
+    private String filePath;
+    /**
      * 文件大小
      */
     private long size;

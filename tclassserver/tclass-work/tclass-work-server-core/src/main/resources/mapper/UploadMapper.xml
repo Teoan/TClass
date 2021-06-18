@@ -6,6 +6,8 @@
         <result property="sId" column="s_id" jdbcType="INTEGER"/>
         <result property="wId" column="w_id" jdbcType="INTEGER"/>
         <result property="fileType" column="file_type" jdbcType="VARCHAR"/>
+        <result property="fileName" column="file_name" jdbcType="VARCHAR"/>
+        <result property="filePath" column="file_path" jdbcType="VARCHAR"/>
         <result property="size" column="size" jdbcType="NUMERIC"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>

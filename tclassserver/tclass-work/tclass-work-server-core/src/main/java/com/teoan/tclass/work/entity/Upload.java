@@ -45,6 +45,10 @@ public class Upload extends Model<Upload> {
      */
     private String fileName;
     /**
+     * 文件保存路径
+     */
+    private String filePath;
+    /**
      * 文件大小
      */
     private long size;
@@ -63,5 +67,9 @@ public class Upload extends Model<Upload> {
     @TableField(exist = false)
     private String sName;
 
-
+    /**
+     * 文件字节流
+     */
+    @TableField(exist = false)
+    private byte[] fileByte;
 }
