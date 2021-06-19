@@ -135,15 +135,18 @@ public class WorkFeignClientApi implements WorkFeignClient {
     public ResponseEntity<byte[]> downloadZipWorkFile(Integer wId) {
         Work work = workService.getById(wId);
         File file =  fileService.getZipByWId(wId);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        try {
-            headers.setContentDispositionFormData("attachment",URLEncoder.encode(work.getName()+".zip","UTF-8"));
-            FileInputStream fileInputStream = new FileInputStream(file);
-            return new ResponseEntity<byte[]>(IOUtils.toByteArray(fileInputStream),headers,HttpStatus.OK);
-        } catch (Exception e) {
-            throw new FileException(HttpStatus.INTERNAL_SERVER_ERROR,"文件未找到,下载失败!");
+        if(ObjectUtils.isNotEmpty(file)){
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            try {
+                headers.setContentDispositionFormData("attachment",URLEncoder.encode(work.getName()+".zip","UTF-8"));
+                FileInputStream fileInputStream = new FileInputStream(file);
+                return new ResponseEntity<byte[]>(IOUtils.toByteArray(fileInputStream),headers,HttpStatus.OK);
+            } catch (Exception e) {
+                throw new FileException(HttpStatus.INTERNAL_SERVER_ERROR,"文件未找到,下载失败!");
+            }
         }
+        return null;
     }
 
     @Override

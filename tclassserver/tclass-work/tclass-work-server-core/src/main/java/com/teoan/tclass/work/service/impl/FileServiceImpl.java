@@ -19,12 +19,15 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Teoan
@@ -60,27 +63,38 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    @Cacheable( cacheNames = "zipFile_cache",key = "#wId")
+    @Cacheable( cacheNames = "zipFile_cache",key = "#wId",unless = "#result==null")
     public File getZipByWId(Integer wId) {
-        //TODO 未测试
-        File zipFile = new File(path+File.separator+"Zip"+File.separator+wId+".zip");
-        QueryWrapper<Upload> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("w_id",wId);
-        List<Upload> uploadList = uploadService.list(queryWrapper);
-        uploadList.stream().map(upload -> {
-            try {
-                upload.setFileByte(fdfsService.downloadFile(upload.getFilePath()));
-            } catch (IOException e) {
-                e.printStackTrace();
+        try {
+            String zipDirPath = ResourceUtils.getURL(ResourceUtils.CLASSPATH_URL_PREFIX).getPath();
+            File zipDir = new File(zipDirPath+ File.separator+"Zip");
+            if(!zipDir.exists()){
+                if(!zipDir.mkdir()){
+                    return null;
+                }
             }
-            return upload;
-        });
-        if (ObjectUtils.isNotEmpty(uploadList)){
-            ZipUtils.zipFiles(zipFile,uploadList);
-        }else {
-            throw new FileNotExistsException(HttpStatus.INTERNAL_SERVER_ERROR,"打包目录中不存在文件！");
+            File zipFile = new File(zipDir.getAbsolutePath()+File.separator+wId+".zip");
+            QueryWrapper<Upload> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("w_id",wId);
+            List<Upload> uploadList = uploadService.list(queryWrapper);
+            uploadList = uploadList.stream().map(upload -> {
+                try {
+                    upload.setFileByte(fdfsService.downloadFile(upload.getFilePath()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return upload;
+            }).collect(Collectors.toList());
+            if (ObjectUtils.isNotEmpty(uploadList)){
+                ZipUtils.zipFiles(zipFile,uploadList);
+            }else {
+                return null;
+            }
+            return zipFile;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
         }
-        return zipFile;
     }
 
     @Override

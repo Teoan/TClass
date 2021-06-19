@@ -25,10 +25,7 @@ public class ZipUtils {
      * @param uploadFiles 要打包的文件
      */
     public static void zipFiles(File zipFile, List<Upload> uploadFiles){
-
-        //TODO 未测试
         try{
-            byte[] buffer = new byte[1024];
             FileOutputStream fos = new FileOutputStream(zipFile);
             ZipOutputStream zos = new ZipOutputStream(new BufferedOutputStream(fos));
             for(Upload upload:uploadFiles){
@@ -40,6 +37,7 @@ public class ZipUtils {
             zos.closeEntry();
             zos.close();
         }catch (Exception e){
+            e.printStackTrace();
             throw new ZipFileException(HttpStatus.INTERNAL_SERVER_ERROR,"文件打包失败");
         }
     }

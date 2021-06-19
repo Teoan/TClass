@@ -119,7 +119,7 @@ public interface WorkFeignClient {
      * 文件打包下载
      * @param wId 作业id
      */
-    @GetMapping("/admin/download/{wId}")
+    @GetMapping("/admin/download/zip/{wId}")
     public ResponseEntity<byte[]> downloadZipWorkFile(@PathVariable("wId")Integer wId);
 
     /**
