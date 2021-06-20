@@ -20,7 +20,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @EnableFeignClients("com.teoan.tclass")
 @EnableResourceServer
 @EnableCaching
-//@EnableFastdfsClient
 @EnableEurekaClient
 public class TclassUserApplication {
     public static void main(String[] args) {

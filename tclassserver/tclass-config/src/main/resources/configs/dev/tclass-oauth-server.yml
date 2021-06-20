@@ -1,5 +1,5 @@
 server:
-  port: 7777 #服务端口
+  port: 9999 #服务端口
 spring:
   profiles:
     active: dev #环境

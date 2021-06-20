@@ -94,7 +94,7 @@ public interface StudentFeignClient {
      * 获取用户头像
      * @param photoPath 图片路径
      */
-    @GetMapping("/avatar")
+    @GetMapping("/avatar/get")
     void getUserAvatar(HttpServletResponse resp , @RequestParam String photoPath);
 
 

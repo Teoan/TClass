@@ -6,7 +6,7 @@
         <span v-else>关于我</span>
       </div>
       <div>
-        <el-avatar :size="150" :src="userInfo.avatarUrl" />
+        <el-avatar :size="150" :src="getUserAvatarUrl" />
       </div>
       <div class="user-name">
         {{ userInfo.name }}
@@ -51,7 +51,7 @@
           :before-upload="beforeAvatarUpload"
           :on-error="handleAvatarError"
         >
-          <img v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" class="avatar">
+          <img v-if="userInfo.avatarUrl" :src="getUserAvatarUrl()" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon" />
         </el-upload>
       </el-tooltip>
@@ -416,6 +416,9 @@ export default {
     handleAvatarError(err, file, fileList) {
       err = JSON.parse(err.message)
       this.$message.error(err.message)
+    },
+    getUserAvatarUrl() {
+      return '/user/avatar/get?photoPath=' + this.userInfo.avatarUrl
     }
   }
 }

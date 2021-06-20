@@ -47,7 +47,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 "/webjars/**",
                 "/api/**/v2/api-docs",
                 "/oauth/login",     //放行登录接口和验证码接口
-                "/oauth/verifyCode.jpg")
+                "/oauth/verifyCode.jpg",
+                "/avatar/get/**")   //放行头像接口 TODO 记录一个坑
                 .permitAll()
         .antMatchers("/admin/**").hasRole("admin").anyRequest().authenticated();
     }

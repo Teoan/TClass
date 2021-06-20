@@ -56,7 +56,7 @@
         </div>
         <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link">
-            <el-avatar :src="currentUser.avatarUrl" />
+            <el-avatar :src="getUserAvatarUrl()" />
             <i class="fas fa-caret-down el-icon--right" />
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -135,6 +135,9 @@ export default {
         return false
       }
       return true
+    },
+    getUserAvatarUrl() {
+      return '/user/avatar/get?photoPath=' + this.currentUser.avatarUrl
     }
   }
 }
