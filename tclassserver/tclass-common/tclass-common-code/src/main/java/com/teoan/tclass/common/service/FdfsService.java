@@ -55,12 +55,12 @@ public class FdfsService {
      * @return  完整路径
      * @throws IOException
      */
-    public String uploadUserAvatarImageFile(InputStream inputStream, long fileSize, int width, int height, String extName) throws IOException {
-        ThumbImage thumbImage = new ThumbImage(width,height);
+    public String uploadUserAvatarImageFile(InputStream inputStream, long fileSize, String extName) throws IOException {
+//        ThumbImage thumbImage = new ThumbImage(width,height);
         // 元数据
         Set<MetaData> metaDataSet = new HashSet<MetaData>();
         metaDataSet.add(new MetaData("dateTime", LocalDateTime.now().toString()));
-        FastImageFile imageFile = new FastImageFile(inputStream,fileSize,extName,metaDataSet,thumbImage);
+        FastImageFile imageFile = new FastImageFile(inputStream,fileSize,extName,metaDataSet);
         StorePath storePath = fastFileStorageClient.uploadImage(imageFile);
         return storePath.getFullPath();
     }
