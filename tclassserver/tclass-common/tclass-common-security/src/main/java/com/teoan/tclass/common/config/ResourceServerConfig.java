@@ -48,7 +48,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 "/api/**/v2/api-docs",
                 "/oauth/login",     //放行登录接口和验证码接口
                 "/oauth/verifyCode.jpg",
-                "/avatar/get/**")   //放行头像接口 TODO 记录一个坑
+                "/avatar/get/**",//放行头像接口 TODO 记录一个坑
+                "/admin/template")    //放行导入模板
                 .permitAll()
         .antMatchers("/admin/**").hasRole("admin").anyRequest().authenticated();
     }

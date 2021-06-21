@@ -6,7 +6,7 @@
         <span v-else>关于我</span>
       </div>
       <div>
-        <el-avatar :size="150" :src="getUserAvatarUrl" />
+        <el-avatar :size="150" :src="getUserAvatarUrl()" />
       </div>
       <div class="user-name">
         {{ userInfo.name }}
@@ -395,7 +395,7 @@ export default {
           // 刷新当前用户数据
           this.$store.commit('INIT_CURRENTUSER', resp.data)
           localStorage.setItem('INIT_CURRENTUSER', JSON.stringify(resp.data))
-          this.userInfo.avatarUrl = resp.data.avatarUrl + '?count=' + Math.random()
+          this.userInfo.avatarUrl = resp.data.avatarUrl
           this.$message.success('头像修改成功！')
         }
       }).catch(error => {

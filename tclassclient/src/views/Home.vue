@@ -96,9 +96,6 @@ export default {
     },
     routes() {
       return this.$router.options.routes
-    },
-    currentRole() {
-      return this.currentUser.role.name
     }
   },
   methods: {
@@ -131,7 +128,7 @@ export default {
       }
     },
     isHaveRoles(item) {
-      if (item.meta.roles.indexOf(this.currentRole) === -1) {
+      if (item.meta.roles.indexOf(this.currentUser.role.name) === -1) {
         return false
       }
       return true

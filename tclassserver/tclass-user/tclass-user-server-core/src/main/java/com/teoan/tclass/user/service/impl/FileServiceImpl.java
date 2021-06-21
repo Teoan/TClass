@@ -49,9 +49,7 @@ public class FileServiceImpl implements FileService {
             ByteArrayOutputStream bs = new ByteArrayOutputStream();
             ImageOutputStream imOut = ImageIO.createImageOutputStream(bs);
             ImageIO.write(bufferedImage,extensionName,imOut);
-
-
-            String filePath = fdfsService.uploadUserAvatarImageFile(new ByteArrayInputStream(bs.toByteArray()),avayarFile.getSize(), extensionName);
+            String filePath = fdfsService.uploadUserAvatarImageFile(new ByteArrayInputStream(bs.toByteArray()), bs.size(), extensionName);
             SysUser currentUser = authUserService.getCurrentUser();
             //删除旧的头像文件
             Student student = studentService.getById(currentUser.getId());
