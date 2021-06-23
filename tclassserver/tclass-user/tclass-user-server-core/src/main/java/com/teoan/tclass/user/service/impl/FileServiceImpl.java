@@ -42,7 +42,7 @@ public class FileServiceImpl implements FileService {
             return R.failed("头像扩展名不符合要求！");
         }
         try {
-            //剪切图片 TODO 未测试
+            //剪切图片
             BufferedImage bufferedImage = ImageIO.read(avayarFile.getInputStream());
             int imageWidth = Math.min(bufferedImage.getWidth(), bufferedImage.getHeight());
             bufferedImage = bufferedImage.getSubimage(0,0,imageWidth,imageWidth);
