@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * (Upload)表服务实现类
@@ -117,5 +118,12 @@ public class UploadServiceImpl extends ServiceImpl<UploadMapper, Upload> impleme
         QueryWrapper<Upload> wrapper = new QueryWrapper<>();
         wrapper.eq("w_id",wId);
         return getBaseMapper().delete(wrapper)>=0;
+    }
+
+    @Override
+    public List<Upload> getUploadListByWId(Integer wId) {
+        QueryWrapper<Upload> wrapper = new QueryWrapper<>();
+        wrapper.eq("w_id",wId);
+        return getBaseMapper().selectList(wrapper);
     }
 }

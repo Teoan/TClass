@@ -6,8 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * @author zhuangjy
- * @description
+ * @author Teoan
  * @date 2021/5/19 17:58
  */
 public interface FileService {

@@ -74,7 +74,7 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
             if (fileService.deleteFilesByWId((Integer) i)&&uploadService.deleteUploadByWId((Integer) i)) {
                 getBaseMapper().deleteById(i);
             }else{
-                throw new DeleteFileException(HttpStatus.INTERNAL_SERVER_ERROR,"删除作业失败，请联系管理员");
+                return false;
             }
         }
         return true;

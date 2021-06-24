@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.teoan.tclass.work.entity.Upload;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * (Upload)表服务接口
  *
@@ -52,4 +54,11 @@ public interface UploadService extends IService<Upload> {
      * @return 是否成功
      */
     boolean deleteUploadByWId(Integer wId);
+
+    /**
+     * 根据作业id获取上传信息列表
+     * @param wId 作业id
+     * @return 上传信息列表
+     */
+    List<Upload> getUploadListByWId(Integer wId);
 }

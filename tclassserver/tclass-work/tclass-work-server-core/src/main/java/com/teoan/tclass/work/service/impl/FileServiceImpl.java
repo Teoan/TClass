@@ -35,8 +35,6 @@ import java.util.stream.Collectors;
  */
 @Service("FileService")
 public class FileServiceImpl implements FileService {
-    @Value("${file.upload.url}")
-    private String path;
 
     @Autowired
     FdfsService fdfsService;
@@ -98,7 +96,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    @Cacheable(cacheNames = "getFile_cache",key = "#wId+#fileName")
+//    @Cacheable(cacheNames = "getFile_cache",key = "#wId+#fileName")
     public byte[] getFile(Integer wId, String fileName) {
         QueryWrapper<Upload> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("w_id",wId);
@@ -115,15 +113,9 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public boolean deleteFilesByWId(Integer wId) {
-        File deleteDir = new File(path+File.separator+wId);
-        if(deleteDir.exists()){
-            File[] deleteFiles = deleteDir.listFiles();
-            for (File file : deleteFiles) {
-                if(!file.delete()){
-                    return false;
-                }
-            }
-            return deleteDir.delete();
+        List<Upload> uploadList = uploadService.getUploadListByWId(wId);
+        for (Upload upload : uploadList) {
+            fdfsService.deleteFile(upload.getFilePath());
         }
         return true;
     }
