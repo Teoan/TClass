@@ -3,6 +3,7 @@ package com.teoan.tclass.work.entity;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -108,7 +109,9 @@ public class Work extends Model<Work> {
 
 
     public String getExtensionName() {
-        extensionName = extensionName.substring(extensionName.indexOf('.')+1);
+        if(StringUtils.isNotBlank(extensionName)){
+            extensionName = extensionName.substring(extensionName.indexOf('.')+1);
+        }
         return extensionName;
     }
 }

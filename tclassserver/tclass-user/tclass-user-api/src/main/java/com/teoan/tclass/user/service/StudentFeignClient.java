@@ -84,7 +84,7 @@ public interface StudentFeignClient {
 
 
     /**
-     * 更新用户头像
+     * 修改用户头像
      * @param avatarFile 用户头像文件
      */
     @PostMapping("/avatar")

@@ -21,7 +21,7 @@ import java.util.List;
 @FeignClient(name="tclass-work-server",value = "tclass-work-server",path = "/work",fallback = WorkFeignFallback.class,configuration = TokenFeignClientConfig.class)
 public interface WorkFeignClient {
     /**
-     * extensionService分页查询所有数据
+     * 分页查询所有数据
      *
      * @param current 分页对象
      * @param size 查询数据量
@@ -30,9 +30,6 @@ public interface WorkFeignClient {
     @GetMapping("/")
     R selectAll(@RequestParam(value = "current",defaultValue = "1")Long current, @RequestParam(value = "size",defaultValue = "10")Long size, WorkDTO work);
 
-
-    @GetMapping("/test")
-    R testFeign();
 
     /**
      * 获取拓展名列表

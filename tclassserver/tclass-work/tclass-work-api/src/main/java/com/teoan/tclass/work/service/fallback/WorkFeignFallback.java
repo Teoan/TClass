@@ -23,12 +23,6 @@ public class WorkFeignFallback implements WorkFeignClient {
     public R selectAll(Long current, Long size, WorkDTO work) {
         return R.failed("查询失败");
     }
-
-    @Override
-    public R testFeign() {
-        return null;
-    }
-
     @Override
     public R getExtensionList() {
         return R.failed("获取失败");

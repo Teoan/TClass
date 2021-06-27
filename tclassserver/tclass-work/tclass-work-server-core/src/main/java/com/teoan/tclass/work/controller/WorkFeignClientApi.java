@@ -2,6 +2,8 @@ package com.teoan.tclass.work.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
+import com.teoan.tclass.common.annotation.TclassLog;
+import com.teoan.tclass.common.enums.LogSeverity;
 import com.teoan.tclass.common.service.AuthUserService;
 import com.teoan.tclass.common.result.R;
 import com.teoan.tclass.work.dto.ExtensionDTO;
@@ -59,6 +61,7 @@ public class WorkFeignClientApi implements WorkFeignClient {
     private FileService fileService;
 
     @Override
+    @TclassLog(operSource = "work",operName = "查询",severity = LogSeverity.INFO,description = "分页查询所有作业数据")
     public R selectAll(Long current, Long size, WorkDTO workDTO) {
         Work work = new Work();
         BeanUtils.copyProperties(workDTO,work);
@@ -66,11 +69,13 @@ public class WorkFeignClientApi implements WorkFeignClient {
     }
 
     @Override
+    @TclassLog(operSource = "work",operName = "查询",severity = LogSeverity.INFO,description = "获取拓展名列表")
     public R getExtensionList() {
         return R.ok(extensionService.list());
     }
 
     @Override
+    @TclassLog(operSource = "work",operName = "添加",severity = LogSeverity.INFO,description = "学生上传作业")
     public R uploadWorkFile(Integer wId, MultipartFile file, Integer sId) {
 
         if(uploadService.uploadFile(wId,sId,file)){
@@ -80,11 +85,13 @@ public class WorkFeignClientApi implements WorkFeignClient {
     }
 
     @Override
+    @TclassLog(operSource = "work",operName = "查询",severity = LogSeverity.INFO,description = "检查用户是否已上传文件")
     public R isUploadedWorkFile(Integer wId, Integer sId) {
         return R.ok(uploadService.isUploadedWorkFile(wId,sId));
     }
 
     @Override
+    @TclassLog(operSource = "work",operName = "删除",severity = LogSeverity.INFO,description = "删除已上传的文件")
     public R deleteUploadFile(UploadDTO uploadDTO) {
         Upload upload = new Upload();
         BeanUtils.copyProperties(uploadDTO,upload);
@@ -92,11 +99,13 @@ public class WorkFeignClientApi implements WorkFeignClient {
     }
 
     @Override
+    @TclassLog(operSource = "work",operName = "查询",severity = LogSeverity.INFO,description = "通过主键查询单条数据")
     public R selectOne(Serializable id) {
         return R.ok(workService.getById(id));
     }
 
     @Override
+    @TclassLog(operSource = "work",operName = "新增",severity = LogSeverity.INFO,description = "新增数据")
     public R insert(WorkDTO workDTO) {
         Work work = new Work();
         BeanUtils.copyProperties(workDTO,work);
@@ -104,6 +113,7 @@ public class WorkFeignClientApi implements WorkFeignClient {
     }
 
     @Override
+    @TclassLog(operSource = "work",operName = "修改",severity = LogSeverity.INFO,description = "修改数据")
     public R update(WorkDTO workDTO) {
         Work work = new Work();
         BeanUtils.copyProperties(workDTO,work);
@@ -111,6 +121,7 @@ public class WorkFeignClientApi implements WorkFeignClient {
     }
 
     @Override
+    @TclassLog(operSource = "work",operName = "删除",severity = LogSeverity.INFO,description = "根据id列表删除数据")
     public R delete(List<Integer> idList) {
         return R.ok(workService.removeByIds(idList));
     }
@@ -150,16 +161,13 @@ public class WorkFeignClientApi implements WorkFeignClient {
     }
 
     @Override
+    @TclassLog(operSource = "work",operName = "查询",severity = LogSeverity.INFO,description = "获取上传文件信息并分页")
     public R getUploadFileInfo(Integer wId, Long current, Long size) {
         return R.ok(uploadService.getUploadPageByWId(current,size,wId));
     }
 
     @Override
-    public R testFeign() {
-        return R.ok(authUserService.getCurrentUser());
-    }
-
-    @Override
+    @TclassLog(operSource = "work",operName = "删除",severity = LogSeverity.INFO,description = "根据上传文件信息列表批量删除文件")
     public R deleteUploadFileByIdList(List<UploadDTO> uploadDTOList) {
         List<Upload> uploadList = uploadDTOList.stream().map(uploadDTO -> {
             Upload upload = new Upload();
@@ -175,11 +183,13 @@ public class WorkFeignClientApi implements WorkFeignClient {
     }
 
     @Override
+    @TclassLog(operSource = "work",operName = "删除",severity = LogSeverity.INFO,description = "根据id删除扩展名")
     public R deleteExtensionById(ExtensionDTO extensionDTO) {
         return R.ok(extensionService.removeById(extensionDTO.getId()));
     }
 
     @Override
+    @TclassLog(operSource = "work",operName = "新增",severity = LogSeverity.INFO,description = "添加扩展名")
     public R addExtension(ExtensionDTO extensionDTO) {
         Extension extension = new Extension();
         BeanUtils.copyProperties(extensionDTO,extension);
