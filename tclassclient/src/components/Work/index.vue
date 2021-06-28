@@ -92,6 +92,7 @@
             v-if="!isUploaded"
             drag
             :action="action"
+            :headers="workUploaderHeaders"
             :accept="work.extensionName"
             show-file-list="true"
             :on-success="onSeccessUpload"
@@ -110,6 +111,7 @@
 </template>
 
 <script>
+import { getOauth2Info } from '@/utils/auth'
 export default {
   props: {
     work: {
@@ -127,7 +129,10 @@ export default {
       isUploaded: false,
       disShowUploadTooltip: true,
       buttonText: '提交作业',
-      fileTableLoading: false
+      fileTableLoading: false,
+      workUploaderHeaders: {
+        Authorization: 'Bearer ' + getOauth2Info().access_token
+      }
     }
   },
   computed: {
