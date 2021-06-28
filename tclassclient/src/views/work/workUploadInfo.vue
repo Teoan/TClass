@@ -125,10 +125,12 @@ export default {
       })
     },
     downloadFiles() {
-      window.open('/work/admin/download/' + this.work.id, '_parent')
+      // window.open('/work/admin/download/zip/' + this.work.id, '_parent')
+      this.downLoadFileRequest('/work/admin/download/zip/' + this.work.id)
     },
     downloadFile(upload) {
-      window.open('/work/admin/download/?wId=' + this.work.id + '&fileName=' + upload.fileName, '_parent')
+      // window.open('/work/admin/download/?wId=' + this.work.id + '&fileName=' + upload.fileName, '_parent')
+      this.downLoadFileRequest('/work/admin/download/?wId=' + this.work.id + '&fileName=' + upload.fileName)
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
