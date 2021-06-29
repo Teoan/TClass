@@ -1,6 +1,6 @@
 # Tclass班级事务管理系统
 
-[主分支]([Teoan/TClass at master (github.com)](https://github.com/Teoan/TClass/tree/master))后端采用Spring Boot开发，现已停止维护。
+[主分支](https://github.com/Teoan/TClass/tree/master)后端采用Spring Boot开发，现已停止维护。
 
 **cloud**分支版本正在开发中，后端采用Spring Cloud进行改造。
 
