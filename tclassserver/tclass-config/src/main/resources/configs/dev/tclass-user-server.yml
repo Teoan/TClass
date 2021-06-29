@@ -73,10 +73,6 @@ hystrix:
           enabled: true
         isolation:
           strategy: SEMAPHORE
-#设置文件上传目录
-file:
-  upload:
-    url: ${UPLOAD_PATH:classPath:/static}
 #fastdfs 配置
 fdfs:
   # 读取时间
