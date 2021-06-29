@@ -31,7 +31,7 @@ public class R<T> {
     /**
      * 时间戳
      */
-    private Long timeStamp = new Date().getTime();
+    private Long timeStamp = System.currentTimeMillis();
 
     public R() {
         // to do nothing

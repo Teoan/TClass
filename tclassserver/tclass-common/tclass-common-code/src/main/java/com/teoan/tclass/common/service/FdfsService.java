@@ -49,8 +49,6 @@ public class FdfsService {
      * 上传图像文件
      * @param inputStream 图像输入流
      * @param fileSize 文件大小
-     * @param width 缩略图宽
-     * @param height 缩略图高
      * @param extName 扩展名
      * @return  完整路径
      * @throws IOException
