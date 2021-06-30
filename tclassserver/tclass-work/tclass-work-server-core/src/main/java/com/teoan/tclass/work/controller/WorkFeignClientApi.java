@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.Serializable;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -127,34 +127,55 @@ public class WorkFeignClientApi implements WorkFeignClient {
     }
 
     @Override
-    public ResponseEntity<byte[]> downloadWorkFile(String fileName, Integer wId) {
+    public ResponseEntity<byte[]> downloadWorkFile(String fileName, Integer wId, HttpServletResponse response) {
         byte[] fileByte = fileService.getFile(wId,fileName);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        if(ObjectUtils.isNotEmpty(fileByte)){
-            try {
-                headers.setContentDispositionFormData("attachment", URLEncoder.encode(fileName,"UTF-8"));
-                return new ResponseEntity<byte[]>(fileByte,headers, HttpStatus.OK);
-            } catch (Exception e) {
-                throw new FileException(HttpStatus.INTERNAL_SERVER_ERROR,"文件未找到,下载失败!");
-            }
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+//        if(ObjectUtils.isNotEmpty(fileByte)){
+//            try {
+//                headers.setContentDispositionFormData("attachment", URLEncoder.encode(fileName,"UTF-8"));
+//                return new ResponseEntity<byte[]>(fileByte,headers, HttpStatus.OK);
+//            } catch (Exception e) {
+//                throw new FileException(HttpStatus.INTERNAL_SERVER_ERROR,"文件未找到,下载失败!");
+//            }
+//        }
+
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM.getType());
+        try {
+            response.addHeader("Content-Disposition","form-data; name=\"attachment\"; filename=\"" + URLEncoder.encode(fileName,"UTF-8")+"\"");
+            ServletOutputStream outputStream = response.getOutputStream();
+            IOUtils.write(fileByte,outputStream);
+            response.flushBuffer();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+
         return null;
     }
 
     @Override
-    public ResponseEntity<byte[]> downloadZipWorkFile(Integer wId) {
+    public ResponseEntity<byte[]> downloadZipWorkFile(Integer wId,HttpServletResponse response) {
         Work work = workService.getById(wId);
         File file =  fileService.getZipByWId(wId);
         if(ObjectUtils.isNotEmpty(file)){
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+//            try {
+//                headers.setContentDispositionFormData("attachment",URLEncoder.encode(work.getName()+".zip","UTF-8"));
+//                FileInputStream fileInputStream = new FileInputStream(file);
+//                return new ResponseEntity<byte[]>(IOUtils.toByteArray(fileInputStream),headers,HttpStatus.OK);
+//            } catch (Exception e) {
+//                throw new FileException(HttpStatus.INTERNAL_SERVER_ERROR,"文件未找到,下载失败!");
+//            }
+            response.setContentType(MediaType.APPLICATION_OCTET_STREAM.getType());
             try {
-                headers.setContentDispositionFormData("attachment",URLEncoder.encode(work.getName()+".zip","UTF-8"));
-                FileInputStream fileInputStream = new FileInputStream(file);
-                return new ResponseEntity<byte[]>(IOUtils.toByteArray(fileInputStream),headers,HttpStatus.OK);
+                response.addHeader("Content-Disposition","form-data; name=\"attachment\"; filename=\"" + URLEncoder.encode(work.getName()+".zip","UTF-8")+"\"");
+                ServletOutputStream outputStream = response.getOutputStream();
+                IOUtils.copy(new FileInputStream(file),outputStream);
+                response.flushBuffer();
             } catch (Exception e) {
-                throw new FileException(HttpStatus.INTERNAL_SERVER_ERROR,"文件未找到,下载失败!");
+                e.printStackTrace();
             }
         }
         return null;

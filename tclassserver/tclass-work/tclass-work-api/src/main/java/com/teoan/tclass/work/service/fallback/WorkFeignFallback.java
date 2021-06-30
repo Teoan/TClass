@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.List;
 
@@ -64,12 +65,12 @@ public class WorkFeignFallback implements WorkFeignClient {
     }
 
     @Override
-    public ResponseEntity<byte[]> downloadWorkFile(String fileName, Integer wId) {
+    public ResponseEntity<byte[]> downloadWorkFile(String fileName, Integer wId, HttpServletResponse response) {
         return null;
     }
 
     @Override
-    public ResponseEntity<byte[]> downloadZipWorkFile(Integer wId) {
+    public ResponseEntity<byte[]> downloadZipWorkFile(Integer wId,HttpServletResponse response) {
         return null;
     }
 

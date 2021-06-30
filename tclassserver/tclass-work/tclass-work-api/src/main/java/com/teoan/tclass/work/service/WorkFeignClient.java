@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.List;
 
@@ -110,14 +111,14 @@ public interface WorkFeignClient {
      * @param wId 作业id
      */
     @GetMapping("/admin/download")
-    public ResponseEntity<byte[]> downloadWorkFile(@RequestParam("fileName")String fileName, @RequestParam("wId")Integer wId);
+    public ResponseEntity<byte[]> downloadWorkFile(@RequestParam("fileName")String fileName, @RequestParam("wId")Integer wId, HttpServletResponse response);
 
     /**
      * 文件打包下载
      * @param wId 作业id
      */
     @GetMapping("/admin/download/zip/{wId}")
-    public ResponseEntity<byte[]> downloadZipWorkFile(@PathVariable("wId")Integer wId);
+    public ResponseEntity<byte[]> downloadZipWorkFile(@PathVariable("wId")Integer wId,HttpServletResponse response);
 
     /**
      * 获取上传文件信息并分页
