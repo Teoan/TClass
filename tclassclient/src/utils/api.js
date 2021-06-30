@@ -5,6 +5,7 @@ import qs from 'qs'
 import { getOauth2Info } from '@/utils/auth'
 // 设置响应拦截器
 axios.interceptors.response.use(success => {
+  console.log(success)
   if (success.status && success.status === 200 && success.data.code === 500) {
     Message.error({ message: success.data.msg })
     return
@@ -23,6 +24,10 @@ axios.interceptors.response.use(success => {
     if (success.data.msg) {
       Message.error({ message: success.data.msg })
     } else {
+      // 文件下载返回完整响应体
+      if (success.config.url.startsWith('/work/admin/download/zip/') || success.config.url.startsWith('/work/admin/download/')) {
+        return success
+      }
       Message.error({ message: '未知错误!' })
     }
   }
@@ -123,19 +128,18 @@ export const getDataRequest = (url, params) => {
   })
 }
 
-export const downLoadFileRequest = (url,params) => {
+export const downLoadFileRequest = (url) => {
   return axios({
     method: 'get',
     url: `${base}${url}`,
-    params: params,
     responseType: 'blob'
   }).then(resp => {
     const { data, headers } = resp
-    const fileName = headers['content-disposition'].replace(/\w+;filename=(.*)/, '$1')
+    const fileName = headers['content-disposition']
     // 此处当返回json文件时需要先对data进行JSON.stringify处理，其他类型文件不用做处理
-    const blob = new Blob([data], {type: headers['content-type']})
-    let dom = document.createElement('a')
-    let url = window.URL.createObjectURL(blob)
+    const blob = new Blob([data], { type: headers['content-type'] })
+    const dom = document.createElement('a')
+    const url = window.URL.createObjectURL(blob)
     dom.href = url
     dom.download = decodeURI(fileName)
     dom.style.display = 'none'

@@ -127,50 +127,28 @@ public class WorkFeignClientApi implements WorkFeignClient {
     }
 
     @Override
-    public ResponseEntity<byte[]> downloadWorkFile(String fileName, Integer wId, HttpServletResponse response) {
+    public void downloadWorkFile(String fileName, Integer wId, HttpServletResponse response) {
         byte[] fileByte = fileService.getFile(wId,fileName);
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-//        if(ObjectUtils.isNotEmpty(fileByte)){
-//            try {
-//                headers.setContentDispositionFormData("attachment", URLEncoder.encode(fileName,"UTF-8"));
-//                return new ResponseEntity<byte[]>(fileByte,headers, HttpStatus.OK);
-//            } catch (Exception e) {
-//                throw new FileException(HttpStatus.INTERNAL_SERVER_ERROR,"文件未找到,下载失败!");
-//            }
-//        }
-
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM.getType());
         try {
-            response.addHeader("Content-Disposition","form-data; name=\"attachment\"; filename=\"" + URLEncoder.encode(fileName,"UTF-8")+"\"");
+            //设置Content-Disposition为文件名
+            response.addHeader("Content-Disposition",URLEncoder.encode(fileName,"UTF-8"));
             ServletOutputStream outputStream = response.getOutputStream();
             IOUtils.write(fileByte,outputStream);
             response.flushBuffer();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-        return null;
     }
 
     @Override
-    public ResponseEntity<byte[]> downloadZipWorkFile(Integer wId,HttpServletResponse response) {
+    public void downloadZipWorkFile(Integer wId,HttpServletResponse response) {
         Work work = workService.getById(wId);
         File file =  fileService.getZipByWId(wId);
         if(ObjectUtils.isNotEmpty(file)){
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-//            try {
-//                headers.setContentDispositionFormData("attachment",URLEncoder.encode(work.getName()+".zip","UTF-8"));
-//                FileInputStream fileInputStream = new FileInputStream(file);
-//                return new ResponseEntity<byte[]>(IOUtils.toByteArray(fileInputStream),headers,HttpStatus.OK);
-//            } catch (Exception e) {
-//                throw new FileException(HttpStatus.INTERNAL_SERVER_ERROR,"文件未找到,下载失败!");
-//            }
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM.getType());
             try {
-                response.addHeader("Content-Disposition","form-data; name=\"attachment\"; filename=\"" + URLEncoder.encode(work.getName()+".zip","UTF-8")+"\"");
+                response.addHeader("Content-Disposition",URLEncoder.encode(work.getName()+".zip","UTF-8"));
                 ServletOutputStream outputStream = response.getOutputStream();
                 IOUtils.copy(new FileInputStream(file),outputStream);
                 response.flushBuffer();
@@ -178,7 +156,6 @@ public class WorkFeignClientApi implements WorkFeignClient {
                 e.printStackTrace();
             }
         }
-        return null;
     }
 
     @Override

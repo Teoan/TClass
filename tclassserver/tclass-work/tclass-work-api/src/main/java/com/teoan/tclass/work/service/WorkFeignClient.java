@@ -111,14 +111,14 @@ public interface WorkFeignClient {
      * @param wId 作业id
      */
     @GetMapping("/admin/download")
-    public ResponseEntity<byte[]> downloadWorkFile(@RequestParam("fileName")String fileName, @RequestParam("wId")Integer wId, HttpServletResponse response);
+    public void downloadWorkFile(@RequestParam("fileName")String fileName, @RequestParam("wId")Integer wId, HttpServletResponse response);
 
     /**
      * 文件打包下载
      * @param wId 作业id
      */
     @GetMapping("/admin/download/zip/{wId}")
-    public ResponseEntity<byte[]> downloadZipWorkFile(@PathVariable("wId")Integer wId,HttpServletResponse response);
+    public void downloadZipWorkFile(@PathVariable("wId")Integer wId,HttpServletResponse response);
 
     /**
      * 获取上传文件信息并分页

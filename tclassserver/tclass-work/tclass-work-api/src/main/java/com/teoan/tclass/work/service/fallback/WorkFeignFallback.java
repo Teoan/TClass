@@ -65,13 +65,13 @@ public class WorkFeignFallback implements WorkFeignClient {
     }
 
     @Override
-    public ResponseEntity<byte[]> downloadWorkFile(String fileName, Integer wId, HttpServletResponse response) {
-        return null;
+    public void downloadWorkFile(String fileName, Integer wId, HttpServletResponse response) {
+
     }
 
     @Override
-    public ResponseEntity<byte[]> downloadZipWorkFile(Integer wId,HttpServletResponse response) {
-        return null;
+    public void downloadZipWorkFile(Integer wId,HttpServletResponse response) {
+
     }
 
     @Override

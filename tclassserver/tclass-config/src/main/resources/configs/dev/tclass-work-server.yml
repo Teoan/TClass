@@ -88,4 +88,4 @@ fdfs:
     - qexw.xumumi.com:22122
 oauth2:
   resource:
-    permit-all-paths: /admin/download/**,/admin/download/zip/** #配置认证放行路径
+    permit-all-paths:  #配置认证放行路径
