@@ -1,8 +1,6 @@
 server:
   port: 6666
 spring:
-  profiles:
-    active: dev
     #网关配置中心
   cloud:
     gateway:
@@ -41,4 +39,4 @@ eureka:
     prefer-ip-address: true #优先使用IP地址注册
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://tclass-regisity:8761/eureka/

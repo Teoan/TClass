@@ -6,6 +6,5 @@ spring:
     config:
       fail-fast: true
       name: ${spring.application.name}  #指定当前工程于config server中的应用名，此处直接引用spring.application.name属性
-      label: ${PROJECT_LABEL:dev}
       profile: ${spring.profiles.active:dev}  #指定当前工程于config server中的生效环境，此处直接引用spring.profiles.active属性
-      uri: http://localhost:8888  #指定配置中心的ip和端口
+      uri: http://tclass-config:8888  #指定配置中心的ip和端口

@@ -9,13 +9,13 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     username: Teoan
     password: 277077411
-    url: jdbc:mysql://localhost:3306/tclass?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://mysql:3306/tclass?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     druid:
       stat-view-servlet:
         login-username: Teoan
         login-password: 277077411
   redis:
-    host: localhost
+    host: redis
     database: 0
     port: 6379
     password: 277077411
@@ -37,10 +37,4 @@ eureka:
     prefer-ip-address: true #优先使用IP地址注册
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/ #eureka的注册地址
-#设置文件上传目录
-file:
-  upload:
-    #    url: ${UPLOAD_PATH}
-    #    Windows
-    url: F:/Linux/git_clone/TClass/tclassserver/tclass-web/src/main/resources/static/upload
+      defaultZone: http://tclass-registry:8761/eureka/ #eureka的注册地址
