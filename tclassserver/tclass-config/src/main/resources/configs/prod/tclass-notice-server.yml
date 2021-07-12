@@ -1,5 +1,4 @@
 server:
-  port: 8002 #服务端口
   servlet:
     context-path: "/notice"
 spring:
@@ -36,3 +35,6 @@ eureka:
   client:
     service-url:
       defaultZone: http://tclass-registry:8761/eureka/ #eureka的注册地址
+mybatis-plus:
+  global-config:
+    banner: false

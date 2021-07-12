@@ -1,8 +1,4 @@
-server:
-  port: 6666
 spring:
-  profiles:
-    active: dev
     #网关配置中心
   cloud:
     gateway:

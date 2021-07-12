@@ -49,7 +49,38 @@
             <artifactId>spring-cloud-config-client</artifactId>
         </dependency>
     </dependencies>
+    <profiles>
+        <!-- 开发测试环境 -->
+        <profile>
+            <id>dev</id>
+            <activation>
+                <!-- 设置默认激活dev环境的配置 -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <profile.env>dev</profile.env>
+                <server.port>8004</server.port>
+                <skipTests>true</skipTests>
+            </properties>
+        </profile>
+        <!-- 产品发布环境 -->
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profile.env>prod</profile.env>
+                <server.port>8014</server.port>
+                <skipTests>true</skipTests>
+            </properties>
+        </profile>
+    </profiles>
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <!-- 开启变量替换功能 将<properties></properties>里面的变量值替换类路径文件中的含有${var} -->
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -83,6 +114,7 @@
                     <dockerfile>Dockerfile</dockerfile>
                     <buildArgs>
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                        <SERVER_PORT>${server.port}</SERVER_PORT>
                     </buildArgs>
                 </configuration>
             </plugin>

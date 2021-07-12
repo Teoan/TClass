@@ -1,10 +1,7 @@
 server:
-  port: 8004 #服务端口
   servlet:
     context-path: "/work"
 spring:
-  profiles:
-    active: dev #环境
   datasource: #数据库连接配置
     type: com.alibaba.druid.pool.DruidDataSource
     username: teoan

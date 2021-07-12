@@ -1,5 +1,3 @@
-server:
-  port: 8761 #暴露服务端口
 eureka:
   client:
     # 是否要注册到其他Eureka Server实例

@@ -1,5 +1,3 @@
-server:
-  port: 7777 #服务端口
 spring:
   datasource: #数据库连接配置
     type: com.alibaba.druid.pool.DruidDataSource
