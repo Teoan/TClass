@@ -60,8 +60,8 @@ public class FileServiceImpl implements FileService {
             student.setAvatarUrl(filePath);
             studentService.updateById(student);
         } catch (Exception e) {
-            R.failed(e.getMessage());
             e.printStackTrace();
+            return R.failed(e.getMessage());
         }
         return R.ok(true);
     }

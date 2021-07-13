@@ -128,13 +128,13 @@ public class StudentFeignClientApi implements StudentFeignClient {
     }
 
     @Override
-    @TclassLog(operSource = "user",operName = "修改",severity = LogSeverity.INFO,description = "修改用户头像")
+//    @TclassLog(operSource = "user",operName = "修改",severity = LogSeverity.INFO,description = "修改用户头像")
     public R updateUserAvatar(MultipartFile avatarFile) {
         return fileService.updateUserAvatarFile(avatarFile);
     }
 
     @Override
-    @TclassLog(operSource = "user",operName = "查询",severity = LogSeverity.INFO,description = "获取用户头像")
+//    @TclassLog(operSource = "user",operName = "查询",severity = LogSeverity.INFO,description = "获取用户头像")
     public void getUserAvatar(HttpServletResponse resp, String photoPath) {
         byte[] avayarFileByte = fileService.getUserAvatarFile(photoPath);
         if(ObjectUtils.isNotEmpty(avayarFileByte)){
