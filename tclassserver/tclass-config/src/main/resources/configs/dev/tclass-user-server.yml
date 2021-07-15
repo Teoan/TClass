@@ -82,7 +82,7 @@ fdfs:
     height: 150
   # Tracker服务
   tracker-list:
-    - qexw.xumumi.com:22122
+    - www.xumumi.com:22122
 oauth2:
   resource:
     permit-all-paths: /avatar/get/**,/admin/template #配置认证放行路径
