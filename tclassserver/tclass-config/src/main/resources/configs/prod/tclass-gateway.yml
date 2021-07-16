@@ -37,4 +37,4 @@ eureka:
     prefer-ip-address: true #优先使用IP地址注册
   client:
     service-url:
-      defaultZone: http://tclass-regisity:8761/eureka/
+      defaultZone: tclass-regisity:8761/eureka/
