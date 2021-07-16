@@ -15,7 +15,7 @@ spring:
     host: redis
     database: 0
     port: 6379
-    password:
+    password: 277077411
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
@@ -34,7 +34,7 @@ eureka:
     prefer-ip-address: true #优先使用IP地址注册
   client:
     service-url:
-      defaultZone: tclass-registry:8761/eureka/ #eureka的注册地址
+      defaultZone: http://tclass-registry:8761/eureka/ #eureka的注册地址
 mybatis-plus:
   global-config:
     banner: false
