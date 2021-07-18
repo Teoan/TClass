@@ -37,4 +37,4 @@ eureka:
     prefer-ip-address: true #优先使用IP地址注册
   client:
     service-url:
-      defaultZone: http://teoan:277077411@localhost:8761/eureka/ #eureka的注册地址
+      defaultZone: http://teoan:277077411@tclass-registry:8761/eureka/ #eureka的注册地址
