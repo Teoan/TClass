@@ -53,7 +53,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 "/swagger-resources/configuration/security",
                 "/swagger-ui.html",
                 "/webjars/**",
-                "/api/**/v2/api-docs")
+                "/api/**/v2/api-docs",
+                "/actuator/**")
                 .permitAll()
 //                .antMatchers(resourcePermitAllPaths) //配置配置文件中的路径
 //                .permitAll()
