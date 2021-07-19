@@ -128,26 +128,19 @@ public class StudentFeignClientApi implements StudentFeignClient {
     }
 
     @Override
-//    @TclassLog(operSource = "user",operName = "修改",severity = LogSeverity.INFO,description = "修改用户头像")
     public R updateUserAvatar(MultipartFile avatarFile) {
         return fileService.updateUserAvatarFile(avatarFile);
     }
 
     @Override
-//    @TclassLog(operSource = "user",operName = "查询",severity = LogSeverity.INFO,description = "获取用户头像")
     public void getUserAvatar(HttpServletResponse resp, String photoPath) {
         byte[] avayarFileByte = fileService.getUserAvatarFile(photoPath);
         if(ObjectUtils.isNotEmpty(avayarFileByte)){
             resp.setContentType("image/jpeg");
             try {
-//                BufferedImage bufferedImage = ImageIO.read(avayarFile);
-//                // 剪切图片
-//                int imageWidth = Math.min(bufferedImage.getWidth(), bufferedImage.getHeight());
-//                bufferedImage = bufferedImage.getSubimage(0,0,imageWidth,imageWidth);
                 ServletOutputStream outputStream = resp.getOutputStream();
                 outputStream.write(avayarFileByte);
                 outputStream.flush();
-//                ImageIO.write(bufferedImage,"jpg",outputStream);
             } catch (IOException e) {
                 e.printStackTrace();
             }
