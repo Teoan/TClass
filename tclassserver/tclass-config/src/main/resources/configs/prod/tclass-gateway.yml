@@ -23,6 +23,10 @@ spring:
           uri: lb://tclass-work-server
           predicates:
             - Path=/work/**
+        - id: tclass-oauth-server
+          uri: lb://tclass-oauth-server
+          predicates:
+            - Path=/oauth/**
         #            - Method=GET #通过请求方式匹配
         #            - RemoteAddr=127.0.0.1/25 #通过请求id匹配，只有在某个 ip 区间号段的请求才会匹配路由，其中/后的是子网掩码
         #            - After=2018-01-20T06:06:06+08:00[Asia/Shanghai] #根据时间进行匹配，在指定时间之后才会匹配路由

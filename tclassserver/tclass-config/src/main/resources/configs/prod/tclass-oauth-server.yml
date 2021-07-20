@@ -23,3 +23,6 @@ eureka:
 mybatis-plus:
   global-config:
     banner: false
+oauth2:
+  resource:
+    permit-all-paths: /oauth/login,/oauth/verifyCode.jpg #配置认证放行路径
