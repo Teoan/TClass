@@ -24,7 +24,8 @@ import { postKeyValueRequest } from './utils/api'
 import { putRequest } from './utils/api'
 import { deleteRequest } from './utils/api'
 import { getRequest } from './utils/api'
-import { loginPostRequest } from './utils/api'
+import {loginPostRequest} from './utils/api'
+import {downLoadFileRequest} from './utils/api'
 import '@/style/element-variables.scss'
 
 Vue.prototype.postRequest = postRequest
@@ -33,6 +34,7 @@ Vue.prototype.putRequest = putRequest
 Vue.prototype.deleteRequest = deleteRequest
 Vue.prototype.getRequest = getRequest
 Vue.prototype.loginPostRequest = loginPostRequest
+Vue.prototype.downLoadFileRequest = downLoadFileRequest
 
 Vue.config.productionTip = false
 

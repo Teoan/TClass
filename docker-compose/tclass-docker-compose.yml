@@ -1,0 +1,123 @@
+version: '3'
+services:
+  tclass-notice:
+    image: teoan1997/tclass-notice-server:1.0.0-BETA
+    container_name: tclass-notice
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    links:
+      - tclass-registry
+      - tclass-config
+    networks:
+      - tclass-net
+    depends_on:
+      - tclass-config
+    expose:
+      - "8012"
+    extra_hosts:
+      - mysql:118.89.58.79
+      - redis:118.89.58.79
+  tclass-user:
+    image: teoan1997/tclass-user-server:1.0.0-BETA
+    container_name: tclass-user
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    links:
+      - tclass-registry
+      - tclass-config
+    networks:
+      - tclass-net
+    depends_on:
+      - tclass-config
+    expose:
+      - "8013"
+    extra_hosts:
+      - mysql:118.89.58.79
+      - redis:118.89.58.79
+      - tracker:118.89.58.79
+  tclass-work:
+    image: teoan1997/tclass-work-server:1.0.0-BETA
+    container_name: tclass-work
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    links:
+      - tclass-registry
+      - tclass-config
+    networks:
+      - tclass-net
+    depends_on:
+      - tclass-config
+    expose:
+      - "8014"
+    extra_hosts:
+      - mysql:118.89.58.79
+      - redis:118.89.58.79
+      - tracker:118.89.58.79
+  tclass-gateway:
+    image: teoan1997/tclass-gateway:1.0-SNAPSHOT
+    container_name: tclass-gateway
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    links:
+      - tclass-registry
+      - tclass-config
+    networks:
+      - tclass-net
+    depends_on:
+      - tclass-config
+    ports:
+      - 6666:6666
+  tclass-registry:
+    image: teoan1997/tclass-registry:1.0-SNAPSHOT
+    container_name: tclass-registry
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    links:
+      - tclass-config
+    networks:
+      - tclass-net
+    depends_on:
+      - tclass-config
+    ports:
+      - 8761:8761
+    expose:
+      - "8761"
+  tclass-oauth:
+    image: teoan1997/tclass-oauth:1.0-SNAPSHOT
+    container_name: tclass-oauth
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    links:
+      - tclass-registry
+      - tclass-config
+    networks:
+      - tclass-net
+    depends_on:
+      - tclass-config
+    expose:
+      - "9999"
+    extra_hosts:
+      - mysql:118.89.58.79
+      - redis:118.89.58.79
+  tclass-config:
+    image: teoan1997/tclass-config:1.0-SNAPSHOT
+    container_name: tclass-config
+    networks:
+      - tclass-net
+    expose:
+      - "8888"
+networks:
+  tclass-net:
+    driver: bridge

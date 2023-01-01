@@ -289,7 +289,7 @@ export default {
         this.selectWorkName = null
       }
       this.getRequest('/work/', { current: current, size: size, name: this.selectWorkName, createTime: this.selectCreateTime }).then(resp => {
-        if (resp.code === 0) {
+        if (resp.code === 200) {
           this.pageInfo = resp.data
           this.workDataList = this.pageInfo.records
           this.tableLoading = false
@@ -318,8 +318,8 @@ export default {
       this.showDialog('编辑')
       this.isEditWork = true
       this.workFormLoading = true
-      this.getRequest('/admin/work/' + row.id).then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/work/admin/' + row.id).then(resp => {
+        if (resp.code === 200) {
           this.workData.id = resp.data.id
           this.workData.fileNameFormatEnum = resp.data.fileNameFormatEnum
           this.workData.name = resp.data.name
@@ -335,8 +335,8 @@ export default {
     },
     deleteWorksidList(idList) {
       this.tableLoading = true
-      this.deleteRequest('/admin/work/', idList).then(resp => {
-        if (resp.code === 0 && resp.data) {
+      this.deleteRequest('/work/admin/', idList).then(resp => {
+        if (resp.code === 200 && resp.data) {
           this.$message.success('删除成功!')
           this.refreshTableData(this.pageInfo.current, 10)
         }
@@ -351,8 +351,8 @@ export default {
         if (valid) {
           this.workFormLoading = true
           this.workData.sid = this.currentUser.id
-          this.postRequest('/admin/work/', this.workData).then(resp => {
-            if (resp.code === 0) {
+          this.postRequest('/work/admin/', this.workData).then(resp => {
+            if (resp.code === 200) {
               this.$message.success('发布成功!')
               this.workFormLoading = false
               this.dialogSelectVisible = false
@@ -393,8 +393,8 @@ export default {
       this.$refs['workDataForm'].validate((valid) => {
         if (valid) {
           this.workData.editSId = this.currentUser.id
-          this.putRequest('/admin/work/', this.workData).then(resp => {
-            if (resp.code === 0) {
+          this.putRequest('/work/admin/', this.workData).then(resp => {
+            if (resp.code === 200) {
               this.$message.success('编辑成功!')
               this.dialogSelectVisible = false
               this.refreshTableData(this.pageInfo.current, 10)
@@ -411,7 +411,7 @@ export default {
     },
     getExtension() {
       this.getRequest('/work/extensions').then(resp => {
-        if (resp.code === 0) {
+        if (resp.code === 200) {
           this.extensions = resp.data
         }
       })
@@ -428,8 +428,8 @@ export default {
     },
     deleteExtension(extension) {
       this.extensionTableLoading = true
-      this.deleteRequest('/admin/work/extensions', { id: extension.id }).then(resp => {
-        if (resp.code === 0 && resp.data === true) {
+      this.deleteRequest('/work/admin/extensions', {id: extension.id}).then(resp => {
+        if (resp.code === 200 && resp.data === true) {
           this.$message.success('删除成功！')
           this.getExtension()
           this.isExtensionsChange = true
@@ -447,8 +447,8 @@ export default {
       this.$refs['extensionValidateForm'].validate((valid) => {
         if (valid) {
           this.extensionTableLoading = true
-          this.postRequest('/admin/work/extensions', { name: this.extensionValidateForm.extension }).then(resp => {
-            if (resp.code === 0 && resp.data === true) {
+          this.postRequest('/work/admin/extensions', {name: this.extensionValidateForm.extension}).then(resp => {
+            if (resp.code === 200 && resp.data === true) {
               this.$message.success('添加成功！')
               this.getExtension()
               this.isExtensionsChange = true

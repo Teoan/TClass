@@ -9,12 +9,16 @@ const vuexLocal = new VuexPersistence({
 
 export default new Vuex.Store({
   state: {
-    currentUser: {}
+      currentUser: {},
+      oauth2: {}
   },
   mutations: {
-    INIT_CURRENTUSER(state, user) {
-      state.currentUser = user
-    }
+      INIT_CURRENTUSER(state, user) {
+          state.currentUser = user
+      },
+      OAUTH2(state, oauth2) {
+          state.oauth2 = oauth2
+      }
   },
   actions: {},
   modules: {},

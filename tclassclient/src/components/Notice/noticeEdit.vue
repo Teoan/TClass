@@ -85,7 +85,7 @@ export default {
     getNoticeById() {
       if (this.$route.query.noticeId !== undefined) {
         this.getRequest('/notice/' + this.$route.query.noticeId).then(resp => {
-          if (resp.code === 0) {
+          if (resp.code === 200) {
             this.notice.id = resp.data.id
             this.notice.sid = resp.data.sid
             this.notice.title = resp.data.title
@@ -98,8 +98,8 @@ export default {
       this.$refs['notice'].validate((valid) => {
         if (valid) {
           this.notice.editSId = this.currentUser.id
-          this.putRequest('/admin/notice/', this.notice).then(resp => {
-            if (resp.code === 0) {
+          this.putRequest('/notice/admin/', this.notice).then(resp => {
+            if (resp.code === 200) {
               this.$message.success('编辑成功!')
               this.$router.push('/noticemana')
             }
@@ -113,8 +113,8 @@ export default {
       this.$refs['notice'].validate((valid) => {
         if (valid) {
           this.notice.sid = this.currentUser.id
-          this.postRequest('/admin/notice/', this.notice).then(resp => {
-            if (resp.code === 0) {
+          this.postRequest('/notice/admin/', this.notice).then(resp => {
+            if (resp.code === 200) {
               this.$message.success('发布成功!')
               this.$router.push('/noticemana')
             }

@@ -34,14 +34,14 @@ export default {
   methods: {
     getCurrentNoticeData() {
       this.getRequest('/notice/current').then(resp => {
-        if (resp.code === 0) {
+        if (resp.code === 200) {
           this.notice = resp.data
         }
       })
     },
     getWorkPageData(current, size) {
       this.getRequest('/work/', { current: current, size: size }).then(resp => {
-        if (resp.code === 0) {
+        if (resp.code === 200) {
           this.workList = resp.data.records
         }
       })

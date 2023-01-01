@@ -89,16 +89,17 @@
             </el-table>
           </el-tooltip>
           <el-upload
-            v-if="!isUploaded"
-            drag
-            :action="action"
-            :accept="work.extensionName"
-            show-file-list="true"
-            :on-success="onSeccessUpload"
-            :on-error="onErrorUpload"
-            :disabled="uploadDisabled"
-            :multiple="false"
-            :data="{sId:currentUser.id}"
+              v-if="!isUploaded"
+              :accept="work.extensionName"
+              :action="action"
+              :data="{sId:currentUser.id}"
+              :disabled="uploadDisabled"
+              :headers="workUploaderHeaders"
+              :multiple="false"
+              :on-error="onErrorUpload"
+              :on-success="onSeccessUpload"
+              drag
+              show-file-list="true"
           >
             <i class="el-icon-upload" />
             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -110,6 +111,7 @@
 </template>
 
 <script>
+import {getOauth2Info} from '@/utils/auth'
 export default {
   props: {
     work: {
@@ -127,7 +129,10 @@ export default {
       isUploaded: false,
       disShowUploadTooltip: true,
       buttonText: '提交作业',
-      fileTableLoading: false
+      fileTableLoading: false,
+      workUploaderHeaders: {
+        Authorization: 'Bearer ' + getOauth2Info().access_token
+      }
     }
   },
   computed: {

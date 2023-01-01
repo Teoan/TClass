@@ -56,7 +56,7 @@
         </div>
         <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link">
-            <el-avatar :src="currentUser.avatarUrl" />
+            <el-avatar :src="getUserAvatarUrl()"/>
             <i class="fas fa-caret-down el-icon--right" />
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -77,6 +77,7 @@
 
 <script>
 import breadcrumb from '@/components/Breadcrumb/index'
+import {setOauth2Info} from '@/utils/auth'
 
 export default {
   components: { breadcrumb },
@@ -95,9 +96,6 @@ export default {
     },
     routes() {
       return this.$router.options.routes
-    },
-    currentRole() {
-      return this.currentUser.role.name
     }
   },
   methods: {
@@ -118,8 +116,10 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.getRequest('/logout')
+            // 删除认证信息
             this.$store.commit('INIT_CURRENTUSER', [])
+            this.$store.commit('OAUTH2', [])
+            setOauth2Info('')
             this.$router.replace('/')
           }).catch(() => {
           })
@@ -128,10 +128,13 @@ export default {
       }
     },
     isHaveRoles(item) {
-      if (item.meta.roles.indexOf(this.currentRole) === -1) {
+      if (item.meta.roles.indexOf(this.currentUser.role.name) === -1) {
         return false
       }
       return true
+    },
+    getUserAvatarUrl() {
+      return '/user/avatar/get?photoPath=' + this.currentUser.avatarUrl
     }
   }
 }

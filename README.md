@@ -1,68 +1,39 @@
 # Tclass班级事务管理系统
 
-一个基于Vue.js和Spring Boot的前后端分离项目。
+[主分支](https://github.com/Teoan/TClass/tree/master)后端采用Spring Boot开发，现已停止维护。
 
-## 系统功能组成
+**cloud**分支版本正在开发中，后端采用Spring Cloud进行改造。
 
-### 登录模块
+## 系统架构
 
-登录模块中有两种角色，一种为管理员，一种为普通用户，两种角色都使用学号和密码登录。不同角色登录后所加载的模块有所不同。普通用户登录后只能查看通知和作业内容、提交作业和修改个人信息。管理员登录系统后可以对通知、作业、用户进行管理，如：编辑、发布、删除等。
+项目采用B/S架构，前后端通讯采用RESTful API，数据格式使用Json，认证Token格式采用JWT。
 
-### 首页显示模块
-
-实现显示当前最新发布的通知和作业，内容包括发布时间、编辑时间、作业文件命名格式等。
-
-### 用户信息管理模块
-
-实现管理员对用户信息的编辑、修改、删除，以及复杂信息的高级搜索，普通用户对个人资料的修改，用户信息管理还包括用户的批量导入和导出、编辑用户信息、重置密码等。
-
-###  通知内容显示和管理模块
-
-管理员可以使用Markdown语法对通知内容进行发布或者编辑，同时还可以对历史通知的内容、标题等进行编辑、删除、查询等。
-
-普通用户可以根据时间或者标题查询某一条通知并进行查阅。
-
-### 作业内容显示和管理模块
-
-管理员可以发布作业，作业内容包括文件命名格式、截止提交时间等、可以对作业进行添加、删除、编辑等管理。
-
-普通用户可以根据作业标题、发布时间对作业进行查阅。
-
-### 作业的上传下载模块
-
-管理员可以查看各个作业提交的情况，并对作业进行打包下载。
-
-普通用户可以上传提交自己的作业文件。
-
-## 架构
-
-项目采用B/S架构，前后端通讯采用RESTful API，数据格式使用Json。
-
-身份认证使用Spring Security。
-
-部署推荐使用Docker进行部署。当然也可以使用命令行的方式运行jar进行部署。
+身份认证使用Spring Security Oauth2。
 
 前端：Vue.js
 
-后端：Spring Boot
+后端：Spring Cloud
 
 数据库：MySQL
 
 缓存：Redis
 
-ORM：MyBatis-Plus 
+文件存储：FastDFS
+
+ORM：MyBatis-Plus
 
 ### 具体技术栈如下：
 
 #### 后端使用的技术栈
 
-1. Spring Boot
+1. Spring Cloud
 2. Spring Security
-3. MySql
-4. Redis
-5. Spring Cache
-6. MyBatis-Plus 
-7. ...
+3. FastDFS
+4. MySql
+5. Redis
+6. Spring Cache
+7. MyBatis-Plus
+8. ...
 
 #### 前端使用的技术栈
 
@@ -74,72 +45,41 @@ ORM：MyBatis-Plus
 6. tui-editor
 7. ...
 
-## 编译
+## 各个模块简要介绍
 
-1. 克隆项目
+| 模块名             | 描述                                               |
+|-----------------|--------------------------------------------------|
+| tclass-common   | 公共模块，存放一些通用的配置和类如：oauth资源服务器的配置，FastDFS文件服务等     |
+| tclass-config   | Spring Cloud配置中心，统一微服务的配置管理                      |
+| tclass-gateway  | Spring Cloud网关，负责将对应请求转发到对应的微服务模块                |
+| tclass-oauth    | Spring Cloud认证中心，负责权限统一的认证，提供登录接口以及发放JWT类型的Token |
+| tclass-registry | Spring Cloud注册中心，负责微服务的统一治理。                     |
+| tclass-notice   | 微服务通知模块，负责通知内容的CRUD                              |
+| tclass-user     | 微服务用户模块，负责用户的CRUD                                |
+| tclass-work     | 微服务作业模块，负责作业文件的持久化和作业内容的CRUD                     |
 
-   ```bash
-   git clone https://github.com/Teoan/TClass.git
-   ```
+## 项目中使用Spring Cloud相关组件介绍
 
-2. 编译前端项目可以使用Vscode或其他IDE打开tclassclient文件夹。编译前需安装依赖：
+| 技术栈                  | 描述                                                            |
+|----------------------|---------------------------------------------------------------|
+| Spring Cloud Config  | 微服务配置的统一管理，实时更新，存储的位置可以为Git仓库、SVN仓库、本地文件等                     |
+| Spring Cloud OAuth2  | Spring Cloud 体系对OAuth2协议的实现，可以用来做多个微服务的统一认证 (验证身份合法性)授权(验证权限) |
+| Spring Cloud Eureka  | 负责服务的注册于发现，Eureka体系包括：服务注册中心、服务提供者、服务消费者。                     |
+| Spring Cloud Ribbon  | 负责服务间调用的负载均衡                                                  |
+| Spring Cloud Feign   | 简化微服务之间相互调用，只需要一个接口的注解，就可以实现服务之间的HTTP调用                       |
+| Spring Cloud Hystrix | 微服务熔断器，当服务不可用时，防止请求服务的积压，导致系统过载                               |
 
-   ```bash
-   # 切换当前目录
-   cd tclassclient
-   # 安装依赖
-   npm install
-   # 启动项目
-   npm run serve
-   ```
+## 部署
 
-3. 编译后端项目可以使用IntelliJ IDEA或其他IDE打开项目目录tclasserver。
+由于系统使用Spring Cloud架构，部署时一般配合Nginx将请求转发到网关模块。部署时需修改对应注册中心和配置中心的地址。
 
-## 获取发布版本
+服务启动顺序如下：
 
-### Releases
-
-[获取release版本](https://github.com/Teoan/TClass/releases)
-
-运行jar
-
-```bash
-java -jar tclass-web-1.0.0-BETA.jar --spring.datasource.url=jdbc:mysql://MYSQL_URL/tclass --spring.datasource.username=MYSQL_USERNAME --spring.datasource.password=MYSQL_PASSWORD --spring.redis.host=REDIS_HOST --spring.redis.port=REDIS_PORT --spring.redis.password=REDIS_PASSWORD --file.upload.url=UPLOAD_PATH
-```
-
-### Docker
-
-拉取并运行镜像
-
-```bash
-sudo docker run  -d -p TCLASS_PORT:8080 -v UPLOAD_PATH:/home/root/tclass/upload --name tclass -e MYSQL_URL=MYSQL_URL -e MYSQL_USERNAME=MYSQL_USERNAME -e MYSQL_PASSWORD=MYSQL_PASSWORD -e REDIS_HOST=REDIS_HOST -e REDIS_PORT=REDIS_PORT -e REDIS_PASSWORD=REDIS_PASSWORD registry.cn-guangzhou.aliyuncs.com/teoan/tclass-server
-```
-
-| 参数           | 含义               |
-| -------------- | ------------------ |
-| MYSQL_URL      | mysql服务地址      |
-| MYSQL_USERNAME | mysql用户名        |
-| MYSQL_PASSWORD | mysql密码          |
-| REDIS_HOST     | redis服务地址      |
-| REDIS_PORT     | redis服务端口      |
-| REDIS_PASSWORD | redis密码          |
-| UPLOAD_PATH    | 上传文件保存的路径 |
-
-例如使用jar部署：
-
-```bash
-java -jar tclass-web-1.0.0-BETA.jar --spring.datasource.url=jdbc:mysql://172.17.0.1:3306/tclass --spring.datasource.username=Teoan --spring.datasource.password=123456 --spring.redis.host=172.17.0.2 --spring.redis.port=6379 --spring.redis.password=123456 --file.upload.url=~/tclass/upload
-```
-
-例如使用Docker部署：
-
-```bash
-sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/upload --name tclass -e MYSQL_URL=172.17.0.1:3306 -e MYSQL_USERNAME=Teoan -e MYSQL_PASSWORD=123456 -e REDIS_HOST=172.17.0.2 -e REDIS_PORT=6379 -e REDIS_PASSWORD=123456 registry.cn-guangzhou.aliyuncs.com/teoan/tclass-server
-```
-
-注意：运行前需创建好tclass数据库，默认管理员账号1724111400，密码123456。
-
-部署完毕以后浏览器打开：http://localhost:8080/index.html 即可访问本项目。
+1. tclass-config
+2. tclass-registry
+3. tclass-oauth
+4. tclass-gateway
+5. 其他业务模块
 
 ## 表字段属性
 
@@ -223,15 +163,16 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ### 上传文件属性（Upload）
 
-| 属性        | 类型     | 说明         | 约束 |
-| ----------- | -------- | ------------ | ---- |
-| s_id        | int      | 文件所有者id | 非空 |
-| w_id        | int      | 作业id       | 非空 |
-| file_type   | varchar  | 文件类型     | 非空 |
-| file_name   | varchar  | 文件名       | 非空 |
-| size        | bigint   | 文件大小     | 非空 |
-| create_time | datetime | 创建时间     |      |
-| update_time | datetime | 更新时间     |      |
+| 属性          | 类型       | 说明      | 约束  |
+|-------------|----------|---------|-----|
+| s_id        | int      | 文件所有者id | 非空  |
+| w_id        | int      | 作业id    | 非空  |
+| file_type   | varchar  | 文件类型    | 非空  |
+| file_name   | varchar  | 文件名     | 非空  |
+| file_path   | varchar  | 文件保存路径  | 非空  |
+| size        | bigint   | 文件大小    | 非空  |
+| create_time | datetime | 创建时间    |     |
+| update_time | datetime | 更新时间    |     |
 
 ### 作业属性（Work）
 
@@ -276,9 +217,10 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 >
 > ```json
 > {
->     "code":"业务错误码",
->     "msg":"描述",
->     "data":"结果集"
+>  "code":"业务错误码",
+>  "msg":"描述",
+>  "data":"结果集",
+>  "timeStamp":"时间戳"
 > }
 > ```
 
@@ -288,22 +230,30 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 POST
 
-请求路径 **/login**
+请求路径 **/oauth/login**
 
-| 参数     | 说明                       |
-| -------- | -------------------------- |
-| username | 用户名                     |
-| password | 密码                       |
-| code     | 验证码                     |
-| remember | Spring Security 记住我参数 |
+| 参数         | 说明         |
+|------------|------------|
+| username   | 用户名        |
+| password   | 密码         |
+| code       | 验证码        |
+| grant_type | Oauth2认证类型 |
 
 响应状态（登录成功）
 
 ```json
 {
-	"code": 0
-	"data": {id: 1724111400, roleId: 1, name: "王涛", password: null, gender: "男", nationId: 53,…}
-	"msg": "登录成功！"
+  "code": 200,
+  "data": {
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjQ5NDkxOTAsInVzZXJfbmFtZSI6IjE3MjQxMTE0MDAiLCJhdXRob3JpdGllcyI6WyJST0xFX2FkbWluIl0sImp0aSI6IjQ1MmQ2Y2VkLWJjZWItNDkzOC05NzIyLTk2NzAxOTkzYzIzOCIsImNsaWVudF9pZCI6IndlYmFwcCIsInNjb3BlIjpbInNlcnZlciJdfQ.CW5PB4zZfx7aAUl9I4U6M2KLZGql_AKMjh1V9U9IafY",
+    "token_type": "bearer",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNzI0MTExNDAwIiwic2NvcGUiOlsic2VydmVyIl0sImF0aSI6IjQ1MmQ2Y2VkLWJjZWItNDkzOC05NzIyLTk2NzAxOTkzYzIzOCIsImV4cCI6MTYyNDk0NzY5MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9hZG1pbiJdLCJqdGkiOiI4MDMxZjEyMS0xOGEwLTRjMjktYTMzZS03NzU5NzBjNDc5NTMiLCJjbGllbnRfaWQiOiJ3ZWJhcHAifQ.9VsKTXvtj9tpLROYNVMzvNnN7gCGd7lSAiCHm1xEYM0",
+    "expires_in": 1798,
+    "scope": "server",
+    "jti": "452d6ced-bceb-4938-9722-96701993c238"
+  },
+  "msg": "登录成功",
+  "timeStamp": 1624947390207
 }
 ```
 
@@ -311,25 +261,10 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 GET
 
-请求路径 **/verifyCode.jpg**
+请求路径 **/oauth/verifyCode.jpg**
 
 响应状态：返回验证码文件流
 
-**退出登录**
-
-请求方法 GET
-
-请求路径 **/logout**
-
-响应状态（注销成功）
-
-```json
-{
-	"code":0,
-	"data":"王涛",
-	"msg":"注销成功！"
-}
-```
 
 ### 普通用户接口
 
@@ -337,7 +272,7 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 PUT
 
-请求路径 **/student/**
+请求路径 **/user/**
 
 请求体
 
@@ -360,8 +295,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-	"code":0,
-	"data":true,
+  "code": 200,
+  "data": true,
 	"msg":"执行成功"
 }
 ```
@@ -370,14 +305,15 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 GET
 
-请求路径 **/student/nations**
+请求路径 **/user/nations**
 
 响应状态（请求成功）
 
 ```json
 {
-	"code": 0,
-	"data": [{
+  "code": 200,
+  "data": [
+    {
 		"id": 1,
 		"name": "汉族"
 	}, {
@@ -395,14 +331,15 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 GET
 
-请求路径 **/student/departments**
+请求路径 **/user/departments**
 
 响应状态（请求成功）
 
 ```json
 {
-	"code": 0,
-	"data": [{
+  "code": 200,
+  "data": [
+    {
 		"id": 1,
 		"name": "组织部"
 	}, {
@@ -420,14 +357,15 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 GET
 
-请求路径 **/student/political**
+请求路径 **/user/political**
 
 响应状态（请求成功）
 
 ```json
 {
-	"code": 0,
-	"data": [{
+  "code": 200,
+  "data": [
+    {
 		"id": 1,
 		"name": "中共党员"
 	}, {
@@ -445,14 +383,15 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 GET
 
-请求路径 **/student/political**
+请求路径 **/user/political**
 
 响应状态（请求成功）
 
 ```json
 {
-	"code": 0,
-	"data": [{
+  "code": 200,
+  "data": [
+    {
 		"id": 1,
 		"name": "班长"
 	}, {
@@ -470,14 +409,15 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 GET
 
-请求路径 **/student/roles**
+请求路径 **/user/roles**
 
 响应状态（请求成功）
 
 ```json
 {
-	"code": 0,
-	"data": [{
+  "code": 200,
+  "data": [
+    {
 		"id": 1,
 		"name": "ROLE_admin",
 		"zhName": "管理员"
@@ -494,9 +434,9 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 POST
 
-请求路径 **/student/avatar**
+请求路径 **/user/avatar**
 
-| 参数 |   说明   |
+| 参数 | 说明 |
 | :--: | :------: |
 | file | 头像文件 |
 
@@ -504,8 +444,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-    "code":0,
-    "data":true,
+  "code": 200,
+  "data": true,
     "msg":"执行成功"
 }
 ```
@@ -514,7 +454,7 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 GET
 
-请求路径 **/student/avatar/{photoPath}**
+请求路径 **/user/avatar/{photoPath}**
 
 |   参数    |     说明     |
 | :-------: | :----------: |
@@ -538,8 +478,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-	"code": 0,
-	"data": {
+  "code": 200,
+  "data": {
 		"records": [{
 			"id": 3,
 			"editSId": null,
@@ -584,8 +524,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-	"code": 0,
-	"data": {
+  "code": 200,
+  "data": {
 		"id": 3,
 		"editSId": null,
 		"editorName": null,
@@ -616,8 +556,9 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-	"code": 0,
-	"data": [{
+  "code": 200,
+  "data": [
+    {
 		"id": 1,
 		"name": "无"
 	}, {
@@ -644,8 +585,9 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-    "code":0
-    ,"data":true,
+  "code": 200,
+  ,
+  "data": true,
     "msg":"上传成功！"
 }
 ```
@@ -665,8 +607,9 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-	"code": 0,
-	"data": {	//若已上传，返回文件信息，否则返回null
+  "code": 200,
+  "data": {
+    //若已上传，返回文件信息，否则返回null
 		"fileType": "application/octet-stream",
 		"fileName": "1724111400_王涛_Java作业.java",
 		"size": 1170,
@@ -696,8 +639,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-    "code":0,
-    "data":true,
+  "code": 200,
+  "data": true,
     "msg":"执行成功"
 }
 ```
@@ -719,8 +662,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-	"code": 0,
-	"data": {
+  "code": 200,
+  "data": {
 		"records": [{
 			"id": 3,
 			"editSId": null,
@@ -765,8 +708,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-	"code": 0,
-	"data": {
+  "code": 200,
+  "data": {
 		"id": 33,
 		"editSId": 1724111400,
 		"editSName": "王涛",
@@ -792,8 +735,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-	"code": 0,
-	"data": {
+  "code": 200,
+  "data": {
 		"id": 33,
 		"editSId": 1724111400,
 		"editSName": "王涛",
@@ -815,7 +758,7 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 GET
 
-请求路径 **/admin/student/**
+请求路径 **/user/admin/**
 
 |    参数     |     说明     |
 | :---------: | :----------: |
@@ -832,8 +775,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-	"code": 0,
-	"data": {
+  "code": 200,
+  "data": {
 		"records": [{
 			"id": 1724111400,
 			"roleId": 1,
@@ -924,7 +867,7 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 PUT
 
-请求路径 **/admin/student/**
+请求路径 **/user/admin/**
 
 请求体
 
@@ -949,8 +892,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-    "code":0,
-    "data":true,
+  "code": 200,
+  "data": true,
     "msg":"执行成功"
 }
 ```
@@ -959,7 +902,7 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 DELETE
 
-请求路径 **/admin/student/**
+请求路径 **/user/admin/**
 
 |  参数  |     说明     |
 | :----: | :----------: |
@@ -969,8 +912,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-    "code":0,
-    "data":true,
+  "code": 200,
+  "data": true,
     "msg":"执行成功"
 }
 ```
@@ -979,7 +922,7 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 GET
 
-请求路径 **/admin/student/export**
+请求路径 **/user/admin/export**
 
 |  参数  |     说明     |
 | :----: | :----------: |
@@ -991,9 +934,9 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 POST
 
-请求路径 **/admin/student/import**
+请求路径 **/user/admin/import**
 
-| 参数 |      说明       |
+| 参数 | 说明 |
 | :--: | :-------------: |
 | file | 导入的excel文件 |
 
@@ -1001,8 +944,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-    "code":0,
-    "data":true,
+  "code": 200,
+  "data": true,
     "msg":"已成功导入n条数据!"
 }
 ```
@@ -1011,7 +954,7 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 GET
 
-请求路径 **/admin/student/template**
+请求路径 **/user/admin/template**
 
 响应状态：返回excel文件流
 
@@ -1019,18 +962,18 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 GET
 
-请求路径 **/admin/work/{id}**
+请求路径 **/work/admin/{id}**
 
-| 参数 |  说明  |
+| 参数 | 说明 |
 | :--: | :----: |
-|  id  | 作业id |
+| id | 作业id |
 
 响应状态（请求成功）
 
 ```json
 {
-	"code": 0,
-	"data": {
+  "code": 200,
+  "data": {
 		"id": 3,
 		"editSId": null,
 		"editorName": null,
@@ -1055,7 +998,7 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 POST
 
-请求路径 **/admin/work/**
+请求路径 **/work/admin/**
 
 请求体
 
@@ -1074,8 +1017,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-    "code":0,
-    "data":true,
+  "code": 200,
+  "data": true,
     "msg":"执行成功"
 }
 ```
@@ -1084,7 +1027,7 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 PUT
 
-请求路径 **/admin/work/**
+请求路径 **/work/admin/**
 
 请求体
 
@@ -1104,8 +1047,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-    "code":0,
-    "data":true,
+  "code": 200,
+  "data": true,
     "msg":"执行成功"
 }
 ```
@@ -1114,7 +1057,7 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 DELETE
 
-请求路径  **/admin/work/**
+请求路径  **/work/admin/**
 
 |  参数  |     说明     |
 | :----: | :----------: |
@@ -1124,8 +1067,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-    "code":0,
-    "data":true,
+  "code": 200,
+  "data": true,
     "msg":"执行成功"
 }
 ```
@@ -1134,7 +1077,7 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 GET
 
-请求路径 **/admin/work/download**
+请求路径 **/work/admin/download**
 
 |   参数   |  说明  |
 | :------: | :----: |
@@ -1147,11 +1090,12 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 GET
 
-请求路径 **/admin/work/download/{wId}**
+请求路径 **/work/admin/download/{wId}**
 
-|   参数   |  说明  |
-| :------: | :----: |
+|    参数    |  说明  |
+|:--------:|:----:|
 |   wId    | 作业id |
+| fileName | 文件名  |
 
 响应状态：返回打包zip文件流
 
@@ -1159,7 +1103,7 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 GET
 
-请求路径 **/admin/work/upload/{wId}**
+请求路径 **/work/admin/upload/{wId}**
 
 |  参数   |  说明  |
 | :-----: | :----: |
@@ -1171,8 +1115,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-	"code": 0,
-	"data": {
+  "code": 200,
+  "data": {
 		"records": [{
 			"fileType": "image/jpeg",
 			"fileName": "1724111400_王涛_医保凭证.jpeg",
@@ -1200,7 +1144,7 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 DELETE
 
-请求路径  **/admin/work/upload**
+请求路径  **/work/admin/upload**
 
 |        参数        |             说明             |
 | :----------------: | :--------------------------: |
@@ -1212,8 +1156,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-    "code":0,
-    "data":true,
+  "code": 200,
+  "data": true,
     "msg":"删除成功！"
 }
 ```
@@ -1222,9 +1166,9 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 POST
 
-请求路径  **/admin/work/extensions**
+请求路径  **/work/admin/extensions**
 
-| 参数 |  说明  |
+| 参数 | 说明 |
 | :--: | :----: |
 | name | 扩展名 |
 
@@ -1232,8 +1176,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-    "code":0,
-    "data":true,
+  "code": 200,
+  "data": true,
     "msg":"执行成功"
 }
 ```
@@ -1242,18 +1186,18 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 DELETE
 
-请求路径  **/admin/work/extensions**
+请求路径  **/work/admin/extensions**
 
-| 参数 |   说明   |
+| 参数 | 说明 |
 | :--: | :------: |
-| eId  | 扩展名id |
+| eId | 扩展名id |
 
 响应状态（请求成功）
 
 ```json
 {
-    "code":0,
-    "data":true,
+  "code": 200,
+  "data": true,
     "msg":"执行成功"
 }
 ```
@@ -1262,7 +1206,7 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 POST
 
-请求路径 **/admin/notice/**
+请求路径 **/notice/admin/**
 
 |  参数   |   说明   |
 | :-----: | :------: |
@@ -1274,8 +1218,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 ```json
 {
-    "code":0,
-    "data":true,
+  "code": 200,
+  "data": true,
     "msg":"执行成功"
 }
 ```
@@ -1284,7 +1228,7 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 PUT
 
-请求路径 **/admin/notice/**
+请求路径 **/notice/admin/**
 
 |  参数   |      说明      |
 | :-----: | :------------: |
@@ -1297,8 +1241,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 响应状态（请求成功）
 ```json
 {
-    "code":0,
-    "data":true,
+  "code": 200,
+  "data": true,
     "msg":"执行成功"
 }
 ```
@@ -1307,7 +1251,7 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 请求方法 DELETE
 
-请求路径 **/admin/notice/**
+请求路径 **/notice/admin/**
 
 |  参数  |     说明     |
 | :----: | :----------: |
@@ -1316,8 +1260,8 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 响应状态（请求成功）
 ```json
 {
-    "code":0,
-    "data":true,
+  "code": 200,
+  "data": true,
     "msg":"执行成功"
 }
 ```
@@ -1326,92 +1270,92 @@ sudo docker run  -d -p 127.0.0.1:8080:8080 -v ~/tclass/upload:/home/root/tclass/
 
 **登录界面**
 
-![](https://i.jpg.dog/img/080311f80e6fc06eeb8e87cd90439239.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/login.jpg)
 
 **项目首页**
 
-![](https://i.jpg.dog/img/4e253150b76c96c9e2b3bca825bfcc0e.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/index.jpg)
 
 **管理员导航栏**
 
-![](https://i.jpg.dog/img/8d801c473ed2efe47f84bf5cd74bf3a8.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/menu_admin.jpg)
 
 **普通用户导航栏**
 
-![](https://i.jpg.dog/img/785d04ef2c110d351de3a64aa280450d.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/menu_user.jpg)
 
 **用户管理**
 
-![](https://i.jpg.dog/img/48b4e10e1980cc0f0ffbb4dac01223c3.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/user_mana.jpg)
 
 **用户数据导入导出**
 
-![](https://i.jpg.dog/img/a44f10e91fbdf0118fb73b3356362ace.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/user_data_mana.jpg)
 
 **用户批量管理**
 
-![](https://i.jpg.dog/img/a49b7ab6bb52aa05516064423d98705b.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/data_batch.jpg)
 
 **用户高级搜索**
 
-![](https://i.jpg.dog/img/bb399aada376a0f2af06de0ecfebcd81.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/user_select.jpg)
 
 **编辑个人资料**
 
-![](https://i.jpg.dog/img/0d1a3f001472c73374563ff608260497.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/userinfo.jpg)
 
 **编辑用户资料**
 
-![](https://i.jpg.dog/img/3520837b11869a2bb59551fb9f3d737f.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/user_edit.jpg)
 
 **查看作业**
 
-![](https://i.jpg.dog/img/d0ad436b4a8adda6ef3b892872aa6544.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/work_index.jpg)
 
 **查看提交的文件**
 
-![](https://i.jpg.dog/img/6bea3b9a34791e39a65141528f70f846.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/work_file.jpg)
 
 **提交作业**
 
-![](https://i.jpg.dog/img/aff6afd90b9fce1d017151a3920faa96.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/work_upload.jpg)
 
 **作业管理**
 
-![](https://i.jpg.dog/img/0e6449737c35f98c72f7ef2c92056a22.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/work_mana.jpg)
 
 **发布作业**
 
-![](https://i.jpg.dog/img/d18f85a319fba7e9ec635801ad08499b.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/work_add.jpg)
 
 **编辑作业**
 
-![](https://i.jpg.dog/img/8a508ef9c58da7ab47c32247097e46a5.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/work_edit.jpg)
 
 **编辑扩展名列表**
 
-![](https://i.jpg.dog/img/2775b8c05df30c7ba0159b998113e39c.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/extensions_edit.jpg)
 
 **查看用户提交的作业文件**
 
-![](https://i.jpg.dog/img/2493e00c040d0ea68c44b608e706f1ea.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/work_uoload.jpg)
 
 **查看通知**
 
-![](https://i.jpg.dog/img/369d358a431e6224ec4843dd67fda032.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/notice_index.jpg)
 
 **查看通知详情**
 
-![](https://i.jpg.dog/img/8bd139820746bad1e10cb0c5c8206f5e.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/notice_info.jpg)
 
 **通知管理**
 
-![](https://i.jpg.dog/img/f73b260fe25c4c109821865c531ec414.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/notice_mana.jpg)
 
 **编辑通知**
 
-![](https://i.jpg.dog/img/c9e497a82f2200a85c0ebbb1cf5c7ada.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/notice_edit.jpg)
 
 **发布通知**
 
-![](https://i.jpg.dog/img/82952aa7dbbe013a2d62b58287e3b924.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/notice_add.jpg)

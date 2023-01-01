@@ -6,7 +6,7 @@
         <span v-else>关于我</span>
       </div>
       <div>
-        <el-avatar :size="150" :src="userInfo.avatarUrl" />
+        <el-avatar :size="150" :src="getUserAvatarUrl()"/>
       </div>
       <div class="user-name">
         {{ userInfo.name }}
@@ -43,15 +43,16 @@
     <el-card class="box-card-data" shadow="hover">
       <el-tooltip v-if="!isEditOtherUserDate" effect="dark" content="点击更换头像" placement="top">
         <el-upload
-          class="avatar-uploader"
-          action="/student/avatar"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-          :on-error="handleAvatarError"
+            :before-upload="beforeAvatarUpload"
+            :headers="avatarUploaderHeaders"
+            :on-error="handleAvatarError"
+            :on-success="handleAvatarSuccess"
+            :show-file-list="false"
+            action="/user/avatar"
+            class="avatar-uploader"
         >
-          <img v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon" />
+          <img v-if="userInfo.avatarUrl" :src="getUserAvatarUrl()" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"/>
         </el-upload>
       </el-tooltip>
       <div>
@@ -155,7 +156,8 @@
 </template>
 
 <script>
-import { regionData, CodeToText, TextToCode } from 'element-china-area-data'
+import {regionData, CodeToText, TextToCode} from 'element-china-area-data'
+import {getOauth2Info} from '@/utils/auth'
 
 export default {
   data() {
@@ -229,7 +231,11 @@ export default {
         checkPassword: ''
       },
       options: regionData,
-      selectedNativePlaceOptions: []
+      selectedNativePlaceOptions: [],
+      // 配置上传请求头
+      avatarUploaderHeaders: {
+        Authorization: 'Bearer ' + getOauth2Info().access_token
+      }
     }
   },
   computed: {
@@ -251,36 +257,36 @@ export default {
   },
   methods: {
     getNations() {
-      this.getRequest('/student/nations').then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/user/nations').then(resp => {
+        if (resp.code === 200) {
           this.nations = resp.data
         }
       })
     },
     getDepartments() {
-      this.getRequest('/student/departments').then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/user/departments').then(resp => {
+        if (resp.code === 200) {
           this.departments = resp.data
         }
       })
     },
     getpoliticsStatusList() {
-      this.getRequest('/student/political').then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/user/political').then(resp => {
+        if (resp.code === 200) {
           this.politicsStatusList = resp.data
         }
       })
     },
     getPositions() {
-      this.getRequest('/student/positions').then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/user/positions').then(resp => {
+        if (resp.code === 200) {
           this.positions = resp.data
         }
       })
     },
     getRoles() {
-      this.getRequest('/student/roles').then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/user/roles').then(resp => {
+        if (resp.code === 200) {
           this.roles = resp.data
         }
       })
@@ -301,53 +307,36 @@ export default {
       this.selectedNativePlaceOptions = code
     },
     initUserData() {
+      var userId = this.currentUser.id
       if (this.isEditOtherUserDate) {
-        this.getRequest('/student/' + this.$route.query.id).then(resp => {
-          if (resp.code === 0) {
-            // 初始化需要显示的数据
-            this.userInfo.name = resp.data.name
-            this.userInfo.email = resp.data.email
-            this.userInfo.phone = resp.data.phone
-            this.userInfo.nativePlace = resp.data.nativePlace
-            this.userInfo.loginTime = resp.data.loginTime
-            this.userInfo.role = resp.data.role
-            this.userInfo.avatarUrl = resp.data.avatarUrl
-            // 初始化需要修改的数据
-            this.userData.id = resp.data.id
-            this.userData.name = resp.data.name
-            this.userData.roleId = resp.data.roleId
-            this.userData.gender = resp.data.gender
-            this.userData.nationId = resp.data.nationId
-            this.userData.politicId = resp.data.politicId
-            this.userData.posId = resp.data.posId
-            this.userData.email = resp.data.email
-            this.userData.phone = resp.data.phone
-            this.userData.address = resp.data.address
-            this.userData.nativePlace = resp.data.nativePlace
-            this.userData.departmentIdList = resp.data.departmentIdList
-            this.nativePlaceTextToCode()
-          }
-        })
-      } else {
-        this.userInfo.name = this.currentUser.name
-        this.userInfo.email = this.currentUser.email
-        this.userInfo.phone = this.currentUser.phone
-        this.userInfo.nativePlace = this.currentUser.nativePlace
-        this.userInfo.loginTime = this.currentUser.loginTime
-        this.userInfo.role = this.currentUser.role
-        this.userInfo.avatarUrl = this.currentUser.avatarUrl
-
-        this.userData.id = this.currentUser.id
-        this.userData.gender = this.currentUser.gender
-        this.userData.nationId = this.currentUser.nationId
-        this.userData.politicId = this.currentUser.politicId
-        this.userData.email = this.currentUser.email
-        this.userData.phone = this.currentUser.phone
-        this.userData.address = this.currentUser.address
-        this.userData.nativePlace = this.currentUser.nativePlace
-        this.userData.departmentIdList = this.currentUser.departmentIdList
-        this.nativePlaceTextToCode()
+        userId = this.$route.query.id
       }
+      this.getRequest('/user/userInfo/' + userId).then(resp => {
+        if (resp.code === 200) {
+          // 初始化需要显示的数据
+          this.userInfo.name = resp.data.name
+          this.userInfo.email = resp.data.email
+          this.userInfo.phone = resp.data.phone
+          this.userInfo.nativePlace = resp.data.nativePlace
+          this.userInfo.loginTime = resp.data.loginTime
+          this.userInfo.role = resp.data.role
+          this.userInfo.avatarUrl = resp.data.avatarUrl
+          // 初始化需要修改的数据
+          this.userData.id = resp.data.id
+          this.userData.name = resp.data.name
+          this.userData.roleId = resp.data.roleId
+          this.userData.gender = resp.data.gender
+          this.userData.nationId = resp.data.nationId
+          this.userData.politicId = resp.data.politicId
+          this.userData.posId = resp.data.posId
+          this.userData.email = resp.data.email
+          this.userData.phone = resp.data.phone
+          this.userData.address = resp.data.address
+          this.userData.nativePlace = resp.data.nativePlace
+          this.userData.departmentIdList = resp.data.departmentIdList
+          this.nativePlaceTextToCode()
+        }
+      })
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -357,8 +346,8 @@ export default {
             this.userDataLoading = true
             this.nativePlaceCodeToText()
             if (this.isEditOtherUserDate) {
-              this.putRequest('/admin/student/', this.userData).then(resp => {
-                if (resp.code === 0) {
+              this.putRequest('/user/admin/', this.userData).then(resp => {
+                if (resp.code === 200) {
                   this.$message.success('资料修改成功！')
                   this.userDataLoading = false
                 }
@@ -368,8 +357,8 @@ export default {
               })
               // 用户修改自己的信息
             } else {
-              this.putRequest('/student/', this.userData).then(resp => {
-                if (resp.code === 0) {
+              this.putRequest('/user/', this.userData).then(resp => {
+                if (resp.code === 200) {
                   this.$message.success('资料修改成功！')
                   this.userDataLoading = false
                   this.$store.commit('INIT_CURRENTUSER', resp.data)
@@ -382,8 +371,8 @@ export default {
             }
           } else if (formName === 'passData') {
             this.passDataLoading = true
-            this.putRequest('/student/reSetPassword/' + this.userData.id).then(resp => {
-              if (resp.code === 0 && resp.data) {
+            this.putRequest('/user/admin/reSetPassword/' + this.userData.id).then(resp => {
+              if (resp.code === 200 && resp.data) {
                 this.$message.success('密码修改成功！')
                 this.passDataLoading = false
                 this.pass.password = ''
@@ -401,12 +390,12 @@ export default {
       })
     },
     handleAvatarSuccess(res, file) {
-      this.getRequest('/student/' + this.currentUser.id).then(resp => {
-        if (resp.code === 0) {
+      this.getRequest('/user/' + this.currentUser.id).then(resp => {
+        if (resp.code === 200) {
           // 刷新当前用户数据
           this.$store.commit('INIT_CURRENTUSER', resp.data)
           localStorage.setItem('INIT_CURRENTUSER', JSON.stringify(resp.data))
-          this.userInfo.avatarUrl = resp.data.avatarUrl + '?count=' + Math.random()
+          this.userInfo.avatarUrl = resp.data.avatarUrl
           this.$message.success('头像修改成功！')
         }
       }).catch(error => {
@@ -427,6 +416,9 @@ export default {
     handleAvatarError(err, file, fileList) {
       err = JSON.parse(err.message)
       this.$message.error(err.message)
+    },
+    getUserAvatarUrl() {
+      return '/user/avatar/get?photoPath=' + this.userInfo.avatarUrl
     }
   }
 }

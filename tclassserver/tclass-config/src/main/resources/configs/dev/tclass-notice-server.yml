@@ -1,0 +1,72 @@
+server:
+  servlet:
+    context-path: "/notice"
+spring:
+  datasource: #数据库连接配置
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: teoan
+    password: 277077411
+    url: jdbc:mysql://www.xumumi.com:3306/tclass?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    druid:
+      stat-view-servlet:
+        login-username: Teoan
+        login-password: 277077411
+  redis:
+    host: www.xumumi.com
+    database: 0
+    port: 6379
+    password: 277077411
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  #配置文件上传大小
+  servlet:
+    multipart:
+      max-request-size: 30MB
+      max-file-size: 50MB
+  #将前端传来的String解析为Data
+  mvc:
+    format:
+      date: yyyy-MM-dd HH:mm:ss
+# 注册中心配置
+eureka:
+  instance:
+    prefer-ip-address: true #优先使用IP地址注册
+  client:
+    service-url:
+      defaultZone: http://teoan:277077411@localhost:8761/eureka/ #eureka的注册地址
+feign:
+  hystrix:
+    enabled: true
+  compression:
+    request:
+      #是否启用请求GZIP压缩，true：启用，false：不启用
+      enabled: true
+      #压缩支持的MIME TYPE
+      mime-types: text/xml,application/xml,application/json
+      #压缩数据的最小值
+      min-request-size: 2048
+    response:
+      #是否启用响应GZIP压缩，true：启用，false：不启用
+      enabled: true
+  client:
+    config:
+      #feign全局配置
+      default:
+        #指定日志级别，none：不记录任何日志，basic：仅记录请求方法、URL、响应状态代码以及执行时间（适合生产环境）
+        #headers：在basic基础上，记录请求和响应的header，full：记录请求和响应的header、body和元数据，默认none
+        loggerLevel: headers
+      #feign指定客户端配置，即仅对指定调用的服务生效
+      eureka-client:
+        loggerLevel: full
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          strategy: SEMAPHORE
+mybatis-plus:
+  global-config:
+    banner: false

@@ -59,23 +59,29 @@
 
 <script>
 import { setLoginInfo } from '@/utils/auth'
-import { getLoginInfo } from '@/utils/auth'
+import {getLoginInfo} from '@/utils/auth'
+import {setOauth2Info} from '@/utils/auth'
 
 export default {
   name: 'Login',
   data() {
     return {
       loading: false,
-      vcUrl: '/verifyCode.jpg?comut=' + Math.random(),
+      vcUrl: '/oauth/verifyCode.jpg?comut=' + Math.random(),
       loginForm: {
         username: '',
         password: '',
         code: '',
-        remember: true
+        remember: true,
+        grant_type: 'password'
       },
       rules: {
-        username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-        password: [{ required: true, message: '请输入密码', trigger: 'blur' }, { min: 6, message: '密码最少为6位', trigger: 'blur' }],
+        username: [{required: true, message: '请输入用户名', trigger: 'blur'}],
+        password: [{required: true, message: '请输入密码', trigger: 'blur'}, {
+          min: 6,
+          message: '密码最少为6位',
+          trigger: 'blur'
+        }],
         code: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
       }
     }
@@ -88,26 +94,28 @@ export default {
   },
   methods: {
     updateVerifyCode() {
-      this.vcUrl = '/verifyCode.jpg?count=' + Math.random()
+      this.vcUrl = '/oauth/verifyCode.jpg?count=' + Math.random()
     },
     submitLogin() {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true
-          this.loginPostRequest('/login', this.loginForm).then(resp => {
+          this.loginPostRequest('/oauth/login', this.loginForm).then(resp => {
             this.loading = false
-            if (resp.code === 0) {
+            if (resp.code === 200) {
               if (this.loginForm.remember) {
                 setLoginInfo(this.loginForm)
               } else {
                 setLoginInfo(null)
               }
-              // 将当前用户信息保存到本地和store
-              this.$store.commit('INIT_CURRENTUSER', resp.data)
-              localStorage.setItem('INIT_CURRENTUSER', JSON.stringify(resp.data))
+              // 保存认证token信息
+              this.$store.commit('OAUTH2', resp.data)
+              setOauth2Info(resp.data)
+              this.getAndSaveCurrentUser()
+              this.$message.success(resp.msg)
               this.$router.replace('/home')
             } else {
-              this.vcUrl = '/verifyCode.jpg?count=' + Math.random()
+              this.vcUrl = '/oauth/verifyCode.jpg?count=' + Math.random()
             }
           }).catch(error => {
             this.loading = false
@@ -115,6 +123,15 @@ export default {
           })
         } else {
           return false
+        }
+      })
+    },
+    getAndSaveCurrentUser() {
+      this.getRequest('/oauth/getCurrentUser').then(resp => {
+        if (resp.code === 200) {
+          // 将当前用户信息保存到本地和store
+          this.$store.commit('INIT_CURRENTUSER', resp.data)
+          localStorage.setItem('INIT_CURRENTUSER', JSON.stringify(resp.data))
         }
       })
     }

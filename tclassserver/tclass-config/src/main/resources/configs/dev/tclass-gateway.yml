@@ -1,0 +1,44 @@
+spring:
+  #网关配置中心
+  cloud:
+    gateway:
+      discovery:
+        locator: #路由访问方式：http://Gateway_HOST:Gateway_PORT/大写的serviceId/**，其中微服务应用名默认大写访问。
+          enabled: true #是否与服务发现组件进行结合，通过 serviceId(必须设置成大写) 转发到具体的服务实例。默认为false，设为true便开启通过服务中心的自动根据 serviceId 创建路由的功能。
+          lower-case-service-id: true #允许通过模块名小写代理
+      routes:
+        - id: tclass-login-server
+          uri: lb://tclass-login-server #网关路由到springcloud-client模块，lb指向内部注册模块
+          predicates: #转发谓词，用于设置匹配路由的规则
+            - Path=/login/** #通过请求路径匹配
+        - id: tclass-notice-server
+          uri: lb://tclass-notice-server
+          predicates:
+            - Path=/notice/**
+        - id: tclass-user-server
+          uri: lb://tclass-user-server
+          predicates:
+            - Path=/user/**
+        - id: tclass-work-server
+          uri: lb://tclass-work-server
+          predicates:
+            - Path=/work/**
+        - id: tclass-oauth-server
+          uri: lb://tclass-oauth-server
+          predicates:
+            - Path=/oauth/**
+        #            - Method=GET #通过请求方式匹配
+        #            - RemoteAddr=127.0.0.1/25 #通过请求id匹配，只有在某个 ip 区间号段的请求才会匹配路由，其中/后的是子网掩码
+        #            - After=2018-01-20T06:06:06+08:00[Asia/Shanghai] #根据时间进行匹配，在指定时间之后才会匹配路由
+        #            - Before=2018-01-20T06:06:06+08:00[Asia/Shanghai] #根据时间进行匹配，在指定时间之前才会匹配路由
+        #            - Between=2018-01-20T06:06:06+08:00[Asia/Shanghai], 2019-01-20T06:06:06+08:00[Asia/Shanghai] #根据时间段进行匹配，处于指定时间段才会匹配路由
+  main:
+    allow-bean-definition-overriding: true #是否允许同Bean覆盖
+
+# 注册中心配置
+eureka:
+  instance:
+    prefer-ip-address: true #优先使用IP地址注册
+  client:
+    service-url:
+      defaultZone: http://teoan:277077411@localhost:8761/eureka/ #eureka的注册地址

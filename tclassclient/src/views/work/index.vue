@@ -75,7 +75,7 @@ export default {
     getWorksData(current, size) {
       this.workDataLoading = true
       this.getRequest('/work/', { current: current, size: size, name: this.selectWorkName, createTime: this.selectCreateTime }).then(resp => {
-        if (resp.code === 0) {
+        if (resp.code === 200) {
           this.pageInfo = resp.data
           this.workList = this.pageInfo.records
           this.workDataLoading = false

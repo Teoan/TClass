@@ -1,0 +1,13 @@
+server:
+  port: 8888 #端口
+spring:
+  application:
+    name: tclass-config-server #应用名
+  profiles:
+    active: native #环境
+  #配置中心
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/configs/{profile}  #此处表明使用本地目录/configs下的配置文件作为配置仓库
