@@ -1262,92 +1262,92 @@ ORM：MyBatis-Plus
 
 **登录界面**
 
-![](https://i.jpg.dog/img/080311f80e6fc06eeb8e87cd90439239.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/login.jpg)
 
 **项目首页**
 
-![](https://i.jpg.dog/img/4e253150b76c96c9e2b3bca825bfcc0e.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/index.jpg)
 
 **管理员导航栏**
 
-![](https://i.jpg.dog/img/8d801c473ed2efe47f84bf5cd74bf3a8.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/menu_admin.jpg)
 
 **普通用户导航栏**
 
-![](https://i.jpg.dog/img/785d04ef2c110d351de3a64aa280450d.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/menu_user.jpg)
 
 **用户管理**
 
-![](https://i.jpg.dog/img/48b4e10e1980cc0f0ffbb4dac01223c3.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/user_mana.jpg)
 
 **用户数据导入导出**
 
-![](https://i.jpg.dog/img/a44f10e91fbdf0118fb73b3356362ace.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/user_data_mana.jpg)
 
 **用户批量管理**
 
-![](https://i.jpg.dog/img/a49b7ab6bb52aa05516064423d98705b.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/data_batch.jpg)
 
 **用户高级搜索**
 
-![](https://i.jpg.dog/img/bb399aada376a0f2af06de0ecfebcd81.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/user_select.jpg)
 
 **编辑个人资料**
 
-![](https://i.jpg.dog/img/0d1a3f001472c73374563ff608260497.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/userinfo.jpg)
 
 **编辑用户资料**
 
-![](https://i.jpg.dog/img/3520837b11869a2bb59551fb9f3d737f.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/user_edit.jpg)
 
 **查看作业**
 
-![](https://i.jpg.dog/img/d0ad436b4a8adda6ef3b892872aa6544.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/work_index.jpg)
 
 **查看提交的文件**
 
-![](https://i.jpg.dog/img/6bea3b9a34791e39a65141528f70f846.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/work_file.jpg)
 
 **提交作业**
 
-![](https://i.jpg.dog/img/aff6afd90b9fce1d017151a3920faa96.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/work_upload.jpg)
 
 **作业管理**
 
-![](https://i.jpg.dog/img/0e6449737c35f98c72f7ef2c92056a22.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/work_mana.jpg)
 
 **发布作业**
 
-![](https://i.jpg.dog/img/d18f85a319fba7e9ec635801ad08499b.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/work_add.jpg)
 
 **编辑作业**
 
-![](https://i.jpg.dog/img/8a508ef9c58da7ab47c32247097e46a5.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/work_edit.jpg)
 
 **编辑扩展名列表**
 
-![](https://i.jpg.dog/img/2775b8c05df30c7ba0159b998113e39c.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/extensions_edit.jpg)
 
 **查看用户提交的作业文件**
 
-![](https://i.jpg.dog/img/2493e00c040d0ea68c44b608e706f1ea.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/work_uoload.jpg)
 
 **查看通知**
 
-![](https://i.jpg.dog/img/369d358a431e6224ec4843dd67fda032.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/notice_index.jpg)
 
 **查看通知详情**
 
-![](https://i.jpg.dog/img/8bd139820746bad1e10cb0c5c8206f5e.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/notice_info.jpg)
 
 **通知管理**
 
-![](https://i.jpg.dog/img/f73b260fe25c4c109821865c531ec414.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/notice_mana.jpg)
 
 **编辑通知**
 
-![](https://i.jpg.dog/img/c9e497a82f2200a85c0ebbb1cf5c7ada.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/notice_edit.jpg)
 
 **发布通知**
 
-![](https://i.jpg.dog/img/82952aa7dbbe013a2d62b58287e3b924.png)
+![](https://github.com/Teoan/TClass/raw/cloud-dev/doc/notice_add.jpg)
