@@ -30,7 +30,7 @@ public class Department extends Model<Department> {
      * @return 主键值
      */
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 }

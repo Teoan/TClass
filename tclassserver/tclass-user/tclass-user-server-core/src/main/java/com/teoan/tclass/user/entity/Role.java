@@ -34,13 +34,14 @@ public class Role extends Model<Role> {
         Role role = (Role) o;
         return Objects.equals(zhName, role.zhName);
     }
+
     /**
      * 获取主键值
      *
      * @return 主键值
      */
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 }

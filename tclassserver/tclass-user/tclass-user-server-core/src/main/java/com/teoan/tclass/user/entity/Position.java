@@ -33,13 +33,14 @@ public class Position extends Model<Position> {
         Position position = (Position) o;
         return Objects.equals(name, position.name);
     }
+
     /**
      * 获取主键值
      *
      * @return 主键值
      */
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 }

@@ -34,13 +34,14 @@ public class Nation extends Model<Nation> {
         Nation nation = (Nation) o;
         return Objects.equals(name, nation.name);
     }
+
     /**
      * 获取主键值
      *
      * @return 主键值
      */
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 }

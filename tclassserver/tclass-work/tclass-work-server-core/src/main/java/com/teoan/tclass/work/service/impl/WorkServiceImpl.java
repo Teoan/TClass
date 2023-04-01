@@ -5,16 +5,14 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.teoan.tclass.work.exception.DeleteFileException;
-import com.teoan.tclass.work.mapper.WorkMapper;
 import com.teoan.tclass.work.entity.Work;
+import com.teoan.tclass.work.mapper.WorkMapper;
 import com.teoan.tclass.work.service.FileService;
 import com.teoan.tclass.work.service.UploadService;
 import com.teoan.tclass.work.service.WorkService;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -67,13 +65,13 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
 
     @CacheEvict(allEntries = true)
     @Override
-    public boolean removeByIds(Collection<? extends Serializable> idList) {
+    public boolean removeByIds(Collection<?> idList) {
 
-        for (Serializable i : idList) {
+        for (Object i : idList) {
 
-            if (fileService.deleteFilesByWId((Integer) i)&&uploadService.deleteUploadByWId((Integer) i)) {
-                getBaseMapper().deleteById(i);
-            }else{
+            if (fileService.deleteFilesByWId((Integer) i) && uploadService.deleteUploadByWId((Integer) i)) {
+                getBaseMapper().deleteById((Integer) i);
+            } else {
                 return false;
             }
         }

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>tclass-work</artifactId>
         <groupId>com.teoan.tclass</groupId>
-        <version>1.0.0-BETA</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -19,18 +19,14 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.teoan.tclass</groupId>
             <artifactId>tclass-work-api</artifactId>
-            <version>1.0.0-BETA</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.teoan.tclass</groupId>
             <artifactId>tclass-work-server-core</artifactId>
-            <version>1.0.0-BETA</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -45,8 +41,12 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-config-client</artifactId>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
     </dependencies>
     <profiles>

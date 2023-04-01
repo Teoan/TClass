@@ -4,11 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.teoan.tclass.user.dto.StudentDTO;
 import com.teoan.tclass.user.dto.StudentPageDTO;
 import com.teoan.tclass.user.entity.StuDepRef;
-import com.teoan.tclass.user.mapper.StudentMapper;
 import com.teoan.tclass.user.entity.Student;
+import com.teoan.tclass.user.mapper.StudentMapper;
 import com.teoan.tclass.user.service.StudentService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheConfig;
@@ -111,7 +110,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @CacheEvict(allEntries = true)
     @Override
-    public boolean removeByIds(Collection<? extends Serializable> idList) {
+    public boolean removeByIds(Collection<?> idList) {
         return super.removeByIds(idList);
     }
 
