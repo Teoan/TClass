@@ -15,11 +15,9 @@
     <packaging>pom</packaging>
     <modules>
         <module>tclass-common</module>
-        <module>tclass-config</module>
         <module>tclass-gateway</module>
         <module>tclass-notice</module>
         <module>tclass-oauth</module>
-        <module>tclass-registry</module>
         <module>tclass-user</module>
         <module>tclass-work</module>
     </modules>
@@ -168,16 +166,6 @@
                 <artifactId>fastdfs-client</artifactId>
                 <version>${fastdfs.version}</version>
             </dependency>
-            <!--            <dependency>-->
-            <!--                <groupId>org.springframework.cloud</groupId>-->
-            <!--                <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>-->
-            <!--                <version>${hystrix.version}</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>org.springframework.cloud</groupId>-->
-            <!--                <artifactId>spring-cloud-starter-security</artifactId>-->
-            <!--                <version>${security.version}</version>-->
-            <!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 </project>
