@@ -24,17 +24,17 @@
 
     <properties>
         <spring.cloud.version>Hoxton.SR12</spring.cloud.version>
-        <spring.boot.version>2.3.12.RELEASE</spring.boot.version>
+        <spring.boot.version>2.4.3</spring.boot.version>
         <druid.version>1.2.16</druid.version>
         <lombok.version>1.18.26</lombok.version>
-        <mybatis.plus.version>3.5.3.1</mybatis.plus.version>
+        <mybatis.plus.version>3.5.3.2</mybatis.plus.version>
         <kaptcha.version>2.3.2</kaptcha.version>
         <jackson.version>2.12.3</jackson.version>
         <poi.version>5.2.3</poi.version>
         <flyway.version>6.5.7</flyway.version>
         <hutool.version>5.8.16</hutool.version>
         <fastdfs.version>1.27.2</fastdfs.version>
-        <spring.cloud.alibaba.version>2.2.9.RELEASE</spring.cloud.alibaba.version>
+        <spring-cloud-tencent.version>1.12.4-2022.0.4</spring-cloud-tencent.version>
         <io.springfox.version>3.0.0</io.springfox.version>
         <hystrix.version>2.2.10.RELEASE</hystrix.version>
         <security.version>2.2.5.RELEASE</security.version>
@@ -99,9 +99,9 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>${spring.cloud.alibaba.version}</version>
+                <groupId>com.tencent.cloud</groupId>
+                <artifactId>spring-cloud-tencent-dependencies</artifactId>
+                <version>${spring-cloud-tencent.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

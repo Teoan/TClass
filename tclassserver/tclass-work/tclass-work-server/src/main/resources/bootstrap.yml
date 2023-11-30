@@ -4,17 +4,11 @@ spring:
   application:
     name: ${SPRING_APPLICATION_NAME:tclass-work-server}
   cloud:
-    nacos:
+    polaris:
+      address: grpc://interfaceserver:8091 # 必填
+      namespace: default # 全局 namespace 参数
       config:
-        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
-        file-extension: ${NACOS_FILE_EXTENSION:yaml}
-        group: ${NACOS_GROUP:DEFAULT_GROUP}
-        username: ${NACOS_USERNAME:nacos}
-        password: ${NACOS_PASSWORD:nacos}
-      discovery:
-        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
-        group: ${NACOS_GROUP:DEFAULT_GROUP}
-        username: ${NACOS_USERNAME:nacos}
-        password: ${NACOS_PASSWORD:nacos}
+        address: grpc://interfaceserver:8093 # 选填，只有在配置中心和注册中心是两个不同的地址时才需要配置
+        auto-refresh: true # 选填，当配置发布后，动态刷新 Spring 上下文，默认值为 true
   main:
     allow-bean-definition-overriding: true
