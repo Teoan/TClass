@@ -27,16 +27,13 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
-        <!-- Spring Cloud Tencent 服务注册与发现 -->
         <dependency>
-            <groupId>com.tencent.cloud</groupId>
-            <artifactId>spring-cloud-starter-tencent-polaris-discovery</artifactId>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
-
-        <!-- Spring Cloud Tencent 配置中心 -->
         <dependency>
-            <groupId>com.tencent.cloud</groupId>
-            <artifactId>spring-cloud-starter-tencent-polaris-config</artifactId>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
