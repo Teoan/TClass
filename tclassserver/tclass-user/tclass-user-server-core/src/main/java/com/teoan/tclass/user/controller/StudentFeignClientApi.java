@@ -1,9 +1,8 @@
 package com.teoan.tclass.user.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
-import com.teoan.tclass.common.annotation.TclassLog;
 import com.teoan.tclass.common.entity.SysUser;
-import com.teoan.tclass.common.enums.LogSeverity;
+import com.teoan.tclass.common.result.R;
 import com.teoan.tclass.common.service.AuthUserService;
 import com.teoan.tclass.user.dto.StudentDTO;
 import com.teoan.tclass.user.dto.StudentInfoDTO;
@@ -11,6 +10,8 @@ import com.teoan.tclass.user.entity.Student;
 import com.teoan.tclass.user.service.*;
 import com.teoan.tclass.user.utils.FileUtils;
 import com.teoan.tclass.user.utils.POIStudentUtils;
+import io.github.teoan.log.core.annotation.TeoanLog;
+import io.github.teoan.log.core.enums.LogSeverity;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +19,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import com.teoan.tclass.common.result.R;
-import javax.imageio.ImageIO;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -64,7 +65,7 @@ public class StudentFeignClientApi implements StudentFeignClient {
     AuthUserService authUserService;
 
     @Override
-    @TclassLog(operSource = "user",operName = "查询",severity = LogSeverity.INFO,description = "通过主键查询单条数据")
+    @TeoanLog(operSource = "user", operName = "查询", severity = LogSeverity.INFO, description = "通过主键查询单条数据")
     public R selectOne(Serializable id) {
         StudentDTO studentDTO = new StudentDTO();
         Student student = studentService.getById(id);
@@ -73,7 +74,7 @@ public class StudentFeignClientApi implements StudentFeignClient {
     }
 
     @Override
-    @TclassLog(operSource = "user",operName = "查询",severity = LogSeverity.INFO,description = "通过主键查询单条详情数据")
+    @TeoanLog(operSource = "user", operName = "查询", severity = LogSeverity.INFO, description = "通过主键查询单条详情数据")
     public R getUserInfoById(Serializable id) {
         StudentInfoDTO studentInfoDTO = new StudentInfoDTO();
         Student student = studentService.getById(id);
@@ -82,7 +83,7 @@ public class StudentFeignClientApi implements StudentFeignClient {
     }
 
     @Override
-    @TclassLog(operSource = "user",operName = "修改",severity = LogSeverity.INFO,description = "修改用户数据")
+    @TeoanLog(operSource = "user", operName = "修改", severity = LogSeverity.INFO, description = "修改用户数据")
     public R update(StudentDTO studentDTO) {
         //获取当前登录用户
         SysUser currentUser = authUserService.getCurrentUser();
@@ -98,31 +99,31 @@ public class StudentFeignClientApi implements StudentFeignClient {
     }
 
     @Override
-    @TclassLog(operSource = "user",operName = "查询",severity = LogSeverity.INFO,description = "获取民族列表")
+    @TeoanLog(operSource = "user", operName = "查询", severity = LogSeverity.INFO, description = "获取民族列表")
     public R getNations() {
         return R.ok(nationService.list());
     }
 
     @Override
-    @TclassLog(operSource = "user",operName = "查询",severity = LogSeverity.INFO,description = "获取部门列表")
+    @TeoanLog(operSource = "user", operName = "查询", severity = LogSeverity.INFO, description = "获取部门列表")
     public R getDepartments() {
         return R.ok(departmentService.list());
     }
 
     @Override
-    @TclassLog(operSource = "user",operName = "查询",severity = LogSeverity.INFO,description = "获取政治面貌列表")
+    @TeoanLog(operSource = "user", operName = "查询", severity = LogSeverity.INFO, description = "获取政治面貌列表")
     public R getPoliticsStatusList() {
         return R.ok(politicsstatusService.list());
     }
 
     @Override
-    @TclassLog(operSource = "user",operName = "查询",severity = LogSeverity.INFO,description = "获取班级职位列表")
+    @TeoanLog(operSource = "user", operName = "查询", severity = LogSeverity.INFO, description = "获取班级职位列表")
     public R getPosition() {
         return R.ok(positionService.list());
     }
 
     @Override
-    @TclassLog(operSource = "user",operName = "查询",severity = LogSeverity.INFO,description = "获取权限列表")
+    @TeoanLog(operSource = "user", operName = "查询", severity = LogSeverity.INFO, description = "获取权限列表")
     public R getRoles() {
         return R.ok(roleService.list());
     }
@@ -148,7 +149,7 @@ public class StudentFeignClientApi implements StudentFeignClient {
     }
 
     @Override
-    @TclassLog(operSource = "user",operName = "新增",severity = LogSeverity.INFO,description = "新增数据")
+    @TeoanLog(operSource = "user", operName = "新增", severity = LogSeverity.INFO, description = "新增数据")
     public R insert(StudentDTO studentDTO) {
         Student student = new Student();
         BeanUtils.copyProperties(studentDTO,student);
@@ -159,7 +160,7 @@ public class StudentFeignClientApi implements StudentFeignClient {
     }
 
     @Override
-    @TclassLog(operSource = "user",operName = "查询",severity = LogSeverity.INFO,description = "分页查询所有数据")
+    @TeoanLog(operSource = "user", operName = "查询", severity = LogSeverity.INFO, description = "分页查询所有数据")
     public R getStudentByPage(Long current, Long size, StudentDTO studentDTO) {
         Student student = new Student();
         BeanUtils.copyProperties(studentDTO,student);
@@ -167,7 +168,7 @@ public class StudentFeignClientApi implements StudentFeignClient {
     }
 
     @Override
-    @TclassLog(operSource = "user",operName = "查询",severity = LogSeverity.INFO,description = "通过主键查询单条详情数据")
+    @TeoanLog(operSource = "user", operName = "查询", severity = LogSeverity.INFO, description = "通过主键查询单条详情数据")
     public R adminUpdate(StudentDTO studentDTO) {
         Student student = new Student();
         BeanUtils.copyProperties(studentDTO,student);
@@ -175,13 +176,13 @@ public class StudentFeignClientApi implements StudentFeignClient {
     }
 
     @Override
-    @TclassLog(operSource = "user",operName = "修改",severity = LogSeverity.INFO,description = "重置密码")
+    @TeoanLog(operSource = "user", operName = "修改", severity = LogSeverity.INFO, description = "重置密码")
     public R reSetPassword(Long SId) {
         return R.ok(this.studentService.reSetPasswordBySId(SId));
     }
 
     @Override
-    @TclassLog(operSource = "work",operName = "查询",severity = LogSeverity.INFO,description = "分页查询所有作业数据")
+    @TeoanLog(operSource = "work", operName = "查询", severity = LogSeverity.INFO, description = "分页查询所有作业数据")
     public R delete(List<Long> idList) {
         return R.ok(this.studentService.removeByIds(idList));
     }
@@ -209,7 +210,7 @@ public class StudentFeignClientApi implements StudentFeignClient {
     }
 
     @Override
-    @TclassLog(operSource = "user",operName = "新增",severity = LogSeverity.INFO,description = "导入学生数据")
+    @TeoanLog(operSource = "user", operName = "新增", severity = LogSeverity.INFO, description = "导入学生数据")
     public R importData(MultipartFile file) {
         String extensionName = FileUtils.getExtensionName(file).toLowerCase();
 

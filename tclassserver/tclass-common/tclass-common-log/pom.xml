@@ -30,6 +30,15 @@
             <artifactId>tclass-common-security</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
+        <!--日志采集-->
+        <dependency>
+            <groupId>io.github.teoan</groupId>
+            <artifactId>teoan-log-spring-boot-starter</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

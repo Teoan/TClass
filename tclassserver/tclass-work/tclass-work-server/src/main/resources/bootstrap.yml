@@ -11,6 +11,9 @@ spring:
         group: ${NACOS_GROUP:DEFAULT_GROUP}
         username: ${NACOS_USERNAME:nacos}
         password: ${NACOS_PASSWORD:nacos}
+        shared-configs:
+          - data-id: tclass-public.yaml
+            group: DEFAULT_GROUP
       discovery:
         server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
         group: ${NACOS_GROUP:DEFAULT_GROUP}

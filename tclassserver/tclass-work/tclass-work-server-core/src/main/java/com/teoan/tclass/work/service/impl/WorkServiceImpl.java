@@ -3,22 +3,30 @@ package com.teoan.tclass.work.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.teoan.tclass.work.entity.Upload;
 import com.teoan.tclass.work.entity.Work;
 import com.teoan.tclass.work.mapper.WorkMapper;
 import com.teoan.tclass.work.service.FileService;
 import com.teoan.tclass.work.service.UploadService;
 import com.teoan.tclass.work.service.WorkService;
+import com.teoan.tclass.work.utils.ZipUtils;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * (Work)表服务实现类
@@ -69,7 +77,7 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
 
         for (Object i : idList) {
 
-            if (fileService.deleteFilesByWId((Integer) i) && uploadService.deleteUploadByWId((Integer) i)) {
+            if (uploadService.deleteUploadByWId((Integer) i)) {
                 getBaseMapper().deleteById((Integer) i);
             } else {
                 return false;
@@ -90,5 +98,57 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
         UpdateWrapper<Work> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("extension_id",EId);
         return getBaseMapper().update(Work.builder().extensionId(1).build(),updateWrapper)>=0;
+    }
+
+
+    /**
+     * 获取作业文件
+     *
+     * @param wId
+     * @param fileName
+     */
+    @Override
+    public byte[] getFile(Integer wId, String fileName) {
+        QueryWrapper<Upload> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("w_id", wId);
+        queryWrapper.eq("file_name", fileName);
+        Upload upload = uploadService.getOne(queryWrapper);
+        return fileService.getFileByte(upload.getFilePath());
+    }
+
+
+    /**
+     * 根据作业id获取作业文件并打包为zip
+     *
+     * @param wId 作业id
+     */
+    @Override
+    @Cacheable(cacheNames = "workZipFile_cache", key = "#wId", unless = "#result==null")
+    public File getZipByWId(Integer wId) {
+        try {
+            String zipDirPath = ResourceUtils.getURL(ResourceUtils.CLASSPATH_URL_PREFIX).getPath();
+            File zipDir = new File(zipDirPath + File.separator + "Zip");
+            if (!zipDir.exists()) {
+                if (!zipDir.mkdir()) {
+                    return null;
+                }
+            }
+            File zipFile = new File(zipDir.getAbsolutePath() + File.separator + wId + ".zip");
+            QueryWrapper<Upload> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("w_id", wId);
+            List<Upload> uploadList = uploadService.list(queryWrapper);
+            uploadList = uploadList.stream().peek(upload -> {
+                upload.setFileByte(fileService.getFileByte(upload.getFilePath()));
+            }).collect(Collectors.toList());
+            if (ObjectUtils.isNotEmpty(uploadList)) {
+                ZipUtils.zipFiles(zipFile, uploadList);
+            } else {
+                return null;
+            }
+            return zipFile;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

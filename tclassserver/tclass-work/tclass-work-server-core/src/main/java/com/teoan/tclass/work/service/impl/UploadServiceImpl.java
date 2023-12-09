@@ -7,9 +7,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.teoan.tclass.common.entity.SysUser;
 import com.teoan.tclass.common.service.SysUserService;
+import com.teoan.tclass.work.entity.Upload;
 import com.teoan.tclass.work.entity.Work;
 import com.teoan.tclass.work.mapper.UploadMapper;
-import com.teoan.tclass.work.entity.Upload;
 import com.teoan.tclass.work.mapper.WorkMapper;
 import com.teoan.tclass.work.service.FileService;
 import com.teoan.tclass.work.service.UploadService;
@@ -115,9 +115,16 @@ public class UploadServiceImpl extends ServiceImpl<UploadMapper, Upload> impleme
 
     @Override
     public boolean deleteUploadByWId(Integer wId) {
+
+        List<Upload> uploadList = getUploadListByWId(wId);
+
+        uploadList.forEach(upload -> {
+            fileService.deleteFile(upload.getFilePath());
+        });
         QueryWrapper<Upload> wrapper = new QueryWrapper<>();
         wrapper.eq("w_id",wId);
-        return getBaseMapper().delete(wrapper)>=0;
+        getBaseMapper().delete(wrapper);
+        return true;
     }
 
     @Override

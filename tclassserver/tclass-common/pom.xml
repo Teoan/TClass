@@ -16,5 +16,6 @@
         <module>tclass-common-security</module>
         <module>tclass-common-sys</module>
         <module>tclass-common-log</module>
+        <module>tclass-common-cloud</module>
     </modules>
 </project>

@@ -19,41 +19,6 @@
         <docker.repostory>teoan1997</docker.repostory>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Hoxton.SR11</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>2.3.10.RELEASE</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.teoan.tclass</groupId>
-                <artifactId>tclass-common</artifactId>
-                <version>1.0.1-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid-spring-boot-starter</artifactId>
-                <version>1.2.6</version>
-            </dependency>
-            <!--验证码-->
-            <dependency>
-                <groupId>com.github.penggle</groupId>
-                <artifactId>kaptcha</artifactId>
-                <version>2.3.2</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <dependencies>
         <!--nacos-->
         <dependency>
@@ -67,17 +32,18 @@
         <dependency>
             <groupId>com.teoan.tclass</groupId>
             <artifactId>tclass-common-sys</artifactId>
-            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.teoan.tclass</groupId>
+            <artifactId>tclass-common-log</artifactId>
         </dependency>
         <dependency>
             <groupId>com.teoan.tclass</groupId>
             <artifactId>tclass-common-security</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.teoan.tclass</groupId>
             <artifactId>tclass-user-api</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

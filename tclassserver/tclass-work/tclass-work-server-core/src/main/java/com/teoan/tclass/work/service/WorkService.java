@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.teoan.tclass.work.entity.Work;
 
+import java.io.File;
+
 /**
  * (Work)表服务接口
  *
@@ -26,4 +28,18 @@ public interface WorkService extends IService<Work> {
      * @return 是否成功
      */
     boolean setDefaultWorkExtensionByEId(Integer EId);
+
+
+    /**
+     * 获取作业文件
+     */
+    byte[] getFile(Integer wId, String fileName);
+
+
+    /**
+     * 根据作业id获取作业文件并打包为zip
+     *
+     * @param wId 作业id
+     */
+    File getZipByWId(Integer wId);
 }

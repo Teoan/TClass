@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.12.RELEASE</version>
+        <version>2.6.13</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -23,21 +23,21 @@
     </modules>
 
     <properties>
-        <spring.cloud.version>Hoxton.SR12</spring.cloud.version>
-        <spring.boot.version>2.3.12.RELEASE</spring.boot.version>
+        <spring.cloud.version>2021.0.5</spring.cloud.version>
+        <spring.boot.version>2.6.13</spring.boot.version>
         <druid.version>1.2.16</druid.version>
         <lombok.version>1.18.26</lombok.version>
-        <mybatis.plus.version>3.5.3.1</mybatis.plus.version>
+        <mybatis.plus.version>3.5.3.2</mybatis.plus.version>
         <kaptcha.version>2.3.2</kaptcha.version>
         <jackson.version>2.12.3</jackson.version>
         <poi.version>5.2.3</poi.version>
         <flyway.version>6.5.7</flyway.version>
         <hutool.version>5.8.16</hutool.version>
         <fastdfs.version>1.27.2</fastdfs.version>
-        <spring.cloud.alibaba.version>2.2.9.RELEASE</spring.cloud.alibaba.version>
+        <spring.cloud.alibaba.version>2021.0.5.0</spring.cloud.alibaba.version>
         <io.springfox.version>3.0.0</io.springfox.version>
         <hystrix.version>2.2.10.RELEASE</hystrix.version>
-        <security.version>2.2.5.RELEASE</security.version>
+        <teoanlog.version>1.0.0</teoanlog.version>
     </properties>
 
     <dependencyManagement>
@@ -46,6 +46,36 @@
             <dependency>
                 <groupId>com.teoan.tclass</groupId>
                 <artifactId>tclass-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.teoan.tclass</groupId>
+                <artifactId>tclass-common-sys</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.teoan.tclass</groupId>
+                <artifactId>tclass-common-log</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.teoan.tclass</groupId>
+                <artifactId>tclass-common-security</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.teoan.tclass</groupId>
+                <artifactId>tclass-common-cloud</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.teoan.tclass</groupId>
+                <artifactId>tclass-common-code</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.teoan.tclass</groupId>
+                <artifactId>tclass-user-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -165,6 +195,12 @@
                 <groupId>com.github.tobato</groupId>
                 <artifactId>fastdfs-client</artifactId>
                 <version>${fastdfs.version}</version>
+            </dependency>
+            <!--日志采集-->
+            <dependency>
+                <groupId>io.github.teoan</groupId>
+                <artifactId>teoan-log-spring-boot-starter</artifactId>
+                <version>${teoanlog.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
